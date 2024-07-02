@@ -3,11 +3,12 @@ import { API_URL } from '@env'
 
  export const registerUser = async(values) => {
 
-    const [email,password] = values
+    const {email,password} = values
 
     try {
         // axios.post('api-back-postUser', values)
-        await loginUser(email,password)
+        // await loginUser(email,password)
+        console.log(values)
 
     }
     catch(error) {
