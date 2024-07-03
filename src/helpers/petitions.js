@@ -1,4 +1,5 @@
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from '@env'
 
  export const registerUser = async(values) => {
@@ -18,7 +19,7 @@ import { API_URL } from '@env'
 
 export const loginUser = async(values) => {
     try {
-        const response = await axios.post(`${API_URL}/authown/login`, values);
+        const response = await axios.post(`${API_URL}/authown/login`, values)
         return response
     }
     catch(error) {
