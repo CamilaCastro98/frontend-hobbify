@@ -11,6 +11,9 @@ export const perfilStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 20,
+        marginTop:20,
+        backgroundColor:'white',
+        borderRadius: 10,
     },
     profileImage: {
         width: 80,
@@ -20,27 +23,29 @@ export const perfilStyles = StyleSheet.create({
     },
     headerTextContainer: {
         flex: 1,
+
     },
     nameText: {
-        color: '#fff',
+        color: '#000',
         fontSize: 20,
         marginBottom: 5,
     },
     infoText: {
-        color: '#ccc',
+        color: '#fff',
         fontSize: 14,
     },
     informationContainer: {
         marginBottom: 20,
     },
     aboutMeCard: {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        backgroundColor: 'white',
         borderRadius: 10,
         padding: 15,
         marginBottom: 20,
+        marginVertical:10
     },
     aboutMeText: {
-        color: '#fff',
+        color: '#000',
         fontSize: 16,
         textAlign: 'justify',
     },
@@ -54,7 +59,7 @@ export const perfilStyles = StyleSheet.create({
         marginBottom: 10,
     },
     tag: {
-        backgroundColor: '#3299ab',
+        backgroundColor: '#7E78D2',
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 20,
@@ -67,7 +72,8 @@ export const perfilStyles = StyleSheet.create({
     buttonsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 20,
+        marginBottom: 120,
+        
     },
     button: {
         flex: 1,
@@ -77,11 +83,11 @@ export const perfilStyles = StyleSheet.create({
         justifyContent: 'center',
     },
     contactButton: {
-        backgroundColor: '#1778f2', // Facebook blue color
+        backgroundColor: '#1778f2', 
         marginRight: 10,
     },
     editButton: {
-        backgroundColor: '#4caf50', // Green color for edit button
+        backgroundColor: '#4caf50', 
     },
     buttonText: {
         color: '#fff',

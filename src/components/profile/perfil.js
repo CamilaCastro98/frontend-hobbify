@@ -1,10 +1,18 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { perfilStyles } from "./perfilStyles";
+import Header from "../../components/Header/Header";
+import NavBar from "../../components/NavBar/NavBar";
+
+const user = {
+    img: require("../../../assets/no-pic.png"),
+    name: "pedrito1",
+};
 
 const Perfil = ({ categories }) => {
     return (
         <View style={perfilStyles.container}>
+            <Header user={user} />
             {/* Header */}
             <View style={perfilStyles.header}>
                 <Image
@@ -16,7 +24,7 @@ const Perfil = ({ categories }) => {
                     <Text style={perfilStyles.infoText}>Email: xxxxxx</Text>
                 </View>
             </View>
-            
+
             {/* Information */}
             <View style={perfilStyles.informationContainer}>
                 <Text style={perfilStyles.infoText}>ABOUT ME</Text>
@@ -26,7 +34,7 @@ const Perfil = ({ categories }) => {
                     </Text>
                 </View>
                 <View style={perfilStyles.tagsContainer}>
-                    <Text style={perfilStyles.infoText}>Categories:</Text>
+                    <Text style={perfilStyles.infoText}>Hobbies:</Text>
                     <View style={perfilStyles.tags}>
                         {categories.map((category, index) => (
                             <View key={index} style={perfilStyles.tag}>
@@ -36,7 +44,7 @@ const Perfil = ({ categories }) => {
                     </View>
                 </View>
             </View>
-            
+
             {/* Contact and Edit Profile Buttons */}
             <View style={perfilStyles.buttonsContainer}>
                 <TouchableOpacity style={[perfilStyles.button, perfilStyles.contactButton]}>
@@ -46,6 +54,7 @@ const Perfil = ({ categories }) => {
                     <Text style={perfilStyles.buttonText}>Edit Profile</Text>
                 </TouchableOpacity>
             </View>
+            <NavBar />
         </View>
     );
 };
