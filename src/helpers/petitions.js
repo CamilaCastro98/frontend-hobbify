@@ -36,3 +36,13 @@ export const loginUserWithProvider = async(provider) => {
         throw new Error(`error trying to login with SM: ${error}`)
     }
 }
+
+export const sendToAdmin = async(values) => {
+    try {
+       //axios.post('api-back-sendToAdmin', values)
+        console.log(`Sent to admin: ${JSON.stringify(values)}`)
+    }
+    catch(error) {
+        throw new Error(`error trying to send form to admin: ${error}`)
+    }
+}
