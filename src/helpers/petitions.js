@@ -1,4 +1,5 @@
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_URL } from '@env'
 
  export const registerUser = async(values) => {
@@ -18,7 +19,7 @@ import { API_URL } from '@env'
 
 export const loginUser = async(values) => {
     try {
-        const response = await axios.post(`${API_URL}/authown/login`, values);
+        const response = await axios.post(`${API_URL}/authown/login`, values)
         return response
     }
     catch(error) {
@@ -33,5 +34,15 @@ export const loginUserWithProvider = async(provider) => {
     }
     catch(error) {
         throw new Error(`error trying to login with SM: ${error}`)
+    }
+}
+
+export const sendToAdmin = async(values) => {
+    try {
+       //axios.post('api-back-sendToAdmin', values)
+        console.log(`Sent to admin: ${JSON.stringify(values)}`)
+    }
+    catch(error) {
+        throw new Error(`error trying to send form to admin: ${error}`)
     }
 }

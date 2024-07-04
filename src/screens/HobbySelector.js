@@ -157,9 +157,17 @@ const HobbySelector = ({navigation}) => {
                         ))}
                     </View>
                 ) : (
-                    <Text style={styles.noResultsText}>
-                        No hobbies found matching "{searched}". Please try a different search term.
-                    </Text>
+                    <View style={styles.noResults}>
+                        <Text style={styles.noResultsText}>
+                            No hobbies found matching "{searched}". Please try a different search term.
+                        </Text>
+                        <Text style={styles.noResultsText}>
+                            Can't find your hobby?
+                        </Text>
+                        <TouchableOpacity style={styles.noResultsButton} onPress={() => navigation.push("CreateHobby")}>
+                            <Text style={styles.text}>Create Hobby</Text>
+                        </TouchableOpacity>
+                    </View>
                 )}
             </ScrollView>
             <View style={styles.buttonContainer}>
@@ -240,6 +248,16 @@ const styles = StyleSheet.create({
         margin: 30,
         fontSize: 15,
         color: 'white'
+    },
+    noResults: {
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    noResultsButton: {
+        backgroundColor: '#7E78D2',
+        borderRadius: 10,
+        padding: 15,
+        width: '50%'
     }
 })
 
