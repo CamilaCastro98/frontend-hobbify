@@ -65,7 +65,6 @@ const HobbySelector = ({navigation}) => {
     const [canProceed, setCanProceed] = useState(false)
     const [selectionData,setSelectionData] = useState([])
 
-
     useEffect(() => {
 
         const saveSelection = async () => {
@@ -96,6 +95,7 @@ const HobbySelector = ({navigation}) => {
                 newSelection = [...selectionData, name]
             } else {
                 newSelection = selectionData
+                showLimitMessage(true)
                 console.log("no se pueden elegir mas de 3 hobbies")
             }
 
@@ -120,6 +120,11 @@ const HobbySelector = ({navigation}) => {
 
     const handleSelectHobbies = () => {
        navigation.push("MainFeed")
+    }
+
+    const buttonStyle = {
+        ...styles.button,
+        backgroundColor: canProceed ? 'white' : 'gray',
     }
 
     return(
@@ -158,7 +163,7 @@ const HobbySelector = ({navigation}) => {
                 )}
             </ScrollView>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={() => handleSelectHobbies()} disabled={!canProceed}>
+                <TouchableOpacity style={buttonStyle} onPress={() => handleSelectHobbies()} disabled={!canProceed}>
                         <Text style={styles.text}>Go to Feed</Text>
                 </TouchableOpacity>
             </View>
