@@ -134,7 +134,7 @@ const HobbySelector = ({navigation}) => {
                 <Text style={styles.subtitile}>You can select up to three hobbies. </Text>
                 <Text style={styles.text}>
                 Would you like to choose more? {" "}
-                        <TouchableOpacity onPress={() => console.log("Navigate to premium plan screen")}>
+                        <TouchableOpacity onPress={() => navigation.push("SubscriptionScreen")}>
                             <Text style={styles.linkText}>Upgrade to our premium plan here</Text>
                         </TouchableOpacity>
                 </Text>
