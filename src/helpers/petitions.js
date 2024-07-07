@@ -1,15 +1,38 @@
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Linking } from 'react-native'
-import { API_URL } from '@env'
+import { API_URL, STRIPE_API_KEY } from '@env'
+import { Linking } from "react-native";
+
+const user = {
+	status: 200,
+	message: "Credentials is valid",
+	data: {
+		userId: "976393e7-4ea3-4082-b4a2-7a18db538f22",
+		username: "anatoly.karpov",
+		email: "anatoli.karpov@mailFake.com",
+		password: "Password1!",
+		city: "Medellin",
+		country: "Erehwon",
+		phone: 11223,
+		hobbies: [
+			// {
+			// 	"hobbieId": 2,
+			// 	"name": "Read",
+			// 	"emoji": ":book"
+			// }
+		],
+		"chats": [],
+		"payments": []
+	}
+}
 
  export const registerUser = async(values) => {
 
     const {email,password} = values
 
     try {
-        // axios.post('api-back-postUser', values)
-        // await loginUser(email,password)
+        axios.post(`${API_URL}/signin`,values)
+        await loginUser(email,password)
         console.log(values)
 
     }
@@ -18,10 +41,20 @@ import { API_URL } from '@env'
     }
 }
 
-export const loginUser = async(values) => {
-    try {
-        const response = await axios.post(`${API_URL}/authown/login`, values)
-        return response
+export const loginUser = async(values,login,navigation) => {
+  try {
+        // const response = await axios.post(`${API_URL}/authown/login`, values);
+        const response = user //borrar esto despues
+
+        if (response.status === 200) {
+          const { hobbies,token } = response.data;
+        //   login(hobbies,token);
+          if (hobbies.length > 0) {
+            navigation.push("MainFeed");
+          } else {
+            navigation.push("HobbySelector");
+          }
+        }
     }
     catch(error) {
         throw new Error(`error trying to login: ${error}`)
@@ -50,15 +83,13 @@ export const sendToAdmin = async(values) => {
 
 export const getPlans = async() => {
 
-    const subscriptions = [
-        { id: 0, type: 'Yearly', price: '$99.99', description: 'Best value for long term use.' },
-        { id: 1, type: '3 Months', price: '$29.99', description: 'Good value for short term use.' },
-        { id: 2, type: '1 Month', price: '$9.99', description: 'Great for trying out the service.' },
-    ]
-
     try {
-        // const response = await axios.get('api-back-getPlans')
-        return subscriptions
+        const subscriptions = await axios.get(`${API_URL}/stripe`, {
+            headers: {
+                'Authorization': `Bearer ${STRIPE_API_KEY}`
+            }
+        })
+        return subscriptions.data.data
     }
     catch(error) {
         throw new Error(`error trying to get premium plans: ${error}`)
@@ -66,15 +97,30 @@ export const getPlans = async() => {
 }
 
 export const postPurchase = async(planId) => {
-
     try {
-        // const response = await axios.post('api-back-postPurchase',{id:planId})
-        // const urlDePago = response.data.url;
-        // Linking.openURL(urlDePago)
+        const response = await axios.post(`${API_URL}/stripe`, 
+            { priceId: planId },
+            {
+                headers: {
+                'Authorization': `Bearer ${STRIPE_API_KEY}`
+            }
+        })
+        const urlDePago = response.data.url;
+        Linking.openURL(urlDePago)
         console.log(planId)
         
     }
     catch(error) {
         throw new Error(`error trying to get premium plans: ${error}`)
+    }
+}
+
+export const getAllHobbies = async() => {
+    try {
+        const response = await axios.get(`${API_URL}/hobbies`)
+        return response.data
+    }
+    catch(error) {
+        throw new Error(`error trying to get all hobbies: ${error}`)
     }
 }
