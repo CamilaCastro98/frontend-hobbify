@@ -46,10 +46,10 @@ const Subscription = () => {
             {plans.map((plan, index) => (
                 <SubscriptionCard
                     key={index}
-                    type={plan.type}
-                    price={plan.price}
-                    description={plan.description}
-                    selected={selectedPlan === index}
+                    nickname={plan.nickname}
+                    price={plan.unit_amount}
+                    interval={plan.recurring.interval}
+                    selected={selectedPlan === plan.id}
                     onSelect={() => handleSelectPlan(plan.id)}
                 />
             ))}

@@ -2,6 +2,7 @@ import { Button, TextInput,View, Text, StyleSheet,ScrollView,TouchableOpacity } 
 import { useState,useEffect } from "react";
 import HobbyCards from "../components/HobbyCards/HobbyCards";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAllHobbies } from "../helpers/petitions";
 
 const tempHobbies = [
     {
@@ -59,7 +60,8 @@ const tempHobbies = [
 
 const HobbySelector = ({navigation}) => {
 
-    const [hobbies,setHobbies] = useState(tempHobbies)
+    const [hobbies,setHobbies] = useState([])
+    const [originalHobbies,setOriginalHobbies] = useState([])
     const [searched,setSearched] = useState("")
     const [isLimited,setIsLimited] = useState(false)
     const [canProceed, setCanProceed] = useState(false)
@@ -109,8 +111,22 @@ const HobbySelector = ({navigation}) => {
         }
     }
 
+    useEffect(()=>{
+        const handleGetHobbies = async() => {
+            try {
+                const response = await getAllHobbies()
+                setHobbies(response)
+                setOriginalHobbies(response)
+            }
+            catch(error) {
+                console.error('Error handling hobbies:', error)
+            }
+        }
+        handleGetHobbies()
+    },[])
+
     useEffect(() => {
-        const newHobbies = tempHobbies.filter(hobbie => hobbie.name.toLocaleLowerCase().includes(searched.toLowerCase()))
+        const newHobbies = originalHobbies.filter(hobbie => hobbie.name.toLocaleLowerCase().includes(searched.toLowerCase()))
         setHobbies(newHobbies)
     }, [searched])
 
@@ -149,7 +165,7 @@ const HobbySelector = ({navigation}) => {
                     <View style={styles.cardsContainer}>
                         {hobbies.map(hobby => (
                             <HobbyCards
-                                key={hobby.id}
+                                key={hobby.hobbieId}
                                 {...hobby}
                                 onPress={() => handlePressHobby(hobby.name)}
                                 disable={isLimited}

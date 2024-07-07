@@ -3,23 +3,18 @@ import { Formik } from 'formik';
 import { AntDesign } from '@expo/vector-icons';
 import validationLogin from "../helpers/validationLogin";
 import React, { useState,useContext } from "react";
-import { Context } from '../contexts/Context';
 import { loginUser, loginUserWithProvider } from "../helpers/petitions";
+import { Context } from "../contexts/Context";
 
 const Login = ({ navigation }) => {
 
-  const [errorSubmiting, setErrorSubmiting] = useState("")
   const { login } = useContext(Context)
+
+  const [errorSubmiting, setErrorSubmiting] = useState("")
 
   const handleLogin = async (values) => {
     try {
-      const response = await loginUser(values)
-      if (response.data.status === 200) {
-        const { token, hobbies } = response.data
-        login(token,hobbies)
-        navigation.push("MainFeed")
-
-      }
+      await loginUser(values,login,navigation)
     } catch (error) {
       console.error("Error trying to login:", error)
       setErrorSubmiting("The data you entered is incorrect")

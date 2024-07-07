@@ -9,8 +9,7 @@ const Register = ({ navigation }) => {
 
     const handleRegister = async (values) => {
         try {
-            await registerUser(values);
-            navigation.push("HobbySelector")
+           await registerUser(values)
         } catch (error) {
             console.error("Error trying to register:", error);
         }
