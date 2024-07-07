@@ -35,7 +35,7 @@ const AppNavigation = () => {
 
   return (
     <NavigationContainer linking={linking}>
-      <DeepLinkingHandler />
+      {/* <DeepLinkingHandler /> */}
       <Stack.Navigator initialRouteName="Landing" screenOptions={screenOptions}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="HobbySelector" component={HobbySelector} />
