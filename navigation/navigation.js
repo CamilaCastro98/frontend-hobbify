@@ -8,7 +8,8 @@ import Messages from "../src/screens/Messages";
 import Chat from "../src/screens/Chat";
 import HobbySelector from "../src/screens/HobbySelector";
 import Login from "../src/screens/Login";
-import Perfil from "../src/screens/Perfil";
+import Profile from "../src/screens/Profile";
+import EProfile from "../src/screens/EProfile";
 import Register from "../src/screens/Register";
 import SubscriptionScreen from "../src/screens/SubscriptionScreen";
 import Landing from "../src/screens/Landing";
@@ -20,6 +21,7 @@ import * as Linking from 'expo-linking'
 import DeepLinkingHandler from "../src/helpers/deepLinkingHandler";
 import Loading from "../src/screens/Loading";
 import TempLogOut from "../src/screens/TempLogOut";
+import ChatPrueba from "../src/screens/ChatPrueba";
 const Stack = createStackNavigator();
 const screenOptions = {
   headerShown: false,
@@ -79,6 +81,8 @@ const AppNavigation = () => {
         <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
         <Stack.Screen name="CancelScreen" component={CancelScreen} />
         <Stack.Screen name="TempLogOut" component={TempLogOut} />
+        <Stack.Screen name="Profile" component={Profile}></Stack.Screen>
+      <Stack.Screen name="EProfile" component={EProfile}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
