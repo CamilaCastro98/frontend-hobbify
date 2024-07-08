@@ -37,14 +37,14 @@ const linking = {
 
 const AppNavigation = () => {
 
-  const { isAuthenticated, userHobbies } = useContext(Context);
+  const { isAuthenticated, user } = useContext(Context);
   const [initialRoute, setInitialRoute] = useState(null);
 
   useEffect(() => {
-    if (isAuthenticated !== undefined && userHobbies !== undefined) {
+    if (isAuthenticated !== undefined) {
       let name;
       if (isAuthenticated) {
-        if (userHobbies.length > 0) {
+        if (user.hobbies && user.hobbies.length > 0) {
           name = "MainFeed";
         } else {
           name = "HobbySelector";
@@ -54,7 +54,8 @@ const AppNavigation = () => {
       }
       setInitialRoute(name);
     }
-  }, [isAuthenticated, userHobbies])
+  }, [isAuthenticated, user.hobbies]);
+
 
   if (initialRoute === null) {
     return <Loading />;
@@ -77,7 +78,7 @@ const AppNavigation = () => {
         <Stack.Screen name="SubscriptionScreen" component={SubscriptionScreen} />
         <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
         <Stack.Screen name="CancelScreen" component={CancelScreen} />
-        {/* <Stack.Screen name="TempLogOut" component={TempLogOut} /> */}
+        <Stack.Screen name="TempLogOut" component={TempLogOut} />
       </Stack.Navigator>
     </NavigationContainer>
   );

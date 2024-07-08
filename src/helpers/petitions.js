@@ -41,22 +41,18 @@ const user = {
 }
 
 export const loginUser = async(values,login,navigation) => {
-
-    console.log(values)
-
   try {
         const response = await axios.post(`${API_URL}/authown/login`,values);
         // const response = user 
         if (response.status === 200 || response.status === 201) {
           const tempToken = "token1234"
-          const { hobbies } = response.data.data;
-            console.log(`hobbies es: ${hobbies}`)
-          if (hobbies.length > 0) {
-            const hobbiesIds = hobbies.map(hobby => hobby.hobbieId)
-            login(tempToken,hobbiesIds)
+          const user = response.data.data;
+          console.log(`user logueado es ${user} y sus hobbies son ${user.hobbies}`)
+          if (user.hobbies.length > 0) {
+            login(tempToken,user)
             navigation.push("MainFeed");
           } else {
-            login(tempToken,hobbies)
+            login(tempToken,user)
             navigation.push("HobbySelector");
           }
         }

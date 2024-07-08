@@ -1,75 +1,91 @@
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Context = createContext()
+const Context = createContext();
 
 const ContextProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [userHobbies, setUserHobbies] = useState([])
-  const [token, setToken] = useState(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState({});
+  const [token, setToken] = useState(null);
+
+console.log('context iniciado')
 
   useEffect(() => {
-
     const loadToken = async () => {
-      const storedToken = await AsyncStorage.getItem('userToken')
-      if (storedToken) {
-        setToken(storedToken)
-        setIsAuthenticated(true)
-        console.log("token loaded in context")
-      }
-    }
-    const loadHobbies = async () => {
-        const storedHobbies = await AsyncStorage.getItem('userHobbies')
-        if (storedHobbies) {
-          setUserHobbies(JSON.parse(storedHobbies))
-          console.log("hobbies loaded in context")
+      try {
+        const storedToken = await AsyncStorage.getItem('userToken');
+        if (storedToken) {
+          setToken(storedToken);
+          setIsAuthenticated(true);
+          console.log("Token loaded in context");
         }
+
+      } catch (error) {
+        console.error("Error loading token:", error);
       }
+    };
 
-    loadToken()
-    loadHobbies()
+    const loadUser = async () => {
+      try {
+        const storedUser = await AsyncStorage.getItem('user');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+          console.log("User loaded in context");
+        }
+      } catch (error) {
+        console.error("Error loading user:", error);
+      }
+    };
 
-  }, [])
+    loadToken();
+    loadUser();
+  }, []);
 
-  const login = async (userToken,userHobbies) => {
-    console.log("entró a login de context")
-    setToken(userToken)
-    setUserHobbies(userHobbies)
-    setIsAuthenticated(true)
+  const login = async (userToken, newUser) => {
+    console.log("Entró a login de context");
+    newUser.hobbies = newUser.hobbies.map(hobby => hobby.hobbieId);
+    setToken(userToken);
+    setUser(newUser);
+    setIsAuthenticated(true);
     try {
       await AsyncStorage.setItem('userToken', userToken);
-      await AsyncStorage.setItem('userHobbies', JSON.stringify(userHobbies));
-  
+      await AsyncStorage.setItem('user', JSON.stringify(newUser));
+
       const loggedToken = await AsyncStorage.getItem('userToken');
-      const loggedHobbies = await AsyncStorage.getItem('userHobbies');
-  
-      console.log(`en contexto: ${loggedToken}, ${loggedHobbies}`);
+      const loggedUser = await AsyncStorage.getItem('user');
+
+      console.log(`En contexto: el token es ${loggedToken}, el user es ${loggedUser}`);
+    } catch (error) {
+      throw new Error(`Error logging data in context: ${error}`);
     }
-    catch(error) {
-      throw new Error(`error logging data in context: ${error}`)
-    }
- 
-  }
+  };
 
   const logout = async () => {
-    setToken(null)
-    setIsAuthenticated(false)
-    await AsyncStorage.removeItem('userToken')
-    await AsyncStorage.removeItem('userHobbies')
-  }
+    setToken(null);
+    setIsAuthenticated(false);
+    await AsyncStorage.removeItem('userToken');
+    await AsyncStorage.removeItem('user');
+    console.log("Token and user removed");
+  };
 
-  const updateHobbies = async (newHobbies) => {
-    setUserHobbies(newHobbies)
-    await AsyncStorage.setItem('userHobbies', JSON.stringify(newHobbies))
-    const confirmedHobbies = await AsyncStorage.getItem('userHobbies')
-    console.log(`en contexto los nuevos hobbies son: ${confirmedHobbies}`)
-  }
+  const updateHobbies = async (userWithNewHobbies) => {
+    try {
+      userWithNewHobbies.hobbies = userWithNewHobbies.hobbies.map(hobby => hobby.hobbieId);
+      setUser(userWithNewHobbies);
+      await AsyncStorage.setItem('user', JSON.stringify(userWithNewHobbies));
+      const confirmedUser = await AsyncStorage.getItem('user');
+      console.log(`Usuario con los hobbies actualizados: ${confirmedUser}`);
+    } catch (error) {
+      console.error("Error updating hobbies:", error);
+    }
+  };
 
   return (
-    <Context.Provider value={{ isAuthenticated, token, userHobbies, login, logout, updateHobbies }}>
+    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies }}>
       {children}
     </Context.Provider>
   );
 };
 
-export { Context, ContextProvider }
+export { Context, ContextProvider };
+

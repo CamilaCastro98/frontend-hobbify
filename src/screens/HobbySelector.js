@@ -61,7 +61,7 @@ const tempHobbies = [
 
 const HobbySelector = ({navigation}) => {
 
-    const { userHobbies,updateHobbies } = useContext(Context);
+    const { user,updateHobbies } = useContext(Context);
 
     const [hobbies,setHobbies] = useState([])
     const [originalHobbies,setOriginalHobbies] = useState([])
@@ -74,8 +74,8 @@ const HobbySelector = ({navigation}) => {
 
         const saveSelection = async () => {
             try {
-                if (userHobbies.length > 0) {
-                    setSelectionData((userHobbies));
+                if (user.hobbies.length > 0) {
+                    setSelectionData((user.hobbies));
                     await AsyncStorage.setItem('tempHobbies',JSON.stringify(selectionData))
                 } else {
                     await AsyncStorage.setItem('tempHobbies', JSON.stringify([]))
@@ -139,7 +139,8 @@ const HobbySelector = ({navigation}) => {
 
     const handleSelectHobbies = async() => {
         if(selectionData.length > 0) {
-            updateHobbies(selectionData)
+            const userNewHobbies = {hobbies: selectionData,...user}
+            updateHobbies(userNewHobbies)
             try {
                 await AsyncStorage.removeItem('tempHobbies')
                 navigation.push("MainFeed")
