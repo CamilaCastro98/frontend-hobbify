@@ -3,14 +3,13 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     card: {
         borderWidth: 1,
-        borderColor: '#800080',
         borderRadius: 10,
         padding: 20,
         marginVertical: 10,
         backgroundColor: '#FFFFFF',
     },
     selectedCard: {
-        backgroundColor: '#D8BFD8',
+        backgroundColor: '#7E78D2',
     },
     type: {
         fontSize: 18,

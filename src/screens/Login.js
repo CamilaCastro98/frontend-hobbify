@@ -1,21 +1,20 @@
-import { StatusBar } from "expo-status-bar";
 import { Button, TextInput, View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { Formik } from 'formik';
 import { AntDesign } from '@expo/vector-icons';
 import validationLogin from "../helpers/validationLogin";
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { loginUser, loginUserWithProvider } from "../helpers/petitions";
+import { Context } from "../contexts/Context";
 
 const Login = ({ navigation }) => {
+
+  const { login } = useContext(Context)
 
   const [errorSubmiting, setErrorSubmiting] = useState("")
 
   const handleLogin = async (values) => {
     try {
-      const response = await loginUser(values)
-      if (response.data.status === 200) {
-        navigation.push("MainFeed")
-      }
+      await loginUser(values,login,navigation)
     } catch (error) {
       console.error("Error trying to login:", error)
       setErrorSubmiting("The data you entered is incorrect")

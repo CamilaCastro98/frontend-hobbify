@@ -2,8 +2,6 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#FFFFFF',
         padding: 20,
     },
     title: {
@@ -14,19 +12,24 @@ const styles = StyleSheet.create({
         color: '#800080',
     },
     purchaseButton: {
-        backgroundColor: '#0000FF',
-        borderWidth: 1,
-        borderColor: '#FFFFFF',
+        backgroundColor: '#7E78D2',
         borderRadius: 10,
-        padding: 15,
+        padding: 20,
         alignItems: 'center',
-        marginTop: 'auto',
+        marginTop: 20,
     },
     purchaseButtonText: {
         color: '#FFFFFF',
         fontSize: 16,
-        fontWeight: 'bold',
     },
+    buttonContainer: {
+        paddingTop:40,
+        paddingBottom:30,
+        backgroundColor: '#7E78D2',
+        borderRadius: 10,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    }
 });
 
 export default styles;

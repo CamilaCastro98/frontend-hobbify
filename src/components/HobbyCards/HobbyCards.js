@@ -2,7 +2,7 @@ import { View, Text, StyleSheet,TouchableOpacity } from "react-native";
 import { useState,useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const HobbyCards = ({emoji,name,onPress,disable}) => {
+const HobbyCards = ({emoji,name,hobbieId,onPress,disable}) => {
 
     const [isPressed, setIsPressed] = useState(false);
 
@@ -16,9 +16,9 @@ const HobbyCards = ({emoji,name,onPress,disable}) => {
 
         const getSelection = async () => {
             try {
-                const selectionDataString = await AsyncStorage.getItem('hobbies')
+                const selectionDataString = await AsyncStorage.getItem('tempHobbies')
                 const selectionData = JSON.parse(selectionDataString)
-                if (selectionData.includes(name)) {
+                if (selectionData.includes(hobbieId)) {
                     setIsPressed(true)
                 } else {
                     setIsPressed(false)
