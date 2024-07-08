@@ -1,7 +1,9 @@
 import { Button, TextInput,View, Text, StyleSheet,ScrollView,TouchableOpacity } from "react-native";
-import { useState,useEffect } from "react";
+import { useState,useEffect,useContext } from "react";
 import HobbyCards from "../components/HobbyCards/HobbyCards";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAllHobbies } from "../helpers/petitions";
+import { Context } from "../contexts/Context";
 
 const tempHobbies = [
     {
@@ -59,7 +61,10 @@ const tempHobbies = [
 
 const HobbySelector = ({navigation}) => {
 
-    const [hobbies,setHobbies] = useState(tempHobbies)
+    const { user,updateHobbies } = useContext(Context);
+
+    const [hobbies,setHobbies] = useState([])
+    const [originalHobbies,setOriginalHobbies] = useState([])
     const [searched,setSearched] = useState("")
     const [isLimited,setIsLimited] = useState(false)
     const [canProceed, setCanProceed] = useState(false)
@@ -69,14 +74,14 @@ const HobbySelector = ({navigation}) => {
 
         const saveSelection = async () => {
             try {
-                const selectionDataString = await AsyncStorage.getItem('hobbies')
-                if (selectionDataString) {
-                    setSelectionData(JSON.parse(selectionDataString));
+                if (user.hobbies.length > 0) {
+                    setSelectionData((user.hobbies));
+                    await AsyncStorage.setItem('tempHobbies',JSON.stringify(selectionData))
                 } else {
-                    await AsyncStorage.setItem('hobbies', JSON.stringify([]))
+                    await AsyncStorage.setItem('tempHobbies', JSON.stringify([]))
                 }
-                setSelectionData(JSON.parse(selectionDataString));
-                    setIsLimited(JSON.parse(selectionDataString).length >= 3)
+                const selection = await AsyncStorage.getItem('tempHobbies')
+                    setIsLimited(JSON.parse(selection).length >= 3)
                 console.log(`seleccion inicial: ${selectionData}`)
             } catch (error) {
                 console.error('Error saving initial hobbies:', error)
@@ -86,13 +91,13 @@ const HobbySelector = ({navigation}) => {
         saveSelection()
     }, [])
 
-    const handlePressHobby = async(name) => {
+    const handlePressHobby = async(id) => {
         try {
             let newSelection
-            if (selectionData.includes(name)) {
-                newSelection = selectionData.filter(hobby => hobby !== name);
+            if (selectionData.includes(id)) {
+                newSelection = selectionData.filter(hobby => hobby !== id);
             } else if(selectionData.length < 3) {
-                newSelection = [...selectionData, name]
+                newSelection = [...selectionData, id]
             } else {
                 newSelection = selectionData
                 showLimitMessage(true)
@@ -100,7 +105,7 @@ const HobbySelector = ({navigation}) => {
             }
 
             setSelectionData(newSelection);
-            await AsyncStorage.setItem('hobbies', JSON.stringify(newSelection))
+            await AsyncStorage.setItem('tempHobbies', JSON.stringify(newSelection))
             setIsLimited(newSelection.length >= 3)
             setCanProceed(newSelection.length > 0)
             console.log(newSelection)
@@ -109,8 +114,22 @@ const HobbySelector = ({navigation}) => {
         }
     }
 
+    useEffect(()=>{
+        const handleGetHobbies = async() => {
+            try {
+                const response = await getAllHobbies()
+                setHobbies(response)
+                setOriginalHobbies(response)
+            }
+            catch(error) {
+                console.error('Error handling hobbies:', error)
+            }
+        }
+        handleGetHobbies()
+    },[])
+
     useEffect(() => {
-        const newHobbies = tempHobbies.filter(hobbie => hobbie.name.toLocaleLowerCase().includes(searched.toLowerCase()))
+        const newHobbies = originalHobbies.filter(hobbie => hobbie.name.toLocaleLowerCase().includes(searched.toLowerCase()))
         setHobbies(newHobbies)
     }, [searched])
 
@@ -118,8 +137,18 @@ const HobbySelector = ({navigation}) => {
         setSearched(text)
     }
 
-    const handleSelectHobbies = () => {
-       navigation.push("MainFeed")
+    const handleSelectHobbies = async() => {
+        if(selectionData.length > 0) {
+            const userNewHobbies = {hobbies: selectionData,...user}
+            updateHobbies(userNewHobbies)
+            try {
+                await AsyncStorage.removeItem('tempHobbies')
+                navigation.push("MainFeed")
+            }
+            catch(error) {
+                console.error('Error handling confirmation:', error)
+            }
+        }
     }
 
     const buttonStyle = {
@@ -134,7 +163,7 @@ const HobbySelector = ({navigation}) => {
                 <Text style={styles.subtitile}>You can select up to three hobbies. </Text>
                 <Text style={styles.text}>
                 Would you like to choose more? {" "}
-                        <TouchableOpacity onPress={() => console.log("Navigate to premium plan screen")}>
+                        <TouchableOpacity onPress={() => navigation.push("SubscriptionScreen")}>
                             <Text style={styles.linkText}>Upgrade to our premium plan here</Text>
                         </TouchableOpacity>
                 </Text>
@@ -149,9 +178,9 @@ const HobbySelector = ({navigation}) => {
                     <View style={styles.cardsContainer}>
                         {hobbies.map(hobby => (
                             <HobbyCards
-                                key={hobby.id}
+                                key={hobby.hobbieId}
                                 {...hobby}
-                                onPress={() => handlePressHobby(hobby.name)}
+                                onPress={() => handlePressHobby(hobby.hobbieId)}
                                 disable={isLimited}
                             />
                         ))}
