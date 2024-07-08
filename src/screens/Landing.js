@@ -1,7 +1,11 @@
 import { Button,View, Text, StyleSheet,TouchableOpacity } from "react-native";
 import Carrousel from "../components/Carrousel/Carrousel";
+import { Context } from "../contexts/Context";
+import { useContext } from "react";
 
 const Landing = ({navigation}) => {
+    const { token,userHobbies,isAuthenticated } = useContext(Context)
+    console.log(`los valores iniciales en context son: isAuth es ${isAuthenticated} y hobbies son ${userHobbies}`)
 return(
 <View style={styles.container}>
     <View style={styles.header}>

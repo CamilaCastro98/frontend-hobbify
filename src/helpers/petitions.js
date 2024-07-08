@@ -26,15 +26,14 @@ const user = {
 	}
 }
 
- export const registerUser = async(values) => {
+ export const registerUser = async(values,login,navigation) => {
 
     const {email,password} = values
 
     try {
-        axios.post(`${API_URL}/signin`,values)
-        await loginUser(email,password)
-        console.log(values)
-
+       const response = await axios.post(`${API_URL}/authown/signin`,values)
+       console.log(response.data)
+       await loginUser({email,password},login,navigation)
     }
     catch(error) {
         throw new Error(`error trying to register: ${error}`)
@@ -42,16 +41,22 @@ const user = {
 }
 
 export const loginUser = async(values,login,navigation) => {
-  try {
-        // const response = await axios.post(`${API_URL}/authown/login`, values);
-        const response = user //borrar esto despues
 
-        if (response.status === 200) {
-          const { hobbies,token } = response.data;
-        //   login(hobbies,token);
+    console.log(values)
+
+  try {
+        const response = await axios.post(`${API_URL}/authown/login`,values);
+        // const response = user 
+        if (response.status === 200 || response.status === 201) {
+          const tempToken = "token1234"
+          const { hobbies } = response.data.data;
+            console.log(`hobbies es: ${hobbies}`)
           if (hobbies.length > 0) {
+            const hobbiesIds = hobbies.map(hobby => hobby.hobbieId)
+            login(tempToken,hobbiesIds)
             navigation.push("MainFeed");
           } else {
+            login(tempToken,hobbies)
             navigation.push("HobbySelector");
           }
         }

@@ -3,13 +3,18 @@ import { Button, TextInput,View, Text, StyleSheet,ScrollView,TouchableOpacity } 
 import { Formik } from 'formik';
 import validationRegister from "../helpers/validationRegister";
 import { registerUser } from "../helpers/petitions";
+import { Context } from "../contexts/Context";
+import { useContext } from "react";
 import React from "react";
 
 const Register = ({ navigation }) => {
 
+    const { login } = useContext(Context)
+
     const handleRegister = async (values) => {
+        values.phone = values.phone ? parseInt(values.phone) : 0
         try {
-           await registerUser(values)
+           await registerUser(values,login,navigation)
         } catch (error) {
             console.error("Error trying to register:", error);
         }

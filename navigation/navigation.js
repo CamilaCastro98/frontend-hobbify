@@ -1,6 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { useContext, useEffect, useState } from "react"
+import { Context } from "../src/contexts/Context";
 import MainFeed from "../src/screens/MainFeed";
 import Messages from "../src/screens/Messages";
 import Chat from "../src/screens/Chat";
@@ -16,6 +18,8 @@ import SuccessScreen from "../src/screens/SuccessScreen";
 import CancelScreen from "../src/screens/CancelScreen";
 import * as Linking from 'expo-linking'
 import DeepLinkingHandler from "../src/helpers/deepLinkingHandler";
+import Loading from "../src/screens/Loading";
+import TempLogOut from "../src/screens/TempLogOut";
 const Stack = createStackNavigator();
 const screenOptions = {
   headerShown: false,
@@ -33,10 +37,34 @@ const linking = {
 
 const AppNavigation = () => {
 
+  const { isAuthenticated, userHobbies } = useContext(Context);
+  const [initialRoute, setInitialRoute] = useState(null);
+
+  useEffect(() => {
+    if (isAuthenticated !== undefined && userHobbies !== undefined) {
+      let name;
+      if (isAuthenticated) {
+        if (userHobbies.length > 0) {
+          name = "MainFeed";
+        } else {
+          name = "HobbySelector";
+        }
+      } else {
+        name = "Landing";
+      }
+      setInitialRoute(name);
+    }
+  }, [isAuthenticated, userHobbies])
+
+  if (initialRoute === null) {
+    return <Loading />;
+  }
+
   return (
     <NavigationContainer linking={linking}>
       {/* <DeepLinkingHandler /> */}
-      <Stack.Navigator initialRouteName="Landing" screenOptions={screenOptions}>
+      <Stack.Navigator initialRouteName={initialRoute} screenOptions={screenOptions}>
+        <Stack.Screen name="Landing" component={Landing} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="HobbySelector" component={HobbySelector} />
         <Stack.Screen name="Messages" component={Messages} />
@@ -44,12 +72,12 @@ const AppNavigation = () => {
         <Stack.Screen name="MainFeed" component={MainFeed} />
         <Stack.Screen name="Perfil" component={Perfil} />
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Landing" component={Landing} />
         <Stack.Screen name="CreateHobby" component={CreateHobby} />
         <Stack.Screen name="SubmitedHobby" component={SubmitedHobby} />
         <Stack.Screen name="SubscriptionScreen" component={SubscriptionScreen} />
         <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
         <Stack.Screen name="CancelScreen" component={CancelScreen} />
+        {/* <Stack.Screen name="TempLogOut" component={TempLogOut} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
