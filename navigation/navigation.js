@@ -26,14 +26,15 @@ const screenOptions = {
 };
 
 const linking = {
-  prefixes: [Linking.createURL('/')],
+  prefixes: ['hobbify://'],
   config: {
     screens: {
       SuccessScreen: 'success',
       CancelScreen: 'cancel',
     },
   },
-}
+};
+
 
 const AppNavigation = () => {
 
@@ -63,21 +64,21 @@ const AppNavigation = () => {
 
   return (
     <NavigationContainer linking={linking}>
-      {/* <DeepLinkingHandler /> */}
+      <DeepLinkingHandler />
       <Stack.Navigator initialRouteName={initialRoute} screenOptions={screenOptions}>
+      <Stack.Screen name="HobbySelector" component={HobbySelector} />
+      <Stack.Screen name="CancelScreen" component={CancelScreen} />
+      <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Landing" component={Landing} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="HobbySelector" component={HobbySelector} />
-        <Stack.Screen name="Messages" component={Messages} />
         <Stack.Screen name="Chat" component={Chat} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Messages" component={Messages} />
         <Stack.Screen name="MainFeed" component={MainFeed} />
         <Stack.Screen name="Perfil" component={Perfil} />
-        <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="CreateHobby" component={CreateHobby} />
         <Stack.Screen name="SubmitedHobby" component={SubmitedHobby} />
         <Stack.Screen name="SubscriptionScreen" component={SubscriptionScreen} />
         <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
-        <Stack.Screen name="CancelScreen" component={CancelScreen} />
         <Stack.Screen name="TempLogOut" component={TempLogOut} />
       </Stack.Navigator>
     </NavigationContainer>

@@ -16,3 +16,4 @@ const SuccessScreen = ({navigation}) => {
 }
 
 export default SuccessScreen
+

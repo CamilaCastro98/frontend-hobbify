@@ -31,7 +31,7 @@ const user = {
     const {email,password} = values
 
     try {
-       const response = await axios.post(`${API_URL}/authown/signin`,values)
+       const response = await axios.post(`http://192.168.100.248:3000/authown/signin`,values)
        console.log(response.data)
        await loginUser({email,password},login,navigation)
     }
@@ -42,7 +42,7 @@ const user = {
 
 export const loginUser = async(values,login,navigation) => {
   try {
-        const response = await axios.post(`${API_URL}/authown/login`,values);
+        const response = await axios.post(`http://192.168.100.248:3000/authown/login`,values);
         // const response = user 
         if (response.status === 200 || response.status === 201) {
           const tempToken = "token1234"
@@ -85,7 +85,7 @@ export const sendToAdmin = async(values) => {
 export const getPlans = async() => {
 
     try {
-        const subscriptions = await axios.get(`${API_URL}/stripe`, {
+        const subscriptions = await axios.get(`http://192.168.100.248:3000/stripe`, {
             headers: {
                 'Authorization': `Bearer ${STRIPE_API_KEY}`
             }
@@ -99,7 +99,7 @@ export const getPlans = async() => {
 
 export const postPurchase = async(planId) => {
     try {
-        const response = await axios.post(`${API_URL}/stripe`, 
+        const response = await axios.post(`http://192.168.100.248:3000/stripe`, 
             { priceId: planId },
             {
                 headers: {
@@ -118,7 +118,7 @@ export const postPurchase = async(planId) => {
 
 export const getAllHobbies = async() => {
     try {
-        const response = await axios.get(`${API_URL}/hobbies`)
+        const response = await axios.get(`http://192.168.100.248:3000/hobbies`)
         return response.data
     }
     catch(error) {
