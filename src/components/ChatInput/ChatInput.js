@@ -8,9 +8,12 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
-const ChatInput = () => {
+const ChatInput = ({sendMessage, messageFromFront,setMessageFromFront}) => {
   const [height, setHeight] = useState(40);
-
+  const sendHandler=() =>{
+    sendMessage();
+    setMessageFromFront("");
+  }
   return (
     <View style={[styles.container, { height: Math.max(50, height + 15) }]}>
       <View style={styles.mainContainer}>
@@ -24,6 +27,8 @@ const ChatInput = () => {
           style={[styles.inputContainer, { height: Math.max(30, height + 5) }]}
         >
           <TextInput
+            value={messageFromFront}
+            onChangeText={setMessageFromFront}
             multiline={true}
             style={[styles.input, { height: Math.max(30, height) }]}
             onContentSizeChange={(event) => {
@@ -34,7 +39,7 @@ const ChatInput = () => {
             }}
           />
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity  onPress={()=>sendHandler()}>
           <Image
             style={styles.icon}
             source={require("../../../assets/send-chat.png")}

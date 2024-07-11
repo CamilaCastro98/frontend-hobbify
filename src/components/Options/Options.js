@@ -7,7 +7,8 @@ import {
   Modal,
   SafeAreaView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Context } from "../../contexts/Context";
 
 const Options = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -23,6 +24,8 @@ const Options = () => {
   const handleCloseModal = () => {
     setIsVisible(false);
   };
+
+  const {logout} = useContext(Context)
 
   return (
     <>
@@ -57,12 +60,14 @@ const Options = () => {
             <View style={styles.div}></View>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
+            ><TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between" }}  onPress={ ()=>logout()}>
+
               <Text style={styles.textOption}>Log Out </Text>
               <Image
                 style={styles.icon}
                 source={require("../../../assets/log-out.png")}
-              />
+                />
+                </TouchableOpacity>
             </View>
           </View>
         </SafeAreaView>
