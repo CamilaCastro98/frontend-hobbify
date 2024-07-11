@@ -7,14 +7,19 @@ import {
 } from "react-native";
 import React from "react";
 
-const MessagesHeader = ({ navigation }) => {
+const MessagesHeader = ({ navigation, searched, setSearched }) => {
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.arrow}>{"<"}</Text>
         </TouchableOpacity>
-        <Text>ACA VA UN BUSCADOR</Text>
+        <TextInput
+            value={searched}
+            onChangeText={setSearched}
+            style={styles.input}
+            placeholder="Search..."
+          />
         <View></View>
       </View>
     </View>
@@ -39,6 +44,15 @@ const styles = StyleSheet.create({
   arrow: {
     color: "white",
     fontSize: 40,
+  },
+  input: {
+    width: 250,
+    fontSize: 16,
+    color: "white",
+    height:30,
+    borderWidth:1,
+    borderColor:"white",
+    borderRadius:5
   },
 });
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { API_URL, STRIPE_API_KEY } from '@env'
+import { API_URL, API_KEY_TEST, STRIPE_API_KEY } from '@env'
 import { Linking } from "react-native";
 
 const user = {

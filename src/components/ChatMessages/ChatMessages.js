@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import FChatHeader from "../FakeComponents/FChatHeader";
 const messagess = [
   { message: "Hola, ¿te gustan las bicicletas?", rec: 1 },
   { message: "Sí, me encantan. ¿Y a ti?", rec: 2 },
@@ -126,15 +125,14 @@ const messagess1 = [
   {
     email: 1,
     type: "text",
-    message: "Lorem ipsum dolor sit amet it amet",
+    message: "Hola todo bien Hola todo bien Hola todo bien Hola todo bien",
     reactions: [],
     createdAt: "20:15",
   },
   {
-    email: 2,
+    email:2,
     type: "text",
-    message:
-      "Lorem ipsum dolor sit amet, it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    message:" prueba prueba prueba",
     reactions: ["👍"],
     createdAt: "20:15",
   },
@@ -143,113 +141,19 @@ const messagess1 = [
     type: "text",
     message:
       "Lorem ipsum dolor sit amet it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    reactions: ["👍"],
+    reactions: [],
     createdAt: "20:15",
   },
   {
-    email: 2,
+    email:2,
     type: "text",
     message:
       "Lorem ipsum dolor sit amet, it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  {
-    email: 1,
-    type: "text",
-    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  {
-    email: 2,
-    type: "text",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing eli it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor int, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  ,
-  {
-    email: 1,
-    type: "text",
-    message: "lore ipsun asimet",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  {
-    email: 2,
-    type: "text",
-    message: "lore ipsun asimet",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  {
-    email: 1,
-    type: "text",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  {
-    email: 2,
-    type: "text",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  {
-    email: 1,
-    type: "text",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  {
-    email: 2,
-    type: "text",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  {
-    email: 1,
-    type: "text",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  {
-    email: 2,
-    type: "text",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  {
-    email: 1,
-    type: "text",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    reactions: ["👍"],
-    createdAt: "20:15",
-  },
-  {
-    email: 2,
-    type: "text",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    reactions: ["👍"],
+    reactions: [],
     createdAt: "20:15",
   },
 ];
-const reactionsEmojis = ["👍", "🤣", "💖", "😡", "🤢", "👊", "👻"];
+const reactionsEmojis = ["👍", "🤣", "💖", "😡", "🤢", "👊", "X"];
 
 const EMsj = ({
   msj,
@@ -324,11 +228,19 @@ const EMsj = ({
     return () => backHandler.remove();
   }, [isPressed]);
   const handleEmojiTouch = (emoji) => {
-    console.log(emoji);
-    const newMsj = msj1;
-    newMsj.reactions = [emoji];
-    setMsj1(newMsj);
-    setBlock(false);
+    if(emoji!=="X"){
+
+      console.log(emoji);
+      const newMsj = msj1;
+      newMsj.reactions = [emoji];
+      setMsj1(newMsj);
+      setBlock(false);
+    }else{
+      const newMsj = msj1;
+      newMsj.reactions = [];
+      setMsj1(newMsj);
+      setBlock(false);
+    }
   };
 
   return (
@@ -343,7 +255,7 @@ const EMsj = ({
         <View style={styles.eMessage}>
           <Text style={styles.eMsg}>{msj.message}</Text>
           <View style={styles.eMsgTimeContainer}>
-            <Text style={styles.eMsgTime}>{msj.createdAt}</Text>
+            <Text style={styles.eMsgTime}>20:15</Text>
           </View>
         </View>
         {isPressed && <View style={styles.overlay} />}
@@ -379,7 +291,7 @@ const EMsj = ({
         </Animated.View>
       )}
       <View style={{ position: "absolute" }}>
-        {msj1.reactions.length && positionMsj?.y ? (
+        {msj1?.reactions?.length && positionMsj?.y ? (
           <View
             style={[
               {
@@ -421,7 +333,7 @@ const OMsj = ({ msj, keyNumb }) => {
         <View style={styles.oMessage}>
           <Text style={styles.oMsg}>{msj.message}</Text>
           <View style={styles.oMsgTimeContainer}>
-            <Text style={styles.oMsgTime}> {msj.createdAt} </Text>
+            <Text style={styles.oMsgTime}>"20:15"</Text>
           </View>
         </View>
       </View>
@@ -435,7 +347,10 @@ const ChatMessages = ({
   disableTouch,
   block,
   setBlock,
+  messagesHistory,
+  socket
 }) => {
+  
   const [scrolling, setScrolling] = useState(0);
   const handleScrolling = () => {
     scrolling === 0 ? setScrolling(1) : setScrolling(0);
@@ -444,13 +359,14 @@ const ChatMessages = ({
     setScrolling(1);
   }, []);
 
-  useEffect(() => {}, []);
-
+  
   return (
     <View style={styles.container}>
-      <ScrollView onScroll={handleScrolling}>
-        {messagess1.map((msj, key) =>
-          msj.email === 1 ? (
+      <ScrollView style={{flex:1}} onScroll={handleScrolling}>
+      {messagess1.map((msj, key) =>
+          msj.email === 2 ? (
+            <OMsj msj={msj} key={key} />
+          ) : (
             <EMsj
               msj={msj}
               key={key}
@@ -462,8 +378,23 @@ const ChatMessages = ({
               setBlock={setBlock}
               numb={key}
             />
-          ) : (
+          )
+        )}
+        {messagesHistory.map((msj, key) =>
+          msj.client == socket.id ? (
             <OMsj msj={msj} key={key} />
+          ) : (
+            <EMsj
+              msj={msj}
+              key={key}
+              keyNumb={key}
+              scrolling={scrolling}
+              touched={touched}
+              setDisableTouch={setDisableTouch}
+              block={block}
+              setBlock={setBlock}
+              numb={key}
+            />
           )
         )}
       </ScrollView>
@@ -479,6 +410,7 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     alignItems: "flex-start",
     marginBottom: 5,
+    minWidth:100
   },
   eMessage: {
     backgroundColor: "#A6A2D6",
@@ -489,6 +421,7 @@ const styles = StyleSheet.create({
     paddingLeft: 3,
     paddingRight: 3,
     marginLeft: 5,
+    minWidth:100
   },
   eMsg: {
     color: "white",
@@ -521,12 +454,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     marginBottom: 5,
     zIndex: 0,
+    minWidth:100
   },
   oMsg: {
     color: "white",
     fontSize: 15,
     marginLeft: 2,
     marginRight: 2,
+    minWidth:100
   },
   oMsgTimeContainer: {
     alignSelf: "stretch",
