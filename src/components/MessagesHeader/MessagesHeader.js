@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
+import { mainColor } from "../../screens/MainFeed";
 
 const MessagesHeader = ({ navigation, searched, setSearched }) => {
   return (
@@ -19,6 +20,7 @@ const MessagesHeader = ({ navigation, searched, setSearched }) => {
             onChangeText={setSearched}
             style={styles.input}
             placeholder="Search..."
+            placeholderTextColor={"gray"}
           />
         <View></View>
       </View>
@@ -28,7 +30,7 @@ const MessagesHeader = ({ navigation, searched, setSearched }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#7E78D2",
+    backgroundColor: mainColor,
     height: 70,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
@@ -50,9 +52,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     height:30,
-    borderWidth:1,
+    borderWidth:0.5,
     borderColor:"white",
-    borderRadius:5
+    borderRadius:5,
+    paddingLeft:10
   },
 });
 

@@ -1,6 +1,5 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useContext, useEffect, useState } from "react"
 import { Context } from "../src/contexts/Context";
 import MainFeed from "../src/screens/MainFeed";
@@ -22,9 +21,11 @@ import DeepLinkingHandler from "../src/helpers/deepLinkingHandler";
 import Loading from "../src/screens/Loading";
 import TempLogOut from "../src/screens/TempLogOut";
 import ChatPrueba from "../src/screens/ChatPrueba";
-const Stack = createStackNavigator();
+import { NavigationContainer } from "@react-navigation/native";
+const Stack = createNativeStackNavigator();
 const screenOptions = {
   headerShown: false,
+  navigationBarHidden:true
 };
 
 const linking = {
@@ -38,7 +39,8 @@ const linking = {
 }
 
 const SignedInStack = ({initialRoute}) => (
-  <NavigationContainer >
+  <NavigationContainer>
+
     <Stack.Navigator initialRouteName={initialRoute} screenOptions={screenOptions}>
       <Stack.Screen name="MainFeed" component={MainFeed} />
       <Stack.Screen name="HobbySelector" component={HobbySelector} />
@@ -54,29 +56,31 @@ const SignedInStack = ({initialRoute}) => (
       <Stack.Screen name="Profile" component={Profile}></Stack.Screen>
     <Stack.Screen name="EProfile" component={EProfile}></Stack.Screen>
     </Stack.Navigator>
-  </NavigationContainer>
+</NavigationContainer>
 );
 
 
 const SignedOutStack = () => (
   <NavigationContainer>
+
     <Stack.Navigator
       initialRouteName="Landing"
       screenOptions={screenOptions}
-    >
+      >
        <Stack.Screen name="Landing" component={Landing} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
     </Stack.Navigator>
-  </NavigationContainer>
+      </NavigationContainer>
 );
 const AppNavigation = () => {
 
-  const { isAuthenticated, user, isLoading } = useContext(Context);
+  const { isAuthenticated, user, isLoading, setIsLoading } = useContext(Context);
   const [initialRoute, setInitialRoute] = useState(null);
 
     useEffect(() => {
       if (isAuthenticated !== undefined) {
+        setIsLoading(false);
         let name;
         if (isAuthenticated) {
           if (user.hobbies && user.hobbies.length > 0) {
