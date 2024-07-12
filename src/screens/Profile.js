@@ -1,5 +1,5 @@
 import { useRoute } from "@react-navigation/native";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,8 @@ import {
   ScrollView,
 } from "react-native";
 import Options from "../components/Options/Options";
+import { Context } from "../contexts/Context";
+import { iconColor, mainColor } from "./MainFeed";
 
 const Profile = () => {
   const route = useRoute();
@@ -24,7 +26,7 @@ const Profile = () => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#1D1E2C" />
+      <StatusBar backgroundColor={mainColor} />
       <View style={styles.imgContainer}>
         <Image style={styles.img} source={user.img} />
         <Text style={styles.name}> {user.name} </Text>
@@ -60,7 +62,7 @@ const Profile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1D1E2C",
+    backgroundColor: mainColor,
   },
   imgContainer: {
     alignSelf: "stretch",
@@ -74,14 +76,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 320,
     bottom: 160,
-    tintColor: "#7E78D2",
+    tintColor: mainColor,
   },
   img: {
     height: 150,
     width: 150,
     borderRadius: 10,
     borderWidth: 3,
-    borderColor: "#7E78D2",
+    borderColor: "white",
   },
   name: {
     color: "white",
@@ -107,10 +109,11 @@ const styles = StyleSheet.create({
   hobbyCard: {
     paddingRight: 5,
     paddingLeft: 5,
-    backgroundColor: "#7E78D2",
     margin: 1,
     marginRight: 5,
-    borderRadius: 4,
+    borderRadius: 99,
+    borderWidth:0.1,
+    borderColor:"white"
   },
   hobbiesContainer: {
     flexDirection: "row",
@@ -119,15 +122,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   bio: {
-    backgroundColor: "#A4A0D6",
+    backgroundColor: "rgba(200, 194, 194, 0.06) ",
     padding: 10,
     margin: 5,
     marginLeft: 20,
     marginRight: 20,
     borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "#7E78D2",
+    borderWidth: 0.5,
+    borderColor: "white",
     fontSize: 15,
+    color:"white"
   },
 });
 

@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../contexts/Context";
+import { mainColor } from "../../screens/MainFeed";
 
 const Options = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -60,7 +61,7 @@ const Options = () => {
             <View style={styles.div}></View>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
-            ><TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between" }}  onPress={ ()=>logout()}>
+            ><TouchableOpacity style={{flex:1, flexDirection: "row", justifyContent: "space-between" }}  onPress={ ()=>logout()}>
 
               <Text style={styles.textOption}>Log Out </Text>
               <Image
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
   options: {
     width: 50,
     height: 50,
-    tintColor: "#7E78D2",
+    tintColor: "white",
   },
   options1: {
     position: "absolute",
@@ -98,7 +99,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   optionsContainer: {
-    borderRadius: 10,
     backgroundColor: "gray",
     width: 160,
     paddingTop: 5,

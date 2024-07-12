@@ -83,7 +83,7 @@ console.log('context iniciado')
   };
 
   return (
-    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies, isLoading }}>
+    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies, isLoading, setIsLoading }}>
       {children}
     </Context.Provider>
   );

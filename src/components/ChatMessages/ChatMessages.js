@@ -152,6 +152,34 @@ const messagess1 = [
     reactions: [],
     createdAt: "20:15",
   },
+  {
+    email: 1,
+    type: "text",
+    message: "Hola todo bien Hola todo bien Hola todo bien Hola todo bien",
+    reactions: [],
+    createdAt: "20:15",
+  },
+  {
+    email:2,
+    type: "text",
+    message:" prueba prueba prueba",
+    reactions: ["👍"],
+    createdAt: "20:15",
+  },
+  {
+    email: 1,
+    type: "text",
+    message: "Hola todo bien Hola todo bien Hola todo bien Hola todo bien",
+    reactions: [],
+    createdAt: "20:15",
+  },
+  {
+    email:2,
+    type: "text",
+    message:" prueba prueba prueba",
+    reactions: ["👍"],
+    createdAt: "20:15",
+  },
 ];
 const reactionsEmojis = ["👍", "🤣", "💖", "😡", "🤢", "👊", "X"];
 
@@ -290,25 +318,30 @@ const EMsj = ({
           ))}
         </Animated.View>
       )}
-      <View style={{ position: "absolute" }}>
+      <View>
         {msj1?.reactions?.length && positionMsj?.y ? (
           <View
             style={[
+
               {
-                position: "absolute",
-                backgroundColor: "white",
-                borderRadius: 999,
-                padding: 4,
-                paddingLeft: 6,
-                paddingRight: 6,
-                left: 10,
+                
+                marginLeft:20,
+                bottom:15,
+                flex:1,
+                alignItems:"flex-start",
+                alignContent:"center"
               },
-              positionMsj.y <= -99999
-                ? { top: 5 }
-                : { top: positionMsj.h - 20 },
-            ]}
+            ]
+            }
           >
-            <Text style={{ fontSize: 18 }}>{msj.reactions}</Text>
+            <Text style={{ 
+              fontSize: 18,
+              backgroundColor: "white",
+              padding:3,
+              borderRadius:999,
+              paddingLeft:5,
+              paddingRight:5
+               }}>{msj.reactions}</Text>
           </View>
         ) : (
           ""

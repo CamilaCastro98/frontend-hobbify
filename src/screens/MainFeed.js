@@ -8,9 +8,14 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../components/Header/Header";
 import NavBar from "../components/NavBar/NavBar";
+
+
+
+
+
 const user = {
   img: require("../../assets/user-test.jpeg"),
   name: "pedrito1",
@@ -120,13 +125,18 @@ const users = [
     bio: "Aficionado a la lectura, apasionado por correr y amante de los viajes. Siempre en busca de la próxima aventura y un buen libro.",
   },
 ];
+export const fondo = "#151515"
+export const textColor = "white"
+export const mainColor = "#151515"
+export const iconColor = "white"
+const detailColor = "#151515"
 const MainFeed = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#7E78D2" />
-      <Header user={user} navigation={navigation} />
+      <StatusBar backgroundColor={mainColor} />
+      <Header user={user} navigation={navigation} mainColor={mainColor} />
       <View style={styles.mainContainer}>
-        <View style={{ margin: 10 }}>
+        <View style={{}}>
           <ScrollView showsVerticalScrollIndicator={false}>
             {users.map((userExamplle, index) => (
               <View key={index} style={styles.card}>
@@ -176,7 +186,8 @@ const MainFeed = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1D1E2C",
+    backgroundColor:fondo,
+    // backgroundColor: "#1D1E2C",
     flex: 1,
   },
   mainContainer: {
@@ -185,9 +196,11 @@ const styles = StyleSheet.create({
   card: {
     height: 90,
     alignSelf: "stretch",
-    backgroundColor: "#FEF9EF",
+    backgroundColor: fondo,
     marginBottom: 5,
     borderRadius: 15,
+    borderBottomWidth:0.2,
+    borderColor:textColor
   },
   profileImg: {
     height: 80,
@@ -203,9 +216,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   sendMessage: {
-    width: 60,
-    height: 60,
-    tintColor: "#808080",
+    width: 45,
+    height:45,
+    tintColor: iconColor,
   },
   imageContainer: {
     margin: 10,
@@ -220,19 +233,22 @@ const styles = StyleSheet.create({
   },
   nameInCard: {
     fontSize: 18,
-    color: "#808080",
+    color: textColor,
     fontWeight: "bold",
   },
   hobbiesInCard: {
     fontSize: 12,
     margin: 5,
     color: "white",
+    
   },
   hobbyCard: {
     padding: 0.5,
-    backgroundColor: "#7E78D2",
+    backgroundColor: detailColor,
     margin: 1,
     borderRadius: 4,
+    borderWidth:0.1,
+    borderColor:"gray"
   },
 });
 

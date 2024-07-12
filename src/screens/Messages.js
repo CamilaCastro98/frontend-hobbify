@@ -11,6 +11,8 @@ import {
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar/NavBar";
 import MessagesHeader from "../components/MessagesHeader/MessagesHeader";
+import { mainColor } from "./MainFeed";
+
 const h1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 const userExamplle = {
   name: "Pedrito Fulano",
@@ -124,7 +126,7 @@ useEffect(() => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#7E78D2" />
+      <StatusBar backgroundColor={mainColor} />
       <MessagesHeader navigation={navigation} searched={searched} setSearched={setSearched}  />
       <View style={styles.mainContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -170,7 +172,7 @@ useEffect(() => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1D1E2C",
+    backgroundColor: mainColor,
     flex: 1,
   },
   mainContainer: {
