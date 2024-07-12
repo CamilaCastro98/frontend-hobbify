@@ -1,5 +1,16 @@
-import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+  Modal,
+  SafeAreaView,
+  Image,
+  Animated,
+  BackHandler,
+} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 const messagess = [
   { message: "Hola, ¿te gustan las bicicletas?", rec: 1 },
@@ -110,23 +121,280 @@ const messagess = [
     rec: 2,
   },
 ];
-const ChatMessages = () => {
+const messagess1 = [
+  {
+    email: 1,
+    type: "text",
+    message: "Hola todo bien Hola todo bien Hola todo bien Hola todo bien",
+    reactions: [],
+    createdAt: "20:15",
+  },
+  {
+    email:2,
+    type: "text",
+    message:" prueba prueba prueba",
+    reactions: ["👍"],
+    createdAt: "20:15",
+  },
+  {
+    email: 1,
+    type: "text",
+    message:
+      "Lorem ipsum dolor sit amet it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    reactions: [],
+    createdAt: "20:15",
+  },
+  {
+    email:2,
+    type: "text",
+    message:
+      "Lorem ipsum dolor sit amet, it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in it amet, consectetur adipiscing elit, sed do eiusmod tempor in consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    reactions: [],
+    createdAt: "20:15",
+  },
+];
+const reactionsEmojis = ["👍", "🤣", "💖", "😡", "🤢", "👊", "X"];
+
+const EMsj = ({
+  msj,
+  keyNumb,
+  scrolling,
+  touched,
+  setDisableTouch,
+  block,
+  setBlock,
+  numb,
+}) => {
+  const [msj1, setMsj1] = useState(msj);
+  const [isPressed, setIsPressed] = useState(false);
+  const [positionMsj, setPositionMsj] = useState({ x: 0, y: 0, h: 0 });
+  const handlePress = () => {
+    console.log(positionMsj);
+    if (!block) {
+      isPressed ? setIsPressed(false) : setIsPressed(true);
+      setDisableTouch(true);
+      setBlock(true);
+    }
+  };
+  const viewRef = useRef(null);
+  useEffect(() => {
+    if (isPressed) {
+      setIsPressed(false);
+      setBlock(false);
+    }
+  }, [touched, scrolling]);
+  useEffect(() => {
+    if (viewRef.current) {
+      viewRef.current.measure((fx, fy, width, height, px, py) => {
+        setPositionMsj({ x: px, y: py, h: height });
+        if (numb === 0) {
+          console.log("measure values:", { py });
+          console.log("measure values:", positionMsj.y);
+        }
+      });
+    }
+  }, [scrolling]);
+  const scaleAnim = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    if (isPressed) {
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        friction: 5,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      // Animar la escala de 1 a 0
+      Animated.timing(scaleAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isPressed]);
+  useEffect(() => {
+    const backAction = () => {
+      if (isPressed) {
+        setIsPressed(false);
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [isPressed]);
+  const handleEmojiTouch = (emoji) => {
+    if(emoji!=="X"){
+
+      console.log(emoji);
+      const newMsj = msj1;
+      newMsj.reactions = [emoji];
+      setMsj1(newMsj);
+      setBlock(false);
+    }else{
+      const newMsj = msj1;
+      newMsj.reactions = [];
+      setMsj1(newMsj);
+      setBlock(false);
+    }
+  };
+
+  return (
+    <Pressable
+      ref={viewRef}
+      style={{ zIndex: 1 }}
+      onLongPress={() => {
+        handlePress();
+      }}
+    >
+      <View key={keyNumb} style={styles.eMsgContainer}>
+        <View style={styles.eMessage}>
+          <Text style={styles.eMsg}>{msj.message}</Text>
+          <View style={styles.eMsgTimeContainer}>
+            <Text style={styles.eMsgTime}>20:15</Text>
+          </View>
+        </View>
+        {isPressed && <View style={styles.overlay} />}
+      </View>
+      {isPressed && (
+        <Animated.View
+          style={[
+            {
+              position: "absolute",
+              backgroundColor: "white",
+              flexDirection: "row",
+              padding: 3,
+              borderRadius: 999,
+              zIndex: 999,
+              left: 50,
+            },
+            positionMsj.y <= 350 ? { top: positionMsj.h - 5 } : { top: -38.5 },
+            {
+              transform: [{ scale: scaleAnim }],
+            },
+          ]}
+        >
+          {reactionsEmojis.map((emoji, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => handleEmojiTouch(emoji)}
+            >
+              <Text style={{ color: "black", fontSize: 28, marginRight: 10 }}>
+                {emoji}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </Animated.View>
+      )}
+      <View style={{ position: "absolute" }}>
+        {msj1?.reactions?.length && positionMsj?.y ? (
+          <View
+            style={[
+              {
+                position: "absolute",
+                backgroundColor: "white",
+                borderRadius: 999,
+                padding: 4,
+                paddingLeft: 6,
+                paddingRight: 6,
+                left: 10,
+              },
+              positionMsj.y <= -99999
+                ? { top: 5 }
+                : { top: positionMsj.h - 20 },
+            ]}
+          >
+            <Text style={{ fontSize: 18 }}>{msj.reactions}</Text>
+          </View>
+        ) : (
+          ""
+        )}
+      </View>
+    </Pressable>
+  );
+};
+const OMsj = ({ msj, keyNumb }) => {
+  const [isPressed, setIsPressed] = useState(false);
+  const handlePress = () => {
+    isPressed ? setIsPressed(false) : setIsPressed(true);
+    console.log(isPressed);
+  };
+
+  return (
+    <Pressable
+      style={{ position: "relative" }}
+      onLongPress={() => handlePress()}
+    >
+      <View key={keyNumb} style={styles.oMsgContainer}>
+        <View style={styles.oMessage}>
+          <Text style={styles.oMsg}>{msj.message}</Text>
+          <View style={styles.oMsgTimeContainer}>
+            <Text style={styles.oMsgTime}>"20:15"</Text>
+          </View>
+        </View>
+      </View>
+    </Pressable>
+  );
+};
+
+const ChatMessages = ({
+  touched,
+  setDisableTouch,
+  disableTouch,
+  block,
+  setBlock,
+  messagesHistory,
+  socket
+}) => {
+  
+  const [scrolling, setScrolling] = useState(0);
+  const handleScrolling = () => {
+    scrolling === 0 ? setScrolling(1) : setScrolling(0);
+  };
+  useEffect(() => {
+    setScrolling(1);
+  }, []);
+
+  
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {messagess.map((msj, key) =>
-          msj.rec === 1 ? (
-            <View style={styles.eMsgContainer}>
-              <View style={styles.eMessage}>
-                <Text style={styles.eMsg}>{msj.message}</Text>
-              </View>
-            </View>
+      <ScrollView style={{flex:1}} onScroll={handleScrolling}>
+      {messagess1.map((msj, key) =>
+          msj.email === 2 ? (
+            <OMsj msj={msj} key={key} />
           ) : (
-            <View style={styles.oMsgContainer}>
-              <View style={styles.oMessage}>
-                <Text style={styles.oMsg}>{msj.message}</Text>
-              </View>
-            </View>
+            <EMsj
+              msj={msj}
+              key={key}
+              keyNumb={key}
+              scrolling={scrolling}
+              touched={touched}
+              setDisableTouch={setDisableTouch}
+              block={block}
+              setBlock={setBlock}
+              numb={key}
+            />
+          )
+        )}
+        {messagesHistory.map((msj, key) =>
+          msj.client == socket.id ? (
+            <OMsj msj={msj} key={key} />
+          ) : (
+            <EMsj
+              msj={msj}
+              key={key}
+              keyNumb={key}
+              scrolling={scrolling}
+              touched={touched}
+              setDisableTouch={setDisableTouch}
+              block={block}
+              setBlock={setBlock}
+              numb={key}
+            />
           )
         )}
       </ScrollView>
@@ -138,27 +406,42 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  eMsgContainer: {
+    alignSelf: "stretch",
+    alignItems: "flex-start",
+    marginBottom: 5,
+    minWidth:100
+  },
   eMessage: {
     backgroundColor: "#A6A2D6",
-    maxWidth: 240,
+    maxWidth: 300,
     borderRadius: 5,
     marginTop: 5,
     padding: 3,
     paddingLeft: 3,
     paddingRight: 3,
     marginLeft: 5,
+    minWidth:100
   },
   eMsg: {
     color: "white",
     fontSize: 15,
+    marginLeft: 2,
+    marginRight: 2,
   },
-  eMsgContainer: {
+  eMsgTimeContainer: {
     alignSelf: "stretch",
-    alignItems: "flex-start",
+    alignItems: "flex-end",
+    marginTop: 3,
+  },
+  eMsgTime: {
+    color: "#EAE8F5",
+    fontStyle: "italic",
+    fontSize: 12,
   },
   oMessage: {
     backgroundColor: "#635BD6",
-    maxWidth: 240,
+    maxWidth: 300,
     borderRadius: 5,
     marginTop: 5,
     padding: 3,
@@ -166,13 +449,40 @@ const styles = StyleSheet.create({
     paddingRight: 3,
     marginRight: 5,
   },
-  oMsg: {
-    color: "white",
-    fontSize: 15,
-  },
   oMsgContainer: {
     alignSelf: "stretch",
     alignItems: "flex-end",
+    marginBottom: 5,
+    zIndex: 0,
+    minWidth:100
+  },
+  oMsg: {
+    color: "white",
+    fontSize: 15,
+    marginLeft: 2,
+    marginRight: 2,
+    minWidth:100
+  },
+  oMsgTimeContainer: {
+    alignSelf: "stretch",
+    alignItems: "flex-start",
+    marginTop: 3,
+  },
+  oMsgTime: {
+    color: "#EAE8F5",
+    fontStyle: "italic",
+    fontSize: 12,
+  },
+  modalContent: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    alignItems: "flex-end",
+    flexDirection: "column",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(99, 91, 214, 0.4)",
+    marginTop: 5,
   },
 });
 

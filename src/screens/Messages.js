@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar/NavBar";
 import MessagesHeader from "../components/MessagesHeader/MessagesHeader";
 const h1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
@@ -18,7 +18,7 @@ const userExamplle = {
   hobbies: ["Boxeo", "Motocross", "Tejer"],
   message: "hola, mucho gusto en conocerte!",
 };
-const users = [
+const users1 = [
   {
     name: "Sana Minatozaki",
     img: require("../../assets/no-pic13.png"),
@@ -111,15 +111,27 @@ const users = [
   },
 ];
 
-console.log(users);
 const Messages = ({ navigation }) => {
+const [users, setUsers] = useState(users1);
+const [searched, setSearched] =useState("");
+
+useEffect(() => {
+  const newUsers = users1.filter(user => user.name.toLocaleLowerCase().includes(searched.toLowerCase()))
+  setUsers(newUsers)
+}, [searched])
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#7E78D2" />
-      <MessagesHeader navigation={navigation} />
+      <MessagesHeader navigation={navigation} searched={searched} setSearched={setSearched}  />
       <View style={styles.mainContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {users.map((userExamplle, index) => (
+          {users?.length ?   
+
+
+          users.map((userExamplle, index) => (
             <TouchableOpacity
               key={index}
               onPress={() => navigation.push("Chat")}
@@ -141,7 +153,15 @@ const Messages = ({ navigation }) => {
                 </View>
               </View>
             </TouchableOpacity>
-          ))}
+          )):
+          <View style={{flex:1, alignContent:"center", alignItems:"center" }}>
+
+          <Text style={{color:"white", fontSize:20, marginTop:40}}>No hay coincidencias...</Text>
+          </View>
+        
+        
+        
+        }
         </ScrollView>
       </View>
     </SafeAreaView>

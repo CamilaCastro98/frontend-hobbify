@@ -8,7 +8,8 @@ import Messages from "../src/screens/Messages";
 import Chat from "../src/screens/Chat";
 import HobbySelector from "../src/screens/HobbySelector";
 import Login from "../src/screens/Login";
-import Perfil from "../src/screens/Perfil";
+import Profile from "../src/screens/Profile";
+import EProfile from "../src/screens/EProfile";
 import Register from "../src/screens/Register";
 import SubscriptionScreen from "../src/screens/SubscriptionScreen";
 import Landing from "../src/screens/Landing";
@@ -20,6 +21,7 @@ import * as Linking from 'expo-linking'
 import DeepLinkingHandler from "../src/helpers/deepLinkingHandler";
 import Loading from "../src/screens/Loading";
 import TempLogOut from "../src/screens/TempLogOut";
+import ChatPrueba from "../src/screens/ChatPrueba";
 const Stack = createStackNavigator();
 const screenOptions = {
   headerShown: false,
@@ -36,53 +38,62 @@ const linking = {
 };
 
 
+const SignedInStack = ({initialRoute}) => (
+  <NavigationContainer >
+    <DeepLinkingHandler />
+    <Stack.Navigator initialRouteName={initialRoute} screenOptions={screenOptions}>
+      <Stack.Screen name="MainFeed" component={MainFeed} />
+      <Stack.Screen name="HobbySelector" component={HobbySelector} />
+      <Stack.Screen name="Messages" component={Messages} />
+      <Stack.Screen name="Chat" component={Chat} />
+
+      <Stack.Screen name="CreateHobby" component={CreateHobby} />
+      <Stack.Screen name="SubmitedHobby" component={SubmitedHobby} />
+      <Stack.Screen name="SubscriptionScreen" component={SubscriptionScreen} />
+      <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
+      <Stack.Screen name="CancelScreen" component={CancelScreen} />
+      <Stack.Screen name="TempLogOut" component={TempLogOut} />
+      <Stack.Screen name="Profile" component={Profile}></Stack.Screen>
+    <Stack.Screen name="EProfile" component={EProfile}></Stack.Screen>
+    </Stack.Navigator>
+  </NavigationContainer>
+);
+
+
+const SignedOutStack = () => (
+  <NavigationContainer>
+    <Stack.Navigator initialRouteName="Landing" screenOptions={screenOptions}>
+      <Stack.Screen name="Landing" component={Landing} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={Register} />
+    </Stack.Navigator>
+  </NavigationContainer>
+);
 const AppNavigation = () => {
 
-  const { isAuthenticated, user } = useContext(Context);
+  const { isAuthenticated, user, isLoading } = useContext(Context);
   const [initialRoute, setInitialRoute] = useState(null);
 
-  useEffect(() => {
-    if (isAuthenticated !== undefined) {
-      let name;
-      if (isAuthenticated) {
-        if (user.hobbies && user.hobbies.length > 0) {
-          name = "MainFeed";
-        } else {
-          name = "HobbySelector";
+    useEffect(() => {
+      if (isAuthenticated !== undefined) {
+        let name;
+        if (isAuthenticated) {
+          if (user.hobbies && user.hobbies.length > 0) {
+            name = "MainFeed";
+          } else {
+            name = "HobbySelector";
+          }
         }
-      } else {
-        name = "Landing";
+        setInitialRoute(name);
       }
-      setInitialRoute(name);
-    }
-  }, [isAuthenticated, user.hobbies]);
+    }, [isAuthenticated, user.hobbies]);
 
 
-  if (initialRoute === null) {
+  if (isLoading) {
     return <Loading />;
   }
 
-  return (
-    <NavigationContainer linking={linking}>
-      <DeepLinkingHandler />
-      <Stack.Navigator initialRouteName={initialRoute} screenOptions={screenOptions}>
-      <Stack.Screen name="HobbySelector" component={HobbySelector} />
-      <Stack.Screen name="CancelScreen" component={CancelScreen} />
-      <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Landing" component={Landing} />
-        <Stack.Screen name="Chat" component={Chat} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Messages" component={Messages} />
-        <Stack.Screen name="MainFeed" component={MainFeed} />
-        <Stack.Screen name="Perfil" component={Perfil} />
-        <Stack.Screen name="CreateHobby" component={CreateHobby} />
-        <Stack.Screen name="SubmitedHobby" component={SubmitedHobby} />
-        <Stack.Screen name="SubscriptionScreen" component={SubscriptionScreen} />
-        <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
-        <Stack.Screen name="TempLogOut" component={TempLogOut} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+    return <>{isAuthenticated !== false ? <SignedInStack initialRoute={initialRoute} /> : <SignedOutStack />}</>;
 };
 
 export default AppNavigation;

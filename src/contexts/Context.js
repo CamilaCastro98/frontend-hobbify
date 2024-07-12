@@ -7,6 +7,7 @@ const ContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
   const [token, setToken] = useState(null);
+  const [isLoading, setIsLoading ] = useState(true);
 
 console.log('context iniciado')
 
@@ -17,6 +18,7 @@ console.log('context iniciado')
         if (storedToken) {
           setToken(storedToken);
           setIsAuthenticated(true);
+          setIsLoading(false);
           console.log("Token loaded in context");
         }
 
@@ -81,11 +83,10 @@ console.log('context iniciado')
   };
 
   return (
-    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies }}>
+    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies, isLoading }}>
       {children}
     </Context.Provider>
   );
 };
 
 export { Context, ContextProvider };
-
