@@ -62,15 +62,15 @@ export const loginUser = async(values,login,navigation) => {
     }
 }
 
-export const loginUserWithProvider = async(provider) => {
-    try {
-       //axios.post('api-back-loginUserWithSM', values)
-        console.log(`login with ${provider}`)
-    }
-    catch(error) {
-        throw new Error(`error trying to login with SM: ${error}`)
-    }
-}
+// export const loginUserWithProvider = async(provider) => {
+//     try {
+        //axios.post('api-back-loginUserWithSM', values)
+//         console.log(`login with ${provider}`)
+//     }
+//     catch(error) {
+//         throw new Error(`error trying to login with SM: ${error}`)
+//     }
+// }
 
 export const sendToAdmin = async(values) => {
     try {

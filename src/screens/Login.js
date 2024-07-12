@@ -5,6 +5,7 @@ import validationLogin from "../helpers/validationLogin";
 import React, { useState,useContext } from "react";
 import { loginUser, loginUserWithProvider } from "../helpers/petitions";
 import { Context } from "../contexts/Context";
+import loginWithAuth0 from "../helpers/authLogin";
 
 const Login = ({ navigation }) => {
 
@@ -21,12 +22,11 @@ const Login = ({ navigation }) => {
     }
   }
 
-  const handleLogSM = async (provider) => {
+  const handleAuth0 = async (provider) => {
     try {
-      await loginUserWithProvider(provider);
+      await loginWithAuth0(provider);
     } catch (error) {
-      console.error("Error trying to register:", error);
-      Alert.alert('Error', 'An error occurred while trying to log in with the social media provider.');
+      console.error("Error trying to login with ayth0:", error);
     }
   }
 
@@ -81,13 +81,13 @@ const Login = ({ navigation }) => {
                 <View style={styles.rrssContainer}>
                   <Text style={styles.text}>Or sign up with</Text>
                   <View style={styles.rrss}>
-                    <TouchableOpacity onPress={() => handleLogSM('google')}>
+                    <TouchableOpacity onPress={() => handleAuth0('google')}>
                       <AntDesign name="google" size={24} color="white" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleLogSM('github')}>
+                    <TouchableOpacity onPress={() => handleAuth0('github')}>
                       <AntDesign name="github" size={24} color="white" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleLogSM('twitter')}>
+                    <TouchableOpacity onPress={() => handleAuth0('twitter')}>
                       <AntDesign name="twitter" size={24} color="white" />
                     </TouchableOpacity>
                   </View>
