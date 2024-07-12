@@ -70,6 +70,10 @@ console.log('context iniciado')
     console.log("Token and user removed");
   };
 
+  const toggleLoading = (value) => {
+    setIsLoading(value)
+  }
+
   const updateHobbies = async (userWithNewHobbies) => {
     try {
       userWithNewHobbies.hobbies = userWithNewHobbies.hobbies.map(hobby => hobby.hobbieId);
@@ -83,7 +87,7 @@ console.log('context iniciado')
   };
 
   return (
-    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies, isLoading }}>
+    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies, isLoading,toggleLoading }}>
       {children}
     </Context.Provider>
   );

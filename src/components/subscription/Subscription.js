@@ -1,62 +1,61 @@
-import React, { useState,useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import SubscriptionCard from '../subscriptionCard/SubscriptionCard';
 import styles from './subscriptionStyles';
 import { getPlans, postPurchase } from '../../helpers/petitions';
 
-
 const Subscription = () => {
     const [selectedPlan, setSelectedPlan] = useState(null);
-    const [plans,setPlans] = useState([])
+    const [plans, setPlans] = useState([]);
 
-    useEffect(()=> {
-        const handleGetPlans = async() => {
+    useEffect(() => {
+        const handleGetPlans = async () => {
             try {
-                const response = await getPlans()
-                setPlans(response)
+                const response = await getPlans();
+                setPlans(response);
+            } catch (error) {
+                throw new Error(`Error handling get premium plans: ${error}`);
             }
-            catch(error) {
-                throw new Error(`error handling get premium plans: ${error}`)
-            }
-        }
-        handleGetPlans()
-    },[])
+        };
+        handleGetPlans();
+    }, []);
 
     const handleSelectPlan = (id) => {
         setSelectedPlan(id);
     };
 
-    const handlePurchase = async(id) => {
+    const handlePurchase = async (id) => {
         if (selectedPlan !== null) {
             // Handle the purchase logic here
-           try {
-            await postPurchase(id)
-           }
-           catch(error) {
-            throw new Error(`error handling post purchase: ${error}`)
-           }
-
+            try {
+                await postPurchase(id);
+            } catch (error) {
+                throw new Error(`Error handling post purchase: ${error}`);
+            }
         } else {
             alert('Please select a subscription plan.');
         }
     };
 
     return (
-        <View style={styles.container}>
-            {plans.map((plan, index) => (
-                <SubscriptionCard
-                    key={index}
-                    nickname={plan.nickname}
-                    price={plan.unit_amount}
-                    interval={plan.recurring.interval}
-                    selected={selectedPlan === plan.id}
-                    onSelect={() => handleSelectPlan(plan.id)}
-                />
-            ))}
-                <TouchableOpacity style={styles.purchaseButton} onPress={()=> handlePurchase(selectedPlan)}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <View style={styles.container}>
+                {plans.map((plan, index) => (
+                    <SubscriptionCard
+                        key={index}
+                        nickname={plan.nickname}
+                        price={plan.unit_amount}
+                        interval={plan.recurring ? plan.recurring.interval : ''}
+                        description={plan.description}
+                        selected={selectedPlan === plan.id}
+                        onSelect={() => handleSelectPlan(plan.id)}
+                    />
+                ))}
+                <TouchableOpacity style={styles.purchaseButton} onPress={() => handlePurchase(selectedPlan)}>
                     <Text style={styles.purchaseButtonText}>Purchase</Text>
                 </TouchableOpacity>
-        </View>
+            </View>
+        </ScrollView>
     );
 };
 

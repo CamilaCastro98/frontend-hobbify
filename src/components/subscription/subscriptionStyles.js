@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 20,
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 20
     },
     purchaseButtonText: {
         color: '#FFFFFF',

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet, ScrollView} from 'react-native';
 import Subscription from '../components/subscription/Subscription'
 
 const SubscriptionScreen = () => {
@@ -8,9 +8,7 @@ const SubscriptionScreen = () => {
                     <Text style={[styles.text,styles.title]}>Select Your Plan!</Text>
                     <Text style={styles.subtitile}>Choose the best option for you and enjoy all the features</Text>
                 </View>
-            <View> 
                 <Subscription />
-            </View>
         </View>
     );
 };
@@ -19,7 +17,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#1D1E2C',
-        flexDirection: 'column'
+        flexDirection: 'column',
     },
     header: {
         paddingTop: 60,

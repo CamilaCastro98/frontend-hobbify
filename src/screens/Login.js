@@ -26,7 +26,7 @@ const Login = ({ navigation }) => {
     try {
       await loginWithAuth0(provider);
     } catch (error) {
-      console.error("Error trying to login with ayth0:", error);
+      console.error("Error trying to login with auth0:", error);
     }
   }
 

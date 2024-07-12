@@ -16,13 +16,12 @@ const DeepLinkingHandler = () => {
       }
     };
 
-    Linking.addEventListener('url', handleDeepLink);
+    const linkingSubscription = Linking.addEventListener('url', handleDeepLink);
 
     return () => {
-      Linking.removeEventListener('url', handleDeepLink);
+      linkingSubscription.remove();
     };
   }, [navigation]);
-
 
   useEffect(() => {
     const getUrlAsync = async () => {
@@ -37,4 +36,5 @@ const DeepLinkingHandler = () => {
 };
 
 export default DeepLinkingHandler;
+
 
