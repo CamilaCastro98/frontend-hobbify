@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
 import HobbyCards from "../components/HobbyCards/HobbyCards";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAllHobbies, updateUser } from "../helpers/petitions";
@@ -67,6 +67,7 @@ const HobbySelector = ({ navigation }) => {
     const [isLimited, setIsLimited] = useState(false);
     const [canProceed, setCanProceed] = useState(false);
     const [selectionData, setSelectionData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const saveSelection = async () => {
@@ -136,7 +137,7 @@ const HobbySelector = ({ navigation }) => {
     };
 
     const handleSelectHobbies = async () => {
-
+        setIsLoading(true);
         const mappedSelectionData = selectionData.map(id => ({ hobbieId: id }));
     
         try {
@@ -152,7 +153,9 @@ const HobbySelector = ({ navigation }) => {
             }
         } catch (error) {
             console.error('Error handling confirmation:', error);
-        }
+        } finally {
+            setIsLoading(false);
+          }
     }
 
     const buttonStyle = {
@@ -220,7 +223,7 @@ const HobbySelector = ({ navigation }) => {
                     onPress={() => handleSelectHobbies()}
                     disabled={!canProceed}
                 >
-                    <Text style={buttonTextStyle}>Go to Feed</Text>
+                   {isLoading ?  <ActivityIndicator size="small" color="white" /> : <Text style={buttonTextStyle}>Go to Feed</Text>}
                 </TouchableOpacity>
             </View>
         </View>

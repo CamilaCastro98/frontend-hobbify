@@ -1,23 +1,27 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, TextInput,View, Text, StyleSheet,ScrollView,TouchableOpacity } from "react-native";
+import { Button, TextInput,View, Text, StyleSheet,ScrollView,TouchableOpacity,ActivityIndicator } from "react-native";
 import { Formik } from 'formik';
 import validationRegister from "../helpers/validationRegister";
 import { registerUser } from "../helpers/petitions";
 import { Context } from "../contexts/Context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import React from "react";
 
 const Register = ({ navigation }) => {
 
     const { login } = useContext(Context)
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleRegister = async (values) => {
+        setIsLoading(true);
         values.phone = values.phone ? parseInt(values.phone) : 0
         try {
            await registerUser(values,login,navigation)
         } catch (error) {
             console.error("Error trying to register:", error);
-        }
+        } finally {
+            setIsLoading(false);
+          }
     }
 
     return (
@@ -139,7 +143,7 @@ const Register = ({ navigation }) => {
             </View>
             
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>Submit</Text>
+                {isLoading ? <ActivityIndicator size="small" color="white" /> : <Text style={styles.buttonText}>Submit</Text>}
             </TouchableOpacity>
             <Text style={styles.loginText}>
                     Already have an account? {" "}
@@ -210,12 +214,12 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#7E78D2',
         marginTop:60,
-        borderRadius: 10
+        borderRadius: 10,
+        padding: 12,
     },
     buttonText: {
         color: 'white',
         alignSelf: 'center',
-        padding: 12,
         fontSize: 20,
     },
     linkText: {

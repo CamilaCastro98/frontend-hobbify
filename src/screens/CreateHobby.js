@@ -1,26 +1,32 @@
-import { TextInput, View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { TextInput, View, Text, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator } from "react-native";
 import { useState } from "react";
 import validationCreateHobby from "../helpers/validationCreateHobby";
 import { Formik } from 'formik';
 import { sendToAdmin } from "../helpers/petitions";
+import { Ionicons } from '@expo/vector-icons';
 
 const CreateHobby = ({ navigation }) => {
 
     const [errorSubmiting, setErrorSubmiting] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSendAdmin = async (values) => {
+        setIsLoading(true);
         try {
             const response = await sendToAdmin(values);
             navigation.push("SubmitedHobby");
         } catch (error) {
             console.error("Error trying to send form to admin:", error);
             setErrorSubmiting("Your data couldn't be sent");
-        }
+        } finally {
+            setIsLoading(false);
+          }
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
+            <Ionicons style={styles.icon} name="chevron-back" size={32} color="#7E78D2" onPress={()=>navigation.goBack()}/>
                 <Text style={styles.title}>Create Your Hobby!</Text>
                 <Text style={styles.subtitle}>Enter the name of your hobby, a descriptive emoji and a description.</Text>
             </View>
@@ -80,7 +86,7 @@ const CreateHobby = ({ navigation }) => {
                             </ScrollView>
                             <View style={styles.buttonContainer}>
                                 <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                                    <Text style={styles.textButton}>Submit Hobby</Text>
+                                   { isLoading ? <ActivityIndicator size="small" color="white" /> : <Text style={styles.textButton}>Submit Hobby</Text>}
                                 </TouchableOpacity>
                             </View>
                         </>
@@ -92,6 +98,9 @@ const CreateHobby = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    icon: {
+        marginTop:10
+    },
     container: {
         backgroundColor: '#151515',
         flex:1
@@ -113,12 +122,11 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#7E78D2',
         borderRadius: 10,
-        padding: 15,
+        padding: 20,
         width: '80%'
     },
     textButton: {
         alignSelf: 'center',
-        padding:5,
         fontSize: 20,
         color: 'white',
         fontWeight:'400'
@@ -127,7 +135,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         alignSelf: 'center',
         marginBottom: 10,
-        marginTop:30,
+        marginTop:10,
         color: 'white',
         fontWeight: '300'
     },

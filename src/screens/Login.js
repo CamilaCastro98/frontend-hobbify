@@ -1,4 +1,4 @@
-import { Button, TextInput, View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { Button, TextInput, View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { Formik } from 'formik';
 import { AntDesign } from '@expo/vector-icons';
 import validationLogin from "../helpers/validationLogin";
@@ -9,16 +9,20 @@ import loginWithAuth0 from "../helpers/authLogin";
 
 const Login = ({ navigation }) => {
 
-  const { login } = useContext(Context)
+  const { login } = useContext(Context);
 
-  const [errorSubmiting, setErrorSubmiting] = useState("")
+  const [errorSubmiting, setErrorSubmiting] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (values) => {
+    setIsLoading(true);
     try {
-      await loginUser(values,login,navigation)
+      await loginUser(values, login, navigation);
     } catch (error) {
-      console.error("Error trying to login:", error)
-      setErrorSubmiting("The data you entered is incorrect")
+      console.error("Error trying to login:", error);
+      setErrorSubmiting("The data you entered is incorrect");
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -72,7 +76,7 @@ const Login = ({ navigation }) => {
                   {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
                 </View>
                 <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                  <Text style={styles.buttonText}>Submit</Text>
+                 { isLoading ? <ActivityIndicator size="small" color="white" /> : <Text style={styles.buttonText}>Submit</Text>}
                 </TouchableOpacity>
                 <Text style={styles.registerText}>
                   Not a member yet? {" "}
@@ -162,12 +166,12 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#7E78D2',
         marginTop:40,
-        borderRadius: 10
+        borderRadius: 10,
+        padding: 12,
     },
     buttonText: {
         color: 'white',
         alignSelf: 'center',
-        padding: 12,
         fontSize: 20,
     },
     linkText: {
