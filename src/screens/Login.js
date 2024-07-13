@@ -42,7 +42,7 @@ const Login = ({ navigation }) => {
             <ScrollView>
               <View style={styles.form}>
                 <Text style={[styles.text, styles.title]}>Welcome Back!</Text>
-                <Text style={[styles.text, styles.description]}>Log in and keep having fun with your passions</Text>
+                <Text style={[styles.text, styles.description]}>Log in and keep having fun</Text>
                 {errorSubmiting && <View style={styles.errorView}><Text style={styles.errorText}>{errorSubmiting}</Text></View>}
                 <View style={styles.formSection}>
                   <Text style={styles.text}>Email</Text>
@@ -51,6 +51,7 @@ const Login = ({ navigation }) => {
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     placeholder="mail@example.com"
+                    placeholderTextColor="gray"
                     value={values.email}
                     onFocus={() => setErrorSubmiting("")}
                   />
@@ -64,6 +65,7 @@ const Login = ({ navigation }) => {
                     onBlur={handleBlur('password')}
                     value={values.password}
                     placeholder="***********"
+                    placeholderTextColor="gray"
                     secureTextEntry={true}
                     onFocus={() => setErrorSubmiting("")}
                   />
@@ -72,7 +74,7 @@ const Login = ({ navigation }) => {
                 <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                   <Text style={styles.buttonText}>Submit</Text>
                 </TouchableOpacity>
-                <Text style={styles.text}>
+                <Text style={styles.registerText}>
                   Not a member yet? {" "}
                   <TouchableOpacity onPress={() => navigation.push("Register")}>
                     <Text style={styles.linkText}>Register here</Text>
@@ -103,7 +105,7 @@ const Login = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     gral: {
-        backgroundColor: '#7E78D2',
+        backgroundColor: '#1b1b1b',
         width: '100%',
         height: '100%'
     },
@@ -111,41 +113,51 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 15,
-        paddingVertical: 60,
-        backgroundColor: '#1D1E2C',
+        paddingHorizontal: 30,
+        paddingVertical: 65,
+        backgroundColor: '#151515',
         marginVertical:80,
         marginHorizontal:20,
-        borderRadius: 40,
+        borderRadius: 40
     },
     form: {
         flex: 1,
         width: "100%",
     },
     formSection: {
-        marginTop:20
+        marginTop:30
     },
     input: {
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: 'white',
         padding: 15,
         marginTop: 10,
-        width: '100%',
-        backgroundColor: 'white',
-        borderRadius: 10
+        color: 'white',
+        backgroundColor: '#151515',
+        borderRadius: 10,
+        fontSize: 20
     },
     text: {
         color: 'white',
-        fontSize: 15
+        fontSize: 18,
+    },
+    registerText: {
+        color: 'white',
+        fontSize: 15,
+        fontWeight: '300',
+        marginTop: 5
     },
     title: {
         alignSelf: 'center',
         fontSize:25,
-        marginBottom:6
+        marginBottom:6,
+        fontWeight: 300
     },
     description: {
         alignSelf: 'center',
-        fontSize:20
+        fontSize:20,
+        fontWeight: 200,
+        marginBottom: 20
     },
     button: {
         backgroundColor: '#7E78D2',
@@ -155,21 +167,24 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         alignSelf: 'center',
-        padding: 15,
+        padding: 12,
+        fontSize: 20,
     },
     linkText: {
         textDecorationLine: 'underline',
         fontSize:15,
-        color: '#7E78D2'
+        color: 'white',
+        fontWeight: '400'
     },
     error: {
-        color: 'red'
+        color: 'red',
+        marginTop: 5
     },
     rrssContainer: {
         flex:1,
         alignItems: 'center',
         gap: 10,
-        marginVertical: 50
+        marginVertical: 45
     },
     rrss: {
         flex: 1,

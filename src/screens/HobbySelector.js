@@ -157,7 +157,12 @@ const HobbySelector = ({ navigation }) => {
 
     const buttonStyle = {
         ...styles.button,
-        backgroundColor: canProceed ? 'white' : 'gray',
+        borderColor: canProceed ? 'white' : '#151515',
+    };
+
+    const buttonTextStyle = {
+        ...styles.buttonText,
+        color: canProceed ? 'white' : '#151515',
     };
 
     return (
@@ -165,19 +170,23 @@ const HobbySelector = ({ navigation }) => {
             <View style={styles.header}>
                 <Text style={[styles.text, styles.title]}>Choose Your Hobbies!</Text>
                 <Text style={styles.subtitile}>You can select up to three hobbies. </Text>
-                <Text style={styles.text}>
-                    Would you like to choose more? {" "}
-                    <TouchableOpacity onPress={() => navigation.push("SubscriptionScreen")}>
-                        <Text style={styles.linkText}>Upgrade to our premium plan here</Text>
-                    </TouchableOpacity>
-                </Text>
                 <TextInput
                     style={styles.input}
                     value={searched}
                     onChangeText={handleInputChange}
-                    placeholder="Search your hobby..."
+                    placeholder="Search hobby here..."
                 />
-                {isLimited && <Text style={styles.limitMessage}>You've reached your hobbies limit</Text>}
+                {isLimited && ( <View style={styles.limitMessageContainer}>
+                                     <Text style={styles.text}>
+                                     You've selected the maximum number of hobbies for the free plan.
+                                    </Text>
+                                    <Text style={styles.text}>
+                                    Want to add more?{" "}
+                                    <TouchableOpacity onPress={() => navigation.push("SubscriptionScreen")}>
+                                    <Text style={styles.linkText}>Upgrade here</Text>
+                                    </TouchableOpacity>
+                                    </Text>
+                                </View>) }
             </View>
             <ScrollView>
                 {hobbies.length > 0 ? (
@@ -200,7 +209,7 @@ const HobbySelector = ({ navigation }) => {
                             Can't find your hobby?
                         </Text>
                         <TouchableOpacity style={styles.noResultsButton} onPress={() => navigation.push("CreateHobby")}>
-                            <Text style={styles.text}>Create Hobby</Text>
+                            <Text style={styles.textCreate}>Create Hobby</Text>
                         </TouchableOpacity>
                     </View>
                 )}
@@ -211,7 +220,7 @@ const HobbySelector = ({ navigation }) => {
                     onPress={() => handleSelectHobbies()}
                     disabled={!canProceed}
                 >
-                    <Text style={styles.text}>Go to Feed</Text>
+                    <Text style={buttonTextStyle}>Go to Feed</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -220,33 +229,34 @@ const HobbySelector = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#1D1E2C',
+        backgroundColor: '#151515',
         flex: 1
     },
     header: {
-        paddingTop: 60,
+        paddingTop: 80,
         paddingBottom: 30,
         paddingHorizontal: 20,
-        backgroundColor: '#7E78D2',
-        borderRadius: 20
+        backgroundColor: '#151515'
     },
     buttonContainer: {
-        paddingTop: 40,
+        paddingTop: 25,
         paddingBottom: 30,
-        backgroundColor: '#7E78D2',
-        borderRadius: 10,
+        backgroundColor: '#151515',
         flexDirection: 'row',
         justifyContent: 'center'
     },
     title: {
-        fontSize: 25,
+        fontSize: 30,
         alignSelf: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+        fontWeight: '300'
     },
     subtitile: {
-        fontSize: 17,
-        marginBottom: 5,
-        alignSelf: 'center'
+        fontSize: 20,
+        marginBottom: 10,
+        alignSelf: 'center',
+        color: 'white',
+        fontWeight: '200'
     },
     input: {
         borderWidth: 1,
@@ -255,7 +265,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
         width: '100%',
         backgroundColor: 'white',
-        borderRadius: 10
+        borderRadius: 10,
+        fontSize:20,
+        marginBottom:10
     },
     cardsContainer: {
         flexDirection: 'row',
@@ -265,28 +277,44 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
     button: {
-        backgroundColor: 'white',
         borderRadius: 10,
+        borderWidth:2,
         padding: 15,
-        width: '50%'
+        width: '80%',
+        marginBottom:20
     },
     linkText: {
         textDecorationLine: 'underline',
-        color: 'white'
+        color: 'white',
+        fontSize:16
     },
     text: {
-        alignSelf: 'center'
+        alignSelf: 'center',
+        color: 'white',
+        fontSize:16,
+        fontWeight: '300'
+    },
+    textCreate: {
+        alignSelf: 'center',
+        color: 'white',
+        fontSize:20,
+    },
+    buttonText: {
+        alignSelf: 'center',
+        fontSize:20
     },
     limitMessage: {
         alignSelf: 'center',
         marginTop: 8,
-        color: 'darkred'
+        color: 'firebrick',
+        fontSize:20
     },
     noResultsText: {
         alignSelf: 'center',
         margin: 30,
         fontSize: 15,
-        color: 'white'
+        color: 'white',
+        fontWeight:'300'
     },
     noResults: {
         flexDirection: 'column',

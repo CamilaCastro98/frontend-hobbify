@@ -16,28 +16,32 @@ const SubscriptionScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1D1E2C',
+        backgroundColor: '#151515',
         flexDirection: 'column',
     },
     header: {
         paddingTop: 60,
         paddingBottom:30,
         paddingHorizontal:20,
-        backgroundColor: '#7E78D2',
-        borderRadius: 20
+        backgroundColor: '#151515'
     },
     title: {
-        fontSize: 25,
+        fontSize: 30,
         alignSelf: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+        marginTop:30,
+        fontWeight: '300'
     },
     subtitile: {
-        fontSize:17,
+        fontSize:20,
         marginBottom: 5,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        color: 'white',
+        fontWeight: '200'
     },
     text: {
-        alignSelf: 'center'
+        alignSelf: 'center',
+        color: 'white'
     }
 })
 

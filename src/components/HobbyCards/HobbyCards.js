@@ -45,7 +45,7 @@ const HobbyCards = ({emoji,name,hobbieId,onPress,disable}) => {
     return(
         <TouchableOpacity style={cardStyle} onPress={handlePress} disabled={disable && !isPressed}>
                 <Text style={styles.emoji}>{emoji}</Text>
-                <Text>{name}</Text>
+                <Text style={styles.text}>{name}</Text>
         </TouchableOpacity>
     )
 }
@@ -63,6 +63,9 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 4
+    },
+    text: {
+        fontSize:16
     },
     content: {
         justifyContent: 'center',

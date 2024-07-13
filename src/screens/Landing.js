@@ -30,13 +30,14 @@ const styles = StyleSheet.create({
         marginTop: 60,
         flexDirection: 'column',
         alignItems: 'center',
-        paddingVertical: 20,
+        paddingVertical: 30,
         paddingHorizontal: 30,
-        gap: 20
+        gap: 15
     },
     title: {
         color: 'white',
-        fontSize: 30
+        fontSize: 30,
+        fontWeight: '300'
     },
     titlePurple: {
         color: '#7E78D2',
@@ -45,10 +46,10 @@ const styles = StyleSheet.create({
     text: {
         color: 'white',
         fontSize: 20,
-        fontWeight: '300'
+        fontWeight: '200'
     },
     container: {
-        backgroundColor: '#1D1E2C',
+        backgroundColor: '#151515',
         flex: 1
     },
     buttonContainer: {
@@ -60,24 +61,27 @@ const styles = StyleSheet.create({
         gap: 15,
     },
     buttonLogin: {
-        backgroundColor: 'white',
+        borderWidth: 2,
+        borderColor: 'white',
         borderRadius: 10,
         width: '90%'
     },
     buttonTextLogin: {
-        color: '#1D1E2C',
+        color: 'white',
         alignSelf: 'center',
-        padding: 10,
+        padding: 15,
+        fontSize:20
     },
     buttonRegister: {
-        backgroundColor: '#7E78D2',
+        backgroundColor: 'white',
         borderRadius: 10,
         width: '90%'
     },
     buttonTextRegister: {
-        color: 'white',
+        color: 'black',
         alignSelf: 'center',
-        padding: 10,
+        padding: 15,
+        fontSize:20
     }
 })
 

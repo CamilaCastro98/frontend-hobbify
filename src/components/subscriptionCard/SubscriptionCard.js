@@ -7,7 +7,7 @@ const SubscriptionCard = ({ nickname, description, price, interval, selected, on
         <TouchableOpacity onPress={onSelect}>
             <View style={[styles.card, selected && styles.selectedCard]}>
                 <Text style={styles.type}>{nickname}</Text>
-                <Text style={styles.price}>${(price/ 100).toFixed(2)} {interval}</Text>
+                <Text style={styles.price}>${(price/ 100).toFixed(2)} per {interval}</Text>
                 <Text>{description}</Text>
             </View>
         </TouchableOpacity>

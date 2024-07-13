@@ -40,7 +40,7 @@ const Register = ({ navigation }) => {
 
        <View style={styles.form}>
         <Text style={[styles.text, styles.title]}>Register</Text>
-        <Text style={[styles.text, styles.description]}>Join now and start sharing your hobbies!</Text>
+        <Text style={[styles.text, styles.description]}>Join now and start sharing your passions</Text>
         <Text style={styles.asterisk}>* Required fields</Text>
             <View style={styles.formSection}>
                 <Text style={styles.text}>Username {" "}
@@ -52,6 +52,7 @@ const Register = ({ navigation }) => {
                     onBlur={handleBlur('username')}
                     placeholder="your.username33"
                     value={values.username}
+                    placeholderTextColor="gray"
                 />
                 {touched.username && errors.username && <Text style={styles.error}>{errors.username}</Text>}
             </View>
@@ -65,6 +66,7 @@ const Register = ({ navigation }) => {
                     onBlur={handleBlur('email')}
                     placeholder="mail@example.com"
                     value={values.email}
+                    placeholderTextColor="gray"
                 />
                 {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
             </View>
@@ -79,6 +81,7 @@ const Register = ({ navigation }) => {
                     value={values.password}
                     placeholder="***********"
                     secureTextEntry={true}
+                    placeholderTextColor="gray"
                 />
                 {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
             </View>
@@ -93,6 +96,7 @@ const Register = ({ navigation }) => {
                     value={values.confirmPassword}
                     placeholder="***********"
                     secureTextEntry={true}
+                    placeholderTextColor="gray"
                 />
                 {touched.confirmPassword && errors.confirmPassword && <Text style={styles.error}>{errors.confirmPassword}</Text>}
             </View>
@@ -104,6 +108,7 @@ const Register = ({ navigation }) => {
                     onBlur={handleBlur('country')}
                     placeholder="Your country"
                     value={values.country}
+                    placeholderTextColor="gray"
                 />
                 {touched.country && errors.country && <Text style={styles.error}>{errors.country}</Text>}
             </View>
@@ -115,6 +120,7 @@ const Register = ({ navigation }) => {
                     onBlur={handleBlur('city')}
                     placeholder="Your city"
                     value={values.city}
+                    placeholderTextColor="gray"
                 />
                 {touched.city && errors.city && <Text style={styles.error}>{errors.city}</Text>}
             </View>
@@ -127,6 +133,7 @@ const Register = ({ navigation }) => {
                     onBlur={handleBlur('phone')}
                     placeholder="123456789"
                     value={values.phone}
+                    placeholderTextColor="gray"
                 />
                 {touched.phone && errors.phone && <Text style={styles.error}>{errors.phone}</Text>}
             </View>
@@ -134,7 +141,7 @@ const Register = ({ navigation }) => {
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                 <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
-            <Text style={styles.text}>
+            <Text style={styles.loginText}>
                     Already have an account? {" "}
                         <TouchableOpacity onPress={() => navigation.push("Login")}>
                             <Text style={styles.linkText}>Login here</Text>
@@ -151,7 +158,7 @@ const Register = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     gral: {
-        backgroundColor: '#7E78D2',
+        backgroundColor: '#1b1b1b',
         width: '100%',
         height: '100%'
     },
@@ -159,9 +166,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 15,
-        paddingVertical: 60,
-        backgroundColor: '#1D1E2C',
+        paddingHorizontal: 30,
+        paddingTop: 65,
+        paddingBottom:90,
+        backgroundColor: '#151515',
         marginVertical:80,
         marginHorizontal:20,
         borderRadius: 40,
@@ -171,50 +179,63 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     formSection: {
-        marginTop:20
+        marginTop:30
     },
     input: {
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: 'white',
         padding: 15,
         marginTop: 10,
-        width: '100%',
-        backgroundColor: 'white',
-        borderRadius: 10
+        color: 'white',
+        backgroundColor: '#151515',
+        borderRadius: 10,
+        fontSize: 20
     },
     text: {
         color: 'white',
-        fontSize: 15
+        fontSize: 18
     },
     title: {
         alignSelf: 'center',
         fontSize:25,
-        marginBottom:6
+        marginBottom:6,
+        fontWeight: 300
     },
     description: {
         alignSelf: 'center',
-        fontSize:20
+        fontSize:19,
+        fontWeight: 200,
+        marginBottom: 10
     },
     button: {
         backgroundColor: '#7E78D2',
-        marginTop:40,
+        marginTop:60,
         borderRadius: 10
     },
     buttonText: {
         color: 'white',
         alignSelf: 'center',
-        padding: 15,
+        padding: 12,
+        fontSize: 20,
     },
     linkText: {
         textDecorationLine: 'underline',
         fontSize:15,
-        color: '#7E78D2'
+        color: 'white',
+        fontWeight: '400'
     },
     error: {
         color: 'red'
     },
     asterisk: {
-        color: 'red'
+        color: 'red',
+        fontStyle: 'italic'
+    },
+    loginText: {
+        color: 'white',
+        fontSize: 15,
+        fontWeight: '300',
+        marginTop: 5
     }
 })
 

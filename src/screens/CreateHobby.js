@@ -44,6 +44,7 @@ const CreateHobby = ({ navigation }) => {
                                             placeholder="Programming"
                                             value={values.name}
                                             onFocus={() => setErrorSubmiting("")}
+                                            placeholderTextColor="gray"
                                         />
                                         {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>}
                                     </View>
@@ -56,6 +57,7 @@ const CreateHobby = ({ navigation }) => {
                                             value={values.emoji}
                                             placeholder="🖥️"
                                             onFocus={() => setErrorSubmiting("")}
+                                            placeholderTextColor="gray"
                                         />
                                         {touched.emoji && errors.emoji && <Text style={styles.error}>{errors.emoji}</Text>}
                                     </View>
@@ -70,6 +72,7 @@ const CreateHobby = ({ navigation }) => {
                                             value={values.description}
                                             placeholder="Programming is a hobby that involves..."
                                             onFocus={() => setErrorSubmiting("")}
+                                            placeholderTextColor="gray"
                                         />
                                         {touched.description && errors.description && <Text style={styles.error}>{errors.description}</Text>}
                                     </View>
@@ -90,14 +93,14 @@ const CreateHobby = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#1D1E2C',
+        backgroundColor: '#151515',
         flex:1
     },
     header: {
         paddingTop: 60,
         paddingBottom:30,
         paddingHorizontal:20,
-        backgroundColor: '#7E78D2',
+        backgroundColor: '#151515',
         borderRadius: 20
     },
     buttonContainer: {
@@ -114,20 +117,29 @@ const styles = StyleSheet.create({
         width: '80%'
     },
     textButton: {
-        alignSelf: 'center'
+        alignSelf: 'center',
+        padding:5,
+        fontSize: 20,
+        color: 'white',
+        fontWeight:'400'
     },
     title: {
-        fontSize: 25,
+        fontSize: 30,
         alignSelf: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+        marginTop:30,
+        color: 'white',
+        fontWeight: '300'
     },
-    subtitile: {
-        fontSize:17,
-        marginBottom: 5,
-        alignSelf: 'center'
+    subtitle: {
+        fontSize:20,
+        alignSelf: 'center',
+        color: 'white',
+        fontWeight: '200'
     },
     text: {
-       color: 'white'
+       color: 'white',
+       fontSize:18
     },
     errorView: {
         marginVertical:8,
@@ -143,17 +155,18 @@ const styles = StyleSheet.create({
         color: 'red'
     },
     formSection: {
-        marginTop:20,
+        marginTop:30,
         paddingHorizontal:40
     },
     input: {
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: 'white',
         padding: 15,
         marginTop: 10,
-        width: '100%',
-        backgroundColor: 'white',
-        borderRadius: 10
+        color: 'white',
+        backgroundColor: '#151515',
+        borderRadius: 10,
+        fontSize: 20
     },
     textArea: {
         height: 150
