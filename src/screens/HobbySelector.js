@@ -1,8 +1,8 @@
-import { Button, TextInput,View, Text, StyleSheet,ScrollView,TouchableOpacity } from "react-native";
-import { useState,useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from "react-native";
 import HobbyCards from "../components/HobbyCards/HobbyCards";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getAllHobbies } from "../helpers/petitions";
+import { getAllHobbies, updateUser } from "../helpers/petitions";
 import { Context } from "../contexts/Context";
 
 const tempHobbies = [
@@ -58,123 +58,129 @@ const tempHobbies = [
     }
 ]
 
+const HobbySelector = ({ navigation }) => {
+    const { user, updateHobbies } = useContext(Context);
 
-const HobbySelector = ({navigation}) => {
-
-    const { user,updateHobbies } = useContext(Context);
-
-    const [hobbies,setHobbies] = useState([])
-    const [originalHobbies,setOriginalHobbies] = useState([])
-    const [searched,setSearched] = useState("")
-    const [isLimited,setIsLimited] = useState(false)
-    const [canProceed, setCanProceed] = useState(false)
-    const [selectionData,setSelectionData] = useState([])
+    const [hobbies, setHobbies] = useState([]);
+    const [originalHobbies, setOriginalHobbies] = useState([]);
+    const [searched, setSearched] = useState("");
+    const [isLimited, setIsLimited] = useState(false);
+    const [canProceed, setCanProceed] = useState(false);
+    const [selectionData, setSelectionData] = useState([]);
 
     useEffect(() => {
-
         const saveSelection = async () => {
             try {
+                let hobbiesArray = [];
                 if (user.hobbies.length > 0) {
-                    setSelectionData((user.hobbies));
-                    await AsyncStorage.setItem('tempHobbies',JSON.stringify(selectionData))
+                    hobbiesArray = user.hobbies.map(hobby => hobby.hobbieId);
+                    setSelectionData(hobbiesArray);
+                    await AsyncStorage.setItem('tempHobbies', JSON.stringify(hobbiesArray));
                 } else {
-                    await AsyncStorage.setItem('tempHobbies', JSON.stringify([]))
+                    await AsyncStorage.setItem('tempHobbies', JSON.stringify([]));
                 }
-                const selection = await AsyncStorage.getItem('tempHobbies')
-                    setIsLimited(JSON.parse(selection).length >= 3)
-                console.log(`seleccion inicial: ${selectionData}`)
+                const selection = await AsyncStorage.getItem('tempHobbies');
+                setIsLimited(JSON.parse(selection).length >= 3);
+                console.log(`seleccion inicial: ${JSON.stringify(hobbiesArray)}`);
             } catch (error) {
-                console.error('Error saving initial hobbies:', error)
+                console.error('Error saving initial hobbies:', error);
             }
         };
-
-        saveSelection()
-    }, [])
-
-    const handlePressHobby = async(id) => {
+    
+        saveSelection();
+    }, []);
+    const handlePressHobby = async (id) => {
         try {
-            let newSelection
+            let newSelection;
             if (selectionData.includes(id)) {
                 newSelection = selectionData.filter(hobby => hobby !== id);
-            } else if(selectionData.length < 3) {
-                newSelection = [...selectionData, id]
+            } else if (selectionData.length < 3) {
+                newSelection = [...selectionData, id];
             } else {
-                newSelection = selectionData
-                showLimitMessage(true)
-                console.log("no se pueden elegir mas de 3 hobbies")
+                newSelection = selectionData;
+                showLimitMessage(true);
+                console.log("no se pueden elegir mas de 3 hobbies");
             }
 
             setSelectionData(newSelection);
-            await AsyncStorage.setItem('tempHobbies', JSON.stringify(newSelection))
-            setIsLimited(newSelection.length >= 3)
-            setCanProceed(newSelection.length > 0)
-            console.log(newSelection)
+            await AsyncStorage.setItem('tempHobbies', JSON.stringify(newSelection));
+            setIsLimited(newSelection.length >= 3);
+            setCanProceed(newSelection.length > 0);
+            console.log(newSelection);
         } catch (error) {
-            console.error('Error saving hobbies:', error)
+            console.error('Error saving hobbies:', error);
         }
-    }
-
-    useEffect(()=>{
-        const handleGetHobbies = async() => {
-            try {
-                const response = await getAllHobbies()
-                setHobbies(response)
-                setOriginalHobbies(response)
-            }
-            catch(error) {
-                console.error('Error handling hobbies:', error)
-            }
-        }
-        handleGetHobbies()
-    },[])
+    };
 
     useEffect(() => {
-        const newHobbies = originalHobbies.filter(hobbie => hobbie.name.toLocaleLowerCase().includes(searched.toLowerCase()))
-        setHobbies(newHobbies)
-    }, [searched])
+        const handleGetHobbies = async () => {
+            try {
+                const response = await getAllHobbies();
+                setHobbies(response);
+                setOriginalHobbies(response);
+            } catch (error) {
+                console.error('Error handling hobbies:', error);
+            }
+        };
+
+        handleGetHobbies();
+    }, []);
+
+    useEffect(() => {
+        const newHobbies = originalHobbies.filter(hobbie => hobbie.name.toLocaleLowerCase().includes(searched.toLowerCase()));
+        setHobbies(newHobbies);
+    }, [searched]);
 
     const handleInputChange = (text) => {
-        setSearched(text)
-    }
+        setSearched(text);
+    };
 
-    const handleSelectHobbies = async() => {
-        if(selectionData.length > 0) {
-            const userNewHobbies = {hobbies: selectionData,...user}
-            updateHobbies(userNewHobbies)
-            try {
-                await AsyncStorage.removeItem('tempHobbies')
-                navigation.push("MainFeed")
+    const handleSelectHobbies = async () => {
+
+        const mappedSelectionData = selectionData.map(id => ({ hobbieId: id }));
+    
+        try {
+            if (mappedSelectionData.length > 0) {
+                const userNewHobbies = { ...user, hobbies: mappedSelectionData };
+                console.log('el usuario con hobbies actualizados es ', userNewHobbies);
+                const update = await updateUser(userNewHobbies);
+                if (update === 200) {
+                    await updateHobbies(userNewHobbies);
+                    await AsyncStorage.removeItem('tempHobbies');
+                    navigation.push("MainFeed");
+                }
             }
-            catch(error) {
-                console.error('Error handling confirmation:', error)
-            }
+        } catch (error) {
+            console.error('Error handling confirmation:', error);
         }
     }
 
     const buttonStyle = {
         ...styles.button,
         backgroundColor: canProceed ? 'white' : 'gray',
-    }
+    };
 
-    return(
+    return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={[styles.text,styles.title]}>Choose Your Hobbies!</Text>
+                <Text style={[styles.text, styles.title]}>Choose Your Hobbies!</Text>
                 <Text style={styles.subtitile}>You can select up to three hobbies. </Text>
                 <Text style={styles.text}>
-                Would you like to choose more? {" "}
-                        <TouchableOpacity onPress={() => navigation.push("SubscriptionScreen")}>
-                            <Text style={styles.linkText}>Upgrade to our premium plan here</Text>
-                        </TouchableOpacity>
+                    Would you like to choose more? {" "}
+                    <TouchableOpacity onPress={() => navigation.push("SubscriptionScreen")}>
+                        <Text style={styles.linkText}>Upgrade to our premium plan here</Text>
+                    </TouchableOpacity>
                 </Text>
-                <TextInput style={styles.input}
-                value={searched}
-                onChangeText={handleInputChange} 
-                placeholder="Search your hobby..."></TextInput>
+                <TextInput
+                    style={styles.input}
+                    value={searched}
+                    onChangeText={handleInputChange}
+                    placeholder="Search your hobby..."
+                />
                 {isLimited && <Text style={styles.limitMessage}>You've reached your hobbies limit</Text>}
             </View>
             <ScrollView>
-            {hobbies.length > 0 ? (
+                {hobbies.length > 0 ? (
                     <View style={styles.cardsContainer}>
                         {hobbies.map(hobby => (
                             <HobbyCards
@@ -200,29 +206,33 @@ const HobbySelector = ({navigation}) => {
                 )}
             </ScrollView>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={buttonStyle} onPress={() => handleSelectHobbies()} disabled={!canProceed}>
-                        <Text style={styles.text}>Go to Feed</Text>
+                <TouchableOpacity
+                    style={buttonStyle}
+                    onPress={() => handleSelectHobbies()}
+                    disabled={!canProceed}
+                >
+                    <Text style={styles.text}>Go to Feed</Text>
                 </TouchableOpacity>
             </View>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#1D1E2C',
-        flex:1
+        flex: 1
     },
     header: {
         paddingTop: 60,
-        paddingBottom:30,
-        paddingHorizontal:20,
+        paddingBottom: 30,
+        paddingHorizontal: 20,
         backgroundColor: '#7E78D2',
         borderRadius: 20
     },
     buttonContainer: {
-        paddingTop:40,
-        paddingBottom:30,
+        paddingTop: 40,
+        paddingBottom: 30,
         backgroundColor: '#7E78D2',
         borderRadius: 10,
         flexDirection: 'row',
@@ -234,7 +244,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     subtitile: {
-        fontSize:17,
+        fontSize: 17,
         marginBottom: 5,
         alignSelf: 'center'
     },
@@ -268,7 +278,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     limitMessage: {
-        alignSelf: 'center', 
+        alignSelf: 'center',
         marginTop: 8,
         color: 'darkred'
     },
@@ -288,6 +298,6 @@ const styles = StyleSheet.create({
         padding: 15,
         width: '50%'
     }
-})
+});
 
-export default HobbySelector
+export default HobbySelector;

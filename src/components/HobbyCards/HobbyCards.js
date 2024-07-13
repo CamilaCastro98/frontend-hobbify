@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet,TouchableOpacity } from "react-native";
-import { useState,useEffect } from "react";
+import { useState,useEffect,useContext } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Context } from "../../contexts/Context";
 
 const HobbyCards = ({emoji,name,hobbieId,onPress,disable}) => {
+
+    const { user } = useContext(Context);
 
     const [isPressed, setIsPressed] = useState(false);
 
@@ -31,7 +34,7 @@ const HobbyCards = ({emoji,name,hobbieId,onPress,disable}) => {
 
         getSelection()
 
-    },[])
+    },[user])
 
 
     const cardStyle = {

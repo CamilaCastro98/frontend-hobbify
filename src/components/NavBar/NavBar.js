@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import { iconColor, mainColor, textColor } from "../../screens/MainFeed";
 
 const NavBar = ({ navigation }) => {
   return (
@@ -31,9 +32,9 @@ const NavBar = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     height: 70,
-    backgroundColor: "#7E78D2",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    backgroundColor: mainColor,
+    // borderTopLeftRadius: 10,
+    // borderTopRightRadius: 10,
   },
   iconContainer: {
     flex: 1,
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   icon: {
     height: 40,
     width: 40,
-    tintColor: "#FEF9EF",
+    tintColor: "white",
   },
   iconBg: {
     height: 55,

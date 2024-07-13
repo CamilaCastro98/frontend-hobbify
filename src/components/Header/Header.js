@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
-
+import { iconColor, mainColor, textColor } from "../../screens/MainFeed";
 const Header = ({ user, navigation }) => {
   const saludo = "holaequisde";
   return (
@@ -32,10 +32,13 @@ const Header = ({ user, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#7E78D2",
+    backgroundColor: mainColor,
+    // backgroundColor: mainColor,
     height: 70,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
+    // borderBottomLeftRadius: 10,
+    // borderBottomRightRadius: 10,
+    borderBottomWidth:0.1,
+    borderColor:textColor
   },
   mainContainer: {
     flex: 1,
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   icon: {
-    tintColor: "#FEF9EF",
+    tintColor: "white",
     width: 30,
     height: 30,
     resizeMode: "contain",

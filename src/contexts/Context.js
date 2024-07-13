@@ -76,7 +76,6 @@ console.log('context iniciado')
 
   const updateHobbies = async (userWithNewHobbies) => {
     try {
-      userWithNewHobbies.hobbies = userWithNewHobbies.hobbies.map(hobby => hobby.hobbieId);
       setUser(userWithNewHobbies);
       await AsyncStorage.setItem('user', JSON.stringify(userWithNewHobbies));
       const confirmedUser = await AsyncStorage.getItem('user');
@@ -87,7 +86,7 @@ console.log('context iniciado')
   };
 
   return (
-    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies, isLoading,toggleLoading }}>
+    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies, isLoading, setIsLoading }}>
       {children}
     </Context.Provider>
   );

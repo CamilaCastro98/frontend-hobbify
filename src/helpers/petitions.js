@@ -45,17 +45,17 @@ export const loginUser = async(values,login,navigation) => {
         const response = await axios.post(`http://192.168.100.248:3000/authown/login`,values);
         // const response = user 
         if (response.status === 200 || response.status === 201) {
-          const tempToken = "token1234"
-          const user = response.data.data;
-          console.log(`user logueado es ${user} y sus hobbies son ${user.hobbies}`)
-          if (user.hobbies.length > 0) {
-            login(tempToken,user)
-            navigation.push("MainFeed");
-          } else {
-            login(tempToken,user)
-            navigation.push("HobbySelector");
-          }
-        }
+            const user = response.data.data.user
+            const token = response.data.data.token
+            console.log(`user logueado es ${user}, sus hobbies son ${user.hobbies} y el token es ${token}`)
+        if (user.hobbies.length > 0) {
+                login(token,user)
+                navigation.push("MainFeed");
+            } else {
+                login(token,user)
+                navigation.push("HobbySelector");
+            }
+         }
     }
     catch(error) {
         throw new Error(`error trying to login: ${error}`)
@@ -124,4 +124,17 @@ export const getAllHobbies = async() => {
     catch(error) {
         throw new Error(`error trying to get all hobbies: ${error}`)
     }
+}
+
+export const updateUser = async(userUpdated) => {
+    const {userId,...user} = userUpdated
+
+    try {
+        const response = await axios.patch(`http://192.168.100.248:3000/users/${userId}`,user)
+        console.log(`La response retornada es ${JSON.stringify(response.status)}`)
+        return response.status
+    }
+    catch(error) {
+        throw new Error(`error trying to update hobbies: ${error}`)
+    }    
 }
