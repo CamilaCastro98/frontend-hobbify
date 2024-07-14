@@ -10,7 +10,7 @@ const DeepLinkingHandler = () => {
       const { path } = Linking.parse(event.url);
       console.log("se activó el evento")
       if (path.includes('success')) {
-        navigation.navigate('SuccessScreen');
+        navigation.navigate('Loading');
       } else if (path.includes('cancel')) {
         navigation.navigate('CancelScreen');
       }

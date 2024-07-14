@@ -1,5 +1,6 @@
 import { View, Text, ActivityIndicator,StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react'
+import { useNavigationState } from '@react-navigation/native';
 
 const curiosities = [
     'Engaging in hobbies can significantly reduce stress levels and improve overall mental health. Activities like gardening, knitting, or painting can act as therapeutic outlets.',
@@ -12,10 +13,9 @@ const curiosities = [
     'The hobby industry is a significant economic sector. From craft supplies and sports equipment to books and travel, hobbies contribute to various markets and can even lead to entrepreneurial ventures.'
 ]
 
-const Loading = () => {
+const Loading = ({navigation}) => {
 
     const [curiosityIndex, setCuriosityIndex] = useState(0);
-
     useEffect(() => {
         const interval = setInterval(() => {
             setCuriosityIndex((prevIndex) => (prevIndex + 1) % curiosities.length);
@@ -23,6 +23,7 @@ const Loading = () => {
 
         return () => clearInterval(interval);
     }, []);
+
 
     return(
         <View style={styles.container}>

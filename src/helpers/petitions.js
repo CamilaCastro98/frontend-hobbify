@@ -138,3 +138,15 @@ export const updateUser = async(userUpdated) => {
         throw new Error(`error trying to update hobbies: ${error}`)
     }    
 }
+
+export const getUserById = async(user) => {
+    const {userId,...userInfo} = user
+    try {
+        const response = await axios.get(`http://192.168.100.248:3000/users/${userId}`)
+        console.log(`La response retornada es ${JSON.stringify(response.data)}`)
+        return response.data
+    }
+    catch(error) {
+        throw new Error(`error trying to update hobbies: ${error}`)
+    } 
+}

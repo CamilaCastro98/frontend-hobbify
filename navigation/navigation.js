@@ -46,7 +46,7 @@ const SignedInStack = ({initialRoute}) => (
       <Stack.Screen name="HobbySelector" component={HobbySelector} />
       <Stack.Screen name="Messages" component={Messages} />
       <Stack.Screen name="Chat" component={Chat} />
-
+      <Stack.Screen name="Loading" component={Loading} />
       <Stack.Screen name="CreateHobby" component={CreateHobby} />
       <Stack.Screen name="SubmitedHobby" component={SubmitedHobby} />
       <Stack.Screen name="SubscriptionScreen" component={SubscriptionScreen} />

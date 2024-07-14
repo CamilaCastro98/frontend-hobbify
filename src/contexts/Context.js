@@ -8,6 +8,7 @@ const ContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading ] = useState(true);
+  const [isPremium, setIsPremium] = useState(false)
 
 console.log('context iniciado')
 
@@ -56,6 +57,8 @@ console.log('context iniciado')
       const loggedToken = await AsyncStorage.getItem('userToken');
       const loggedUser = await AsyncStorage.getItem('user');
 
+      loggedUser.payments ? setIsPremium(true) : null
+
       console.log(`En contexto: el token es ${loggedToken}, el user es ${loggedUser}`);
     } catch (error) {
       throw new Error(`Error logging data in context: ${error}`);
@@ -70,9 +73,6 @@ console.log('context iniciado')
     console.log("Token and user removed");
   };
 
-  const toggleLoading = (value) => {
-    setIsLoading(value)
-  }
 
   const updateHobbies = async (userWithNewHobbies) => {
     try {
@@ -86,7 +86,7 @@ console.log('context iniciado')
   };
 
   return (
-    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies, isLoading, setIsLoading }}>
+    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies, isLoading, isPremium, setIsPremium, setIsLoading }}>
       {children}
     </Context.Provider>
   );
