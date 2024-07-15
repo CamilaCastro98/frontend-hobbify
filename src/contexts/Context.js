@@ -30,9 +30,11 @@ console.log('context iniciado')
 
     const loadUser = async () => {
       try {
-        const storedUser = await AsyncStorage.getItem('user');
+        const storedUser = await AsyncStorage.getItem('user')
         if (storedUser) {
           setUser(JSON.parse(storedUser));
+          const userIsPremium = JSON.parse(storedUser).payments && JSON.parse(storedUser).payments.length > 0
+          setIsPremium(userIsPremium)
           console.log("User loaded in context");
         }
       } catch (error) {
@@ -40,8 +42,10 @@ console.log('context iniciado')
       }
     };
 
+
     loadToken();
     loadUser();
+    console.log(`En contexto: el user es ${JSON.stringify(user)}, el token es ${token} y su premium es ${isPremium}`)
   }, []);
 
   const login = async (userToken, newUser) => {
@@ -57,9 +61,9 @@ console.log('context iniciado')
       const loggedToken = await AsyncStorage.getItem('userToken');
       const loggedUser = await AsyncStorage.getItem('user');
 
-      loggedUser.payments ? setIsPremium(true) : null
+      const userIsPremium = JSON.parse(loggedUser).payments.length > 0;
+      setIsPremium(userIsPremium);
 
-      console.log(`En contexto: el token es ${loggedToken}, el user es ${loggedUser}`);
     } catch (error) {
       throw new Error(`Error logging data in context: ${error}`);
     }
@@ -70,6 +74,7 @@ console.log('context iniciado')
     setIsAuthenticated(false);
     await AsyncStorage.removeItem('userToken');
     await AsyncStorage.removeItem('user');
+    setIsPremium(false)
     console.log("Token and user removed");
   };
 

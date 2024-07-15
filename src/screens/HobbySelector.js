@@ -171,6 +171,7 @@ const HobbySelector = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
+                <Text style={[styles.text, styles.title]}>Hi, <Text style={styles.user}>{user.username}</Text></Text>
                 <Text style={[styles.text, styles.title]}>Choose Your Hobbies!</Text>
                 <Text style={styles.subtitile}>You can select up to three hobbies. </Text>
                 <TextInput
@@ -260,6 +261,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         color: 'white',
         fontWeight: '200'
+    },
+    user: {
+        color: '#7E78D2'
     },
     input: {
         borderWidth: 1,

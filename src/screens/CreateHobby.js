@@ -26,8 +26,10 @@ const CreateHobby = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-            <Ionicons style={styles.icon} name="chevron-back" size={32} color="#7E78D2" onPress={()=>navigation.goBack()}/>
+            <View style={styles.iconTitle}>
+                <Ionicons style={styles.icon} name="chevron-back" size={32} color="#7E78D2" onPress={()=>navigation.goBack()}/>
                 <Text style={styles.title}>Create Your Hobby!</Text>
+            </View>
                 <Text style={styles.subtitle}>Enter the name of your hobby, a descriptive emoji and a description.</Text>
             </View>
             <ScrollView>
@@ -98,8 +100,11 @@ const CreateHobby = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    icon: {
-        marginTop:10
+
+    iconTitle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 20
     },
     container: {
         backgroundColor: '#151515',

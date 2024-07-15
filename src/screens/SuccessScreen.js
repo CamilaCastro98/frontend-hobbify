@@ -19,6 +19,7 @@ const SuccessScreen = ({navigation}) => {
             try {
               const response = await getUserById(user)
               if (response.payments.length > 0) {
+                console.log('entro al if para update user')
                 await updateHobbies(response)
                 setIsPremium(true);
                 setIsUserPremium(true)
