@@ -31,7 +31,7 @@ const user = {
     const {email,password} = values
 
     try {
-       const response = await axios.post(`http://192.168.100.248:3000/authown/signin`,values)
+       const response = await axios.post(`${API_URL}/authown/signin`,values)
        console.log(response.data)
        await loginUser({email,password},login,navigation)
     }
@@ -42,7 +42,7 @@ const user = {
 
 export const loginUser = async(values,login,navigation) => {
   try {
-        const response = await axios.post(`http://192.168.100.248:3000/authown/login`,values);
+        const response = await axios.post(`${API_URL}/authown/login`,values);
         // const response = user 
         if (response.status === 200 || response.status === 201) {
             const user = response.data.data.user
@@ -85,7 +85,7 @@ export const sendToAdmin = async(values) => {
 export const getPlans = async() => {
 
     try {
-        const subscriptions = await axios.get(`http://192.168.100.248:3000/stripe`, {
+        const subscriptions = await axios.get(`${API_URL}/stripe`, {
             headers: {
                 'Authorization': `Bearer ${STRIPE_API_KEY}`
             }
@@ -99,7 +99,7 @@ export const getPlans = async() => {
 
 export const postPurchase = async(planId) => {
     try {
-        const response = await axios.post(`http://192.168.100.248:3000/stripe`, 
+        const response = await axios.post(`${API_URL}/stripe`, 
             { priceId: planId },
             {
                 headers: {
@@ -118,7 +118,7 @@ export const postPurchase = async(planId) => {
 
 export const getAllHobbies = async() => {
     try {
-        const response = await axios.get(`http://192.168.100.248:3000/hobbies`)
+        const response = await axios.get(`${API_URL}/hobbies`)
         return response.data
     }
     catch(error) {
@@ -130,7 +130,7 @@ export const updateUser = async(userUpdated) => {
     const {userId,...user} = userUpdated
 
     try {
-        const response = await axios.patch(`http://192.168.100.248:3000/users/${userId}`,user)
+        const response = await axios.patch(`${API_URL}/users/${userId}`,user)
         console.log(`La response retornada es ${JSON.stringify(response.status)}`)
         return response.status
     }
@@ -142,7 +142,7 @@ export const updateUser = async(userUpdated) => {
 export const getUserById = async(user) => {
     const {userId,...userInfo} = user
     try {
-        const response = await axios.get(`http://192.168.100.248:3000/users/${userId}`)
+        const response = await axios.get(`${API_URL}/users/${userId}`)
         console.log(`La response retornada es ${JSON.stringify(response.data)}`)
         return response.data
     }
