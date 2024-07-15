@@ -1,27 +1,35 @@
-import { TextInput, View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { TextInput, View, Text, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator } from "react-native";
 import { useState } from "react";
 import validationCreateHobby from "../helpers/validationCreateHobby";
 import { Formik } from 'formik';
 import { sendToAdmin } from "../helpers/petitions";
+import { Ionicons } from '@expo/vector-icons';
 
 const CreateHobby = ({ navigation }) => {
 
     const [errorSubmiting, setErrorSubmiting] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSendAdmin = async (values) => {
+        setIsLoading(true);
         try {
             const response = await sendToAdmin(values);
             navigation.push("SubmitedHobby");
         } catch (error) {
             console.error("Error trying to send form to admin:", error);
             setErrorSubmiting("Your data couldn't be sent");
-        }
+        } finally {
+            setIsLoading(false);
+          }
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
+            <View style={styles.iconTitle}>
+                <Ionicons style={styles.icon} name="chevron-back" size={32} color="#7E78D2" onPress={()=>navigation.goBack()}/>
                 <Text style={styles.title}>Create Your Hobby!</Text>
+            </View>
                 <Text style={styles.subtitle}>Enter the name of your hobby, a descriptive emoji and a description.</Text>
             </View>
             <ScrollView>
@@ -44,6 +52,7 @@ const CreateHobby = ({ navigation }) => {
                                             placeholder="Programming"
                                             value={values.name}
                                             onFocus={() => setErrorSubmiting("")}
+                                            placeholderTextColor="gray"
                                         />
                                         {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>}
                                     </View>
@@ -56,6 +65,7 @@ const CreateHobby = ({ navigation }) => {
                                             value={values.emoji}
                                             placeholder="🖥️"
                                             onFocus={() => setErrorSubmiting("")}
+                                            placeholderTextColor="gray"
                                         />
                                         {touched.emoji && errors.emoji && <Text style={styles.error}>{errors.emoji}</Text>}
                                     </View>
@@ -70,6 +80,7 @@ const CreateHobby = ({ navigation }) => {
                                             value={values.description}
                                             placeholder="Programming is a hobby that involves..."
                                             onFocus={() => setErrorSubmiting("")}
+                                            placeholderTextColor="gray"
                                         />
                                         {touched.description && errors.description && <Text style={styles.error}>{errors.description}</Text>}
                                     </View>
@@ -77,7 +88,7 @@ const CreateHobby = ({ navigation }) => {
                             </ScrollView>
                             <View style={styles.buttonContainer}>
                                 <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                                    <Text style={styles.textButton}>Submit Hobby</Text>
+                                   { isLoading ? <ActivityIndicator size="small" color="white" /> : <Text style={styles.textButton}>Submit Hobby</Text>}
                                 </TouchableOpacity>
                             </View>
                         </>
@@ -89,15 +100,21 @@ const CreateHobby = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+
+    iconTitle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 20
+    },
     container: {
-        backgroundColor: '#1D1E2C',
+        backgroundColor: '#151515',
         flex:1
     },
     header: {
         paddingTop: 60,
         paddingBottom:30,
         paddingHorizontal:20,
-        backgroundColor: '#7E78D2',
+        backgroundColor: '#151515',
         borderRadius: 20
     },
     buttonContainer: {
@@ -110,24 +127,32 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#7E78D2',
         borderRadius: 10,
-        padding: 15,
+        padding: 20,
         width: '80%'
     },
     textButton: {
-        alignSelf: 'center'
+        alignSelf: 'center',
+        fontSize: 20,
+        color: 'white',
+        fontWeight:'400'
     },
     title: {
-        fontSize: 25,
+        fontSize: 30,
         alignSelf: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+        marginTop:10,
+        color: 'white',
+        fontWeight: '300'
     },
-    subtitile: {
-        fontSize:17,
-        marginBottom: 5,
-        alignSelf: 'center'
+    subtitle: {
+        fontSize:20,
+        alignSelf: 'center',
+        color: 'white',
+        fontWeight: '200'
     },
     text: {
-       color: 'white'
+       color: 'white',
+       fontSize:18
     },
     errorView: {
         marginVertical:8,
@@ -143,17 +168,18 @@ const styles = StyleSheet.create({
         color: 'red'
     },
     formSection: {
-        marginTop:20,
+        marginTop:30,
         paddingHorizontal:40
     },
     input: {
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: 'white',
         padding: 15,
         marginTop: 10,
-        width: '100%',
-        backgroundColor: 'white',
-        borderRadius: 10
+        color: 'white',
+        backgroundColor: '#151515',
+        borderRadius: 10,
+        fontSize: 20
     },
     textArea: {
         height: 150

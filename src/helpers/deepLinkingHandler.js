@@ -7,22 +7,34 @@ const DeepLinkingHandler = () => {
 
   useEffect(() => {
     const handleDeepLink = (event) => {
-      const url = event.url;
-      if (url.includes('success')) {
-        navigation.navigate('SuccessScreen')
-      } else if (url.includes('cancel')) {
-        navigation.navigate('CancelScreen')
+      const { path } = Linking.parse(event.url);
+      console.log("se activó el evento")
+      if (path.includes('success')) {
+        navigation.navigate('Loading');
+      } else if (path.includes('cancel')) {
+        navigation.navigate('CancelScreen');
       }
     };
 
-    Linking.addEventListener('url', handleDeepLink);
+    const linkingSubscription = Linking.addEventListener('url', handleDeepLink);
 
     return () => {
-      Linking.removeEventListener('url', handleDeepLink);
+      linkingSubscription.remove();
     };
   }, [navigation]);
 
-  return null
+  useEffect(() => {
+    const getUrlAsync = async () => {
+      const initialUrl = await Linking.getInitialURL();
+      console.log('initial url:',initialUrl);
+    };
+
+    getUrlAsync();
+  }, []);
+
+  return null;
 };
 
-export default DeepLinkingHandler
+export default DeepLinkingHandler;
+
+

@@ -6,21 +6,21 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 24,
-        fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 20,
         color: '#800080',
     },
     purchaseButton: {
-        backgroundColor: '#7E78D2',
         borderRadius: 10,
-        padding: 20,
+        padding: 15,
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 40,
+        borderWidth: 2,
+        borderColor: 'white',
     },
     purchaseButtonText: {
         color: '#FFFFFF',
-        fontSize: 16,
+        fontSize: 20,
     },
     buttonContainer: {
         paddingTop:40,

@@ -12,14 +12,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#7E78D2',
     },
     type: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 20,
         marginBottom: 10,
     },
     price: {
         fontSize: 16,
         fontWeight: 'bold',
-        marginBottom: 10,
+        marginBottom: 5,
     },
     description: {
         fontSize: 14,

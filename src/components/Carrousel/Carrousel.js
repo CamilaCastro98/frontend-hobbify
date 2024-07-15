@@ -4,13 +4,14 @@ import Carousel from 'react-native-reanimated-carousel';
 
 import img1 from '../../../assets/landingImg/img1.jpg';
 import img2 from '../../../assets/landingImg/img2.jpg';
-import img3 from '../../../assets/landingImg/img3.png';
+import img3 from '../../../assets/landingImg/img3.jpg';
 
 const imageData = [
     { uri: img1 },
     { uri: img2 },
     { uri: img3 },
 ];
+
 
 function Carrousel() {
     const width = Dimensions.get('window').width;

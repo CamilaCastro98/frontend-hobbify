@@ -39,14 +39,14 @@ const linking = {
 }
 
 const SignedInStack = ({initialRoute}) => (
-  <NavigationContainer>
-
+  <NavigationContainer linking={linking}>
+    <DeepLinkingHandler />
     <Stack.Navigator initialRouteName={initialRoute} screenOptions={screenOptions}>
       <Stack.Screen name="MainFeed" component={MainFeed} />
       <Stack.Screen name="HobbySelector" component={HobbySelector} />
       <Stack.Screen name="Messages" component={Messages} />
       <Stack.Screen name="Chat" component={Chat} />
-
+      <Stack.Screen name="Loading" component={Loading} />
       <Stack.Screen name="CreateHobby" component={CreateHobby} />
       <Stack.Screen name="SubmitedHobby" component={SubmitedHobby} />
       <Stack.Screen name="SubscriptionScreen" component={SubscriptionScreen} />

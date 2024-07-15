@@ -8,6 +8,7 @@ const ContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading ] = useState(true);
+  const [isPremium, setIsPremium] = useState(false)
 
 console.log('context iniciado')
 
@@ -29,9 +30,11 @@ console.log('context iniciado')
 
     const loadUser = async () => {
       try {
-        const storedUser = await AsyncStorage.getItem('user');
+        const storedUser = await AsyncStorage.getItem('user')
         if (storedUser) {
           setUser(JSON.parse(storedUser));
+          const userIsPremium = JSON.parse(storedUser).payments && JSON.parse(storedUser).payments.length > 0
+          setIsPremium(userIsPremium)
           console.log("User loaded in context");
         }
       } catch (error) {
@@ -39,8 +42,10 @@ console.log('context iniciado')
       }
     };
 
+
     loadToken();
     loadUser();
+    console.log(`En contexto: el user es ${JSON.stringify(user)}, el token es ${token} y su premium es ${isPremium}`)
   }, []);
 
   const login = async (userToken, newUser) => {
@@ -56,7 +61,9 @@ console.log('context iniciado')
       const loggedToken = await AsyncStorage.getItem('userToken');
       const loggedUser = await AsyncStorage.getItem('user');
 
-      console.log(`En contexto: el token es ${loggedToken}, el user es ${loggedUser}`);
+      const userIsPremium = JSON.parse(loggedUser).payments.length > 0;
+      setIsPremium(userIsPremium);
+
     } catch (error) {
       throw new Error(`Error logging data in context: ${error}`);
     }
@@ -67,12 +74,13 @@ console.log('context iniciado')
     setIsAuthenticated(false);
     await AsyncStorage.removeItem('userToken');
     await AsyncStorage.removeItem('user');
+    setIsPremium(false)
     console.log("Token and user removed");
   };
 
+
   const updateHobbies = async (userWithNewHobbies) => {
     try {
-      userWithNewHobbies.hobbies = userWithNewHobbies.hobbies.map(hobby => hobby.hobbieId);
       setUser(userWithNewHobbies);
       await AsyncStorage.setItem('user', JSON.stringify(userWithNewHobbies));
       const confirmedUser = await AsyncStorage.getItem('user');
@@ -83,7 +91,7 @@ console.log('context iniciado')
   };
 
   return (
-    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies, isLoading, setIsLoading }}>
+    <Context.Provider value={{ isAuthenticated, token, user, login, logout, updateHobbies, isLoading, isPremium, setIsPremium, setIsLoading }}>
       {children}
     </Context.Provider>
   );
