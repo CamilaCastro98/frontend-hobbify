@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
     minWidth:100
   },
   eMessage: {
-    backgroundColor: "#A6A2D6",
+    backgroundColor:"rgba(122, 122, 122, 0.5)",
     maxWidth: 300,
     borderRadius: 5,
     marginTop: 5,
@@ -454,7 +454,9 @@ const styles = StyleSheet.create({
     paddingLeft: 3,
     paddingRight: 3,
     marginLeft: 5,
-    minWidth:100
+    minWidth:100,
+    borderWidth:0.5,
+    borderColor:"white"
   },
   eMsg: {
     color: "white",
@@ -473,7 +475,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   oMessage: {
-    backgroundColor: "#635BD6",
+    backgroundColor: "rgba(122, 122, 122, 0.2)",
     maxWidth: 300,
     borderRadius: 5,
     marginTop: 5,
@@ -481,6 +483,8 @@ const styles = StyleSheet.create({
     paddingLeft: 3,
     paddingRight: 3,
     marginRight: 5,
+    borderWidth:0.5,
+    borderColor:"white"
   },
   oMsgContainer: {
     alignSelf: "stretch",

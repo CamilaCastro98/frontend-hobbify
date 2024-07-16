@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-
+const mainColor1 = "#151515"
 const ChatInput = ({sendMessage, messageFromFront,setMessageFromFront}) => {
   const [height, setHeight] = useState(40);
   const sendHandler=() =>{
@@ -52,7 +52,7 @@ const ChatInput = ({sendMessage, messageFromFront,setMessageFromFront}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#7E78D2",
+    backgroundColor:mainColor1,
   },
   mainContainer: {
     flex: 1,

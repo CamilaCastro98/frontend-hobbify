@@ -19,7 +19,7 @@ import {
   API_URLTEST
 } from "@env";
 const socket = io("https://backend-hobbify.onrender.com/");
-
+const mainColor1 = "#151515"
 const Chat = ({ navigation }) => {
   const [touched, setTouched] = useState(0);
   const [disableTouch, setDisableTouch] = useState(false);
@@ -79,7 +79,7 @@ const Chat = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Pressable style={{ flex: 1 }} onTouchEnd={handleTouching}>
-        <StatusBar backgroundColor="#7E78D2" />
+        <StatusBar backgroundColor={mainColor1} />
         <ChatHeader navigation={navigation} />
         <KeyboardAvoidingView
           style={{ flex: 1 }}
@@ -105,7 +105,7 @@ const Chat = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1D1E2C",
+    backgroundColor: mainColor1,
     flex: 1,
   },
 });

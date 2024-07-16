@@ -1,17 +1,33 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { iconColor, mainColor, textColor } from "../../screens/MainFeed";
-const Header = ({ user, navigation }) => {
-  const saludo = "holaequisde";
+
+const premiumBadge = {
+  vipOn: require("../../../assets/vip-on.png"),
+  vipOff: require("../../../assets/vip-off.png")
+}
+const isPremium1 = true;
+const Header = ({ user, navigation, isPremium }) => {
+  const handlePremium = () => {
+
+  }
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
-        <View style={{ width: 30 }}></View>
+        <View >
+          <TouchableOpacity onPress={()=> isPremium ?  "" : navigation.push("SubscriptionScreen") }>
+
+        <Image
+              style={ isPremium ? styles.iconPremium : styles.icon }
+              source={ isPremium ? premiumBadge.vipOn : premiumBadge.vipOff }
+              />
+              </TouchableOpacity>
+        </View>
         <View style={styles.userProfile}>
           <TouchableOpacity
-            onPress={() => navigation.push("Profile", { saludo: saludo })}
+            onPress={() => navigation.push("Profile", { user:user })}
           >
-            <Image style={styles.profile} source={user.img} />
+            <Image style={styles.profile} source={require("../../../assets/no-pic10.png")} />
           </TouchableOpacity>
         </View>
         <View>
@@ -22,7 +38,7 @@ const Header = ({ user, navigation }) => {
             <Image
               style={styles.icon}
               source={require("../../../assets/notification.png")}
-            ></Image>
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -79,6 +95,12 @@ const styles = StyleSheet.create({
   unreadBadgeText: {
     color: "white",
     fontWeight: "600",
+  },
+  iconPremium: {
+    tintColor: "gold",
+    width: 30,
+    height: 30,
+    resizeMode: "contain",
   },
 });
 

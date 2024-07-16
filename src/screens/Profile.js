@@ -16,9 +16,13 @@ import { iconColor, mainColor } from "./MainFeed";
 
 const Profile = () => {
   const route = useRoute();
-  const { saludo } = route.params;
+  const { user } = route.params;
+  useEffect(() => {
+    console.log(user)
+  }, [])
+  
   const categories = ["asd", "asd", "asd"];
-  const user = {
+  const user1 = {
     name: "Juan Pérez",
     img: require("../../assets/no-pic10.png"),
     hobbies: ["Leer", "Correr", "Viajar"],
@@ -28,8 +32,8 @@ const Profile = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={mainColor} />
       <View style={styles.imgContainer}>
-        <Image style={styles.img} source={user.img} />
-        <Text style={styles.name}> {user.name} </Text>
+        <Image style={styles.img} source={user1.img} />
+        <Text style={styles.name}> {user.username} </Text>
       </View>
       <Options />
       <View style={styles.detailsContainer}>
@@ -43,7 +47,7 @@ const Profile = () => {
         <View style={styles.hobbiesContainer}>
           {user.hobbies.map((hobby, index) => (
             <View key={index} style={styles.hobbyCard}>
-              <Text style={styles.hobbiesInCard}>{hobby}</Text>
+              <Text style={styles.hobbiesInCard}>{hobby.name}</Text>
             </View>
           ))}
         </View>
@@ -53,7 +57,7 @@ const Profile = () => {
             <Text style={styles.intereses}>Bio</Text>
             <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
           </View>
-          <Text style={styles.bio}> " {user.bio} " </Text>
+          <Text style={styles.bio}> " {user1.bio} " </Text>
         </View>
       </View>
     </SafeAreaView>
@@ -120,6 +124,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     marginTop: 10,
     marginBottom: 10,
+    justifyContent:"center"
   },
   bio: {
     backgroundColor: "rgba(200, 194, 194, 0.06) ",
