@@ -85,7 +85,7 @@ export const sendToAdmin = async(values) => {
 export const getPlans = async() => {
 
     try {
-        const subscriptions = await axios.get(`${API_URL}/stripe`, {
+        const subscriptions = await axios.get(`http://192.168.100.248:3000/stripe`, {
             headers: {
                 'Authorization': `Bearer ${STRIPE_API_KEY}`
             }
@@ -99,7 +99,7 @@ export const getPlans = async() => {
 
 export const postPurchase = async(planId) => {
     try {
-        const response = await axios.post(`${API_URL}/stripe`, 
+        const response = await axios.post(`http://192.168.100.248:3000/stripe`, 
             { priceId: planId },
             {
                 headers: {
@@ -144,10 +144,14 @@ export const updateUser = async(userUpdated,token) => {
     }    
 }
 
-export const getUserById = async(user) => {
+export const getUserById = async(user,token) => {
     const {userId,...userInfo} = user
     try {
-        const response = await axios.get(`https://backend-hobbify.onrender.com/users/${userId}`)
+        const response = await axios.get(`http://192.168.100.248:3000/users/${userId}`,{
+            headers: {
+              'Authorization': `Bearer ${token}` 
+            }
+          })
         console.log(`La response retornada es ${JSON.stringify(response.data)}`)
         return response.data
     }

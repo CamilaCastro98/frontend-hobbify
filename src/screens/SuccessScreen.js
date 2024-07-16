@@ -9,7 +9,7 @@ import { getUserById } from "../helpers/petitions";
 
 const SuccessScreen = ({navigation}) => {
 
-    const {updateHobbies,user,setIsPremium} = useContext(Context)
+    const {updateHobbies,user,token,setIsPremium} = useContext(Context)
 
     const [isUserPremium, setIsUserPremium] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ const SuccessScreen = ({navigation}) => {
     useEffect(() => {
         const checkPremiumStatus = async () => {
             try {
-              const response = await getUserById(user)
+              const response = await getUserById(user,token)
               if (response.payments.length > 0) {
                 console.log('entro al if para update user')
                 await updateHobbies(response)

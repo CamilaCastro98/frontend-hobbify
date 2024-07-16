@@ -138,7 +138,7 @@ const HobbySelector = ({ navigation }) => {
 
     const handleSelectHobbies = async () => {
         setIsLoading(true);
-        const mappedSelectionData = selectionData.map(id => ({ hobbieId: id }));
+        const mappedSelectionData = originalHobbies.filter(hobby => (selectionData.includes(hobby.hobbieId)));
     
         try {
             if (mappedSelectionData.length > 0) {
