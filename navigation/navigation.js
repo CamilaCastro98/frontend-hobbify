@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useContext, useEffect, useState } from "react"
 import { Context } from "../src/contexts/Context";
-import MainFeed from "../src/screens/MainFeed";
+import MainFeed, { mainColor } from "../src/screens/MainFeed";
 import Messages from "../src/screens/Messages";
 import Chat from "../src/screens/Chat";
 import HobbySelector from "../src/screens/HobbySelector";
@@ -25,7 +25,7 @@ import { NavigationContainer } from "@react-navigation/native";
 const Stack = createNativeStackNavigator();
 const screenOptions = {
   headerShown: false,
-  navigationBarHidden:true
+  navigationBarColor:mainColor
 };
 
 const linking = {

@@ -10,6 +10,7 @@ import {
   StatusBar,
   ScrollView,
 } from "react-native";
+import { mainColor } from "./MainFeed";
 
 const EProfile = () => {
   const route = useRoute();
@@ -17,10 +18,10 @@ const EProfile = () => {
   const categories = ["asd", "asd", "asd"];
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#1D1E2C" />
+      <StatusBar backgroundColor={mainColor} />
       <View style={styles.imgContainer}>
-        <Image style={styles.img} source={user.img} />
-        <Text style={styles.name}> {user.name} </Text>
+        <Image style={styles.img} source={require("../../assets/no-pic15.png")} />
+        <Text style={styles.name}> {user.username} </Text>
       </View>
       <View style={styles.detailsContainer}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -33,7 +34,7 @@ const EProfile = () => {
         <View style={styles.hobbiesContainer}>
           {user.hobbies.map((hobby, index) => (
             <View key={index} style={styles.hobbyCard}>
-              <Text style={styles.hobbiesInCard}>{hobby}</Text>
+              <Text style={styles.hobbiesInCard}>{hobby.name}</Text>
             </View>
           ))}
         </View>
@@ -43,12 +44,11 @@ const EProfile = () => {
             <Text style={styles.intereses}>Bio</Text>
             <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
           </View>
-          <Text style={styles.bio}> " {user.bio} " </Text>
+          <Text style={styles.bio}> " {"asdasdasdasdasdasdasdasdasd"} " </Text>
         </View>
         <TouchableOpacity style={{ alignItems: "center" }}>
           <Image
             style={{
-              backgroundColor: "#7E78D2",
               fontSize: 40,
               borderRadius: 20,
               color: "white",
@@ -68,10 +68,11 @@ const EProfile = () => {
     </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1D1E2C",
+    backgroundColor: mainColor,
   },
   imgContainer: {
     alignSelf: "stretch",
@@ -79,12 +80,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
   },
+  options: {
+    width: 50,
+    height: 50,
+    position: "absolute",
+    left: 320,
+    bottom: 160,
+    tintColor: mainColor,
+  },
   img: {
     height: 150,
     width: 150,
     borderRadius: 10,
     borderWidth: 3,
-    borderColor: "#7E78D2",
+    borderColor: "white",
   },
   name: {
     color: "white",
@@ -110,27 +119,30 @@ const styles = StyleSheet.create({
   hobbyCard: {
     paddingRight: 5,
     paddingLeft: 5,
-    backgroundColor: "#7E78D2",
     margin: 1,
     marginRight: 5,
-    borderRadius: 4,
+    borderRadius: 99,
+    borderWidth:0.1,
+    borderColor:"white"
   },
   hobbiesContainer: {
     flexDirection: "row",
     paddingLeft: 5,
     marginTop: 10,
     marginBottom: 10,
+    justifyContent:"center"
   },
   bio: {
-    backgroundColor: "#A4A0D6",
+    backgroundColor: "rgba(200, 194, 194, 0.06) ",
     padding: 10,
     margin: 5,
     marginLeft: 20,
     marginRight: 20,
     borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "#7E78D2",
+    borderWidth: 0.5,
+    borderColor: "white",
     fontSize: 15,
+    color:"white"
   },
 });
 

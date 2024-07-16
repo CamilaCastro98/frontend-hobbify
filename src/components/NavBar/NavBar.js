@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
-import { iconColor, mainColor, textColor } from "../../screens/MainFeed";
 
 const NavBar = ({ navigation }) => {
   return (
@@ -32,7 +31,7 @@ const NavBar = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     height: 70,
-    backgroundColor: mainColor,
+    backgroundColor: "#151515",
     // borderTopLeftRadius: 10,
     // borderTopRightRadius: 10,
   },

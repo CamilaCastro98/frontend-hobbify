@@ -8,15 +8,17 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header/Header";
 import NavBar from "../components/NavBar/NavBar";
+import { Context } from "../contexts/Context";
+import { API_URL, API_KEY_TEST } from '@env'
+import axios from "axios";
 
 
 
 
-
-const user = {
+const user1 = {
   img: require("../../assets/user-test.jpeg"),
   name: "pedrito1",
 };
@@ -33,7 +35,7 @@ const hh = {
   a10: "10",
 };
 const h1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-const users = [
+const users1 = [
   {
     name: "Juan Pérez",
     img: require("../../assets/no-pic10.png"),
@@ -124,21 +126,75 @@ const users = [
     hobbies: ["Fútbol", "Ciclismo", "Viajar"],
     bio: "Aficionado a la lectura, apasionado por correr y amante de los viajes. Siempre en busca de la próxima aventura y un buen libro.",
   },
-];
+]; 
 export const fondo = "#151515"
 export const textColor = "white"
 export const mainColor = "#151515"
 export const iconColor = "white"
 const detailColor = "#151515"
+
+
+
+
+
+
+
+
+
 const MainFeed = ({ navigation }) => {
+  const { user, isPremium,token } = useContext(Context);
+  const [users, setUsers] = useState(false); 
+  useEffect(() => {
+    const getFilteredUsers = async () => {
+      try {
+        console.log(user);
+          const response = await axios.get(`${API_URL}/users/byhobbies/${user.userId}`,{
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          })
+          return response.data.data
+    }
+    catch(error) {
+        console.log(error);
+          throw new Error(`error trying to get all hobbies: ${error}`)
+        }
+     } 
+      const handleGetUsers = async () => {
+        try {
+          const response = await getFilteredUsers();
+          setUsers(response);
+          console.log(response)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      handleGetUsers();
+
+    }, [])
+    
+    
+    
+    // const newUsers = response.data;
+    // console.log(newUsers);
+    // setUsers(newUsers);
+    // console.log(API_URL)
+
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={mainColor} />
-      <Header user={user} navigation={navigation} mainColor={mainColor} />
+      <Header user={user} navigation={navigation} mainColor={mainColor} isPremium={isPremium} />
       <View style={styles.mainContainer}>
         <View style={{}}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            {users.map((userExamplle, index) => (
+            {
+            users.length>0 ?
+            
+            
+            users?.map((userExamplle, index) => (
               <View key={index} style={styles.card}>
                 <View style={styles.cardMain}>
                   <View style={{ margin: 5 }}>
@@ -148,7 +204,7 @@ const MainFeed = ({ navigation }) => {
                       }
                     >
                       <Image
-                        source={userExamplle.img}
+                        source={require("../../assets/no-pic15.png")}
                         style={styles.profileImg}
                       />
                     </TouchableOpacity>
@@ -156,13 +212,13 @@ const MainFeed = ({ navigation }) => {
                   <View style={styles.cardText}>
                     <TouchableOpacity>
                       <Text style={styles.nameInCard}>
-                        {userExamplle.name}{" "}
+                        {userExamplle.username}{" "}
                       </Text>
                     </TouchableOpacity>
                     <View style={styles.hobbiesContainer}>
                       {userExamplle.hobbies.map((hobby, index) => (
                         <TouchableOpacity key={index} style={styles.hobbyCard}>
-                          <Text style={styles.hobbiesInCard}>{hobby}</Text>
+                          <Text style={styles.hobbiesInCard}>{hobby.name}</Text>
                         </TouchableOpacity>
                       ))}
                     </View>
@@ -175,7 +231,10 @@ const MainFeed = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
               </View>
-            ))}
+            ))
+          : <></>
+          
+          }
           </ScrollView>
         </View>
       </View>

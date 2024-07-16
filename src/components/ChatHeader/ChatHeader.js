@@ -7,7 +7,7 @@ import {
   Image,
 } from "react-native";
 import React from "react";
-
+const mainColor1 = "#151515"
 const ChatHeader = ({ navigation }) => {
   return (
     <View style={styles.container}>
@@ -33,10 +33,8 @@ const ChatHeader = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#7E78D2",
+    backgroundColor: mainColor1,
     height: 70,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
   },
   mainContainer: {
     flex: 1,
