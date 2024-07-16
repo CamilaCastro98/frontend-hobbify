@@ -59,7 +59,7 @@ const tempHobbies = [
 ]
 
 const HobbySelector = ({ navigation }) => {
-    const { user, updateHobbies } = useContext(Context);
+    const { user, updateHobbies,token } = useContext(Context);
 
     const [hobbies, setHobbies] = useState([]);
     const [originalHobbies, setOriginalHobbies] = useState([]);
@@ -144,7 +144,7 @@ const HobbySelector = ({ navigation }) => {
             if (mappedSelectionData.length > 0) {
                 const userNewHobbies = { ...user, hobbies: mappedSelectionData };
                 console.log('el usuario con hobbies actualizados es ', userNewHobbies);
-                const update = await updateUser(userNewHobbies);
+                const update = await updateUser(userNewHobbies,token);
                 if (update === 200) {
                     await updateHobbies(userNewHobbies);
                     await AsyncStorage.removeItem('tempHobbies');
