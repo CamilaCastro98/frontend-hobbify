@@ -50,7 +50,6 @@ console.log('context iniciado')
 
   const login = async (userToken, newUser) => {
     console.log("Entró a login de context");
-    newUser.hobbies = newUser.hobbies.map(hobby => hobby.hobbieId);
     setToken(userToken);
     setUser(newUser);
     setIsAuthenticated(true);
@@ -60,6 +59,7 @@ console.log('context iniciado')
 
       const loggedToken = await AsyncStorage.getItem('userToken');
       const loggedUser = await AsyncStorage.getItem('user');
+      console.log(`el usuario logueado es ${loggedUser}`)
 
       const userIsPremium = JSON.parse(loggedUser).payments.length > 0;
       setIsPremium(userIsPremium);

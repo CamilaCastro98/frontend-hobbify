@@ -59,7 +59,7 @@ const tempHobbies = [
 ]
 
 const HobbySelector = ({ navigation }) => {
-    const { user, updateHobbies,token } = useContext(Context);
+    const { user, updateHobbies,token, isPremium } = useContext(Context);
 
     const [hobbies, setHobbies] = useState([]);
     const [originalHobbies, setOriginalHobbies] = useState([]);
@@ -81,7 +81,7 @@ const HobbySelector = ({ navigation }) => {
                     await AsyncStorage.setItem('tempHobbies', JSON.stringify([]));
                 }
                 const selection = await AsyncStorage.getItem('tempHobbies');
-                setIsLimited(JSON.parse(selection).length >= 3);
+                setIsLimited(JSON.parse(selection).length >= 3 && !isPremium);
                 console.log(`seleccion inicial: ${JSON.stringify(hobbiesArray)}`);
             } catch (error) {
                 console.error('Error saving initial hobbies:', error);
@@ -95,7 +95,7 @@ const HobbySelector = ({ navigation }) => {
             let newSelection;
             if (selectionData.includes(id)) {
                 newSelection = selectionData.filter(hobby => hobby !== id);
-            } else if (selectionData.length < 3) {
+            } else if (selectionData.length < 3 || isPremium) {
                 newSelection = [...selectionData, id];
             } else {
                 newSelection = selectionData;
@@ -105,7 +105,7 @@ const HobbySelector = ({ navigation }) => {
 
             setSelectionData(newSelection);
             await AsyncStorage.setItem('tempHobbies', JSON.stringify(newSelection));
-            setIsLimited(newSelection.length >= 3);
+            setIsLimited(newSelection.length >= 3 && !isPremium);
             setCanProceed(newSelection.length > 0);
             console.log(newSelection);
         } catch (error) {
@@ -180,7 +180,7 @@ const HobbySelector = ({ navigation }) => {
                     onChangeText={handleInputChange}
                     placeholder="Search hobby here..."
                 />
-                {isLimited && ( <View style={styles.limitMessageContainer}>
+                {isLimited && !isPremium && ( <View style={styles.limitMessageContainer}>
                                      <Text style={styles.text}>
                                      You've selected the maximum number of hobbies for the free plan.
                                     </Text>

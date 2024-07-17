@@ -40,21 +40,29 @@ const user = {
     }
 }
 
-export const loginUser = async(values,login,navigation) => {
+export const loginUser = async(values,login) => {
+    console.log('HOLA HOLA')
   try {
-        const response = await axios.post(`https://backend-hobbify.onrender.com/authown/login`,values);
-        // const response = user 
+    let response
+        if (values.password) {
+
+            response = await axios.post(`https://backend-hobbify.onrender.com/authown/login`,values);
+        } else {
+            console.log('entroooooo')
+            response = await axios.post(`https://backend-hobbify.onrender.com/auth/login`,values);
+        }
+
         if (response.status === 200 || response.status === 201) {
             const user = response.data.data.userData
             const token = response.data.data.token
-            console.log(`user logueado es ${JSON.stringify(user)}, sus hobbies son  y el token es ${token}`)
-        if (user.hobbies.length > 0) {
-                login(token,user)
-                navigation.push("MainFeed");
+            const {isBanned} = user
+            if (isBanned === true) {
+                return("You are banned and can not login")
             } else {
+                 console.log(`user logueado es ${JSON.stringify(user)}, sus hobbies son  y el token es ${token}`)
                 login(token,user)
-                navigation.push("HobbySelector");
             }
+           
          }
     }
     catch(error) {
