@@ -148,7 +148,7 @@ const MainFeed = ({ navigation }) => {
     const getFilteredUsers = async () => {
       try {
         console.log(user);
-          const response = await axios.get(`${API_URL}/users/byhobbies/${user.userId}`,{
+          const response = await axios.get(`https://backend-hobbify.onrender.com/users/byhobbies/${user.userId}`,{
             headers: {
               Authorization: `Bearer ${token}`,
             }

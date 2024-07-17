@@ -1,11 +1,30 @@
-import { Button, TextInput, View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { Button, TextInput, Platform, View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { Formik } from 'formik';
 import { AntDesign } from '@expo/vector-icons';
 import validationLogin from "../helpers/validationLogin";
-import React, { useState,useContext } from "react";
+import React, { useState,useContext, useEffect } from "react";
 import { loginUser, loginUserWithProvider } from "../helpers/petitions";
 import { Context } from "../contexts/Context";
 import loginWithAuth0 from "../helpers/authLogin";
+import logoutFromAuth0 from "../helpers/authLogout";
+import * as WebBrowser from 'expo-web-browser';
+import { useAuthRequest, exchangeCodeAsync, revokeAsync, ResponseType } from 'expo-auth-session';
+import getUserProfile from "../helpers/auth0GetInfo";
+
+WebBrowser.maybeCompleteAuthSession();
+const useProxy = Platform.select({ web: false, default: true });
+
+const clientId = 'tp0j0p0KQ5LAOC5lS9UFlITbs9O1pmfT';
+const clientSecret = 'ekdHxeQcpEqa3bDS--51lXFjYVkvp1bpZ7GXOfY3EsRwzXps-JI6PrJR-1V2QOdu';
+const domain = 'https://dev-4hnohqxrkmmrqi8u.us.auth0.com';
+const redirectUri = 'exp://192.168.100.248:8081';
+
+const discoveryDocument = {
+  authorizationEndpoint: `${domain}/authorize`,
+  tokenEndpoint: `${domain}/oauth/token`,
+  revocationEndpoint: `${domain}/oauth/revoke`,
+};
+
 
 const Login = ({ navigation }) => {
 
@@ -13,11 +32,71 @@ const Login = ({ navigation }) => {
 
   const [errorSubmiting, setErrorSubmiting] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [authTokens, setAuthTokens] = React.useState(null);
+
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      clientId,
+      responseType: ResponseType.Code,
+      redirectUri,
+      scopes: ['openid', 'profile', 'email'],
+      usePKCE: true,
+    },
+    discoveryDocument
+  );
+
+  useEffect(() => {
+  console.log('entra al use effect de token')
+    const exchangeFn = async (exchangeTokenReq) => {
+      try {
+        const exchangeTokenResponse = await exchangeCodeAsync(
+          {
+            clientId,
+            code: exchangeTokenReq.code,
+            redirectUri,
+            extraParams: {
+              code_verifier: exchangeTokenReq.codeVerifier,
+              client_secret: clientSecret,
+            },
+          },
+          discoveryDocument
+        );
+        console.log('Exchange token response:', exchangeTokenResponse.idToken)
+      setAuthTokens(exchangeTokenResponse.idToken)
+        const userProfile = await getUserProfile(exchangeTokenResponse.idToken)
+        console.log(`el user por loguearse con auth0 es ${JSON.stringify(userProfile)}`)
+          await loginUser(userProfile,login)
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (response) {
+      if (response.error) {
+        Alert.alert(
+          'Authentication error',
+          response.params.error_description || 'Something went wrong'
+        );
+        return;
+      }
+      if (response.type === 'success') {
+        exchangeFn({
+          clientId,
+          code: response.params.code,
+          redirectUri,
+          codeVerifier: request.codeVerifier,
+        });
+      }
+    }
+  }, [discoveryDocument, request, response]);
 
   const handleLogin = async (values) => {
     setIsLoading(true);
     try {
-      await loginUser(values, login, navigation);
+      const response = await loginUser(values, login);
+      if (response === "You are banned and can not login") {
+        setErrorSubmiting(response)
+      }
     } catch (error) {
       console.error("Error trying to login:", error);
       setErrorSubmiting("The data you entered is incorrect");
@@ -87,16 +166,15 @@ const Login = ({ navigation }) => {
                 <View style={styles.rrssContainer}>
                   <Text style={styles.text}>Or sign up with</Text>
                   <View style={styles.rrss}>
-                    <TouchableOpacity onPress={() => handleAuth0('google')}>
+                    <TouchableOpacity style={styles.buttonAuth0} onPress={() => promptAsync({ useProxy })}>
                       <AntDesign name="google" size={24} color="white" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleAuth0('github')}>
-                      <AntDesign name="github" size={24} color="white" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleAuth0('twitter')}>
-                      <AntDesign name="twitter" size={24} color="white" />
-                    </TouchableOpacity>
+
+                    
                   </View>
+                  <TouchableOpacity onPress={logoutFromAuth0}>
+                      <Text>Log out</Text>
+                    </TouchableOpacity>
                 </View>
               </View>
             </ScrollView>
@@ -130,6 +208,16 @@ const styles = StyleSheet.create({
     },
     formSection: {
         marginTop:30
+    },
+    buttonAuth0: {
+      flexDirection: 'row',
+      gap: 10,
+      borderWidth: 2,
+      borderColor: 'white',
+      borderRadius: '50%',
+      padding: 10,
+      width: '20%',
+      justifyContent: 'center'
     },
     input: {
         borderWidth: 1,
@@ -188,7 +276,7 @@ const styles = StyleSheet.create({
         flex:1,
         alignItems: 'center',
         gap: 10,
-        marginVertical: 45
+        marginVertical: 20
     },
     rrss: {
         flex: 1,
