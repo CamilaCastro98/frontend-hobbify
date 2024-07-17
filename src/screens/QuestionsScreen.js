@@ -1,30 +1,37 @@
 import { TextInput, View, Text, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator } from "react-native";
-import { useState } from "react";
-import validationCreateHobby from "../helpers/validationCreateHobby";
+import { useState,useContext } from "react";
+import { Context } from "../contexts/Context";
 import { Formik } from 'formik';
-import { sendToAdmin } from "../helpers/petitions";
+import { sendToAdmin, updateUser } from "../helpers/petitions";
 import { Ionicons } from '@expo/vector-icons';
 
-const CreateHobby = ({ navigation }) => {
+const QuestionScreen = ({ navigation }) => {
 
     const [errorSubmiting, setErrorSubmiting] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const { token,updateHobbies,user} = useContext(Context);
 
-    const handleSendAdmin = async (values) => {
+    const handleUpdate = async (values) => {
+        console.log(`values son: ${JSON.stringify(values)}`)
+        const {mate,intensity} = values
+        console.log(`${mate} y ${intensity}`) 
         setIsLoading(true);
+        const newUser = {
+            ...user,
+            idealMate: mate,
+            hobbyIntensity: intensity,
+        };
+        console.log(`EL NEW USER QUE SE VA A ENVIAR ES ${JSON.stringify(newUser)}`)
         try {
-            const response = await sendToAdmin(values);
+            const response = await updateUser(newUser,token);
             console.log('response.data es', response);
-            if (response.status === 200 || response.status === 201) {
-                navigation.push("SubmitedHobby");
+            if (response === 200 || response === 201) {
+                console.log(`el nuevo user es: ${JSON.stringify(newUser)}`)
+                updateHobbies(newUser)
+                navigation.push("MainFeed");
             }
         } catch (error) {
-
-            if (error.message.includes(400)) {
-                setErrorSubmiting("This hobby already exists");
-            } else {
                 setErrorSubmiting("Your data couldn't be sent");
-            }
         } finally {
             setIsLoading(false);
         }
@@ -34,16 +41,14 @@ const CreateHobby = ({ navigation }) => {
         <View style={styles.container}>
             <View style={styles.header}>
             <View style={styles.iconTitle}>
-                <Ionicons style={styles.icon} name="chevron-back" size={32} color="#7E78D2" onPress={()=>navigation.goBack()}/>
-                <Text style={styles.title}>Create Your Hobby!</Text>
+                <Text style={styles.title}>Tell us About Yourself</Text>
             </View>
-                <Text style={styles.subtitle}>Enter the name of your hobby, a descriptive emoji and a description.</Text>
+                <Text style={styles.subtitle}>Answer some questions so everyone can know you better. This step is not mandatory.</Text>
             </View>
             <ScrollView>
                 <Formik
-                    initialValues={{ name: '', emoji: ''}}
-                    validate={validationCreateHobby}
-                    onSubmit={handleSendAdmin}
+                    initialValues={{ mate: '', intensity: ''}}
+                    onSubmit={handleUpdate}
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                         <>
@@ -51,37 +56,38 @@ const CreateHobby = ({ navigation }) => {
                                 <View>
                                     {errorSubmiting && <View style={styles.errorView}><Text style={styles.errorText}>{errorSubmiting}</Text></View>}
                                     <View style={styles.formSection}>
-                                        <Text style={styles.text}>Hobby Name</Text>
+                                        <Text style={styles.text}>What would your ideal mate be like on hobbify?</Text>
                                         <TextInput
                                             style={styles.input}
-                                            onChangeText={handleChange('name')}
-                                            onBlur={handleBlur('name')}
-                                            placeholder="Programming"
-                                            value={values.name}
+                                            onChangeText={handleChange('mate')}
+                                            onBlur={handleBlur('mate')}
+                                            placeholder="I would like to find someone nice and..."
+                                            value={values.mate}
                                             onFocus={() => setErrorSubmiting("")}
                                             placeholderTextColor="gray"
+                                            multiline={true} 
+                                            numberOfLines={4}
                                         />
-                                        {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>}
                                     </View>
                                     <View style={styles.formSection}>
-                                        <Text style={styles.text}>Emoji</Text>
+                                        <Text style={styles.text}>How committed are you to your hobbies?</Text>
                                         <TextInput
                                             style={styles.input}
-                                            onChangeText={handleChange('emoji')}
-                                            onBlur={handleBlur('emoji')}
-                                            value={values.emoji}
-                                            placeholder="🖥️"
+                                            onChangeText={handleChange('intensity')}
+                                            onBlur={handleBlur('intensity')}
+                                            value={values.intensity}
+                                            placeholder="I practice my hobbies all weekends and..."
                                             onFocus={() => setErrorSubmiting("")}
                                             placeholderTextColor="gray"
+                                            multiline={true} 
                                         />
-                                        {touched.emoji && errors.emoji && <Text style={styles.error}>{errors.emoji}</Text>}
                                     </View>
 
                                 </View>
                             </ScrollView>
                             <View style={styles.buttonContainer}>
                                 <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                                   { isLoading ? <ActivityIndicator size="small" color="white" /> : <Text style={styles.textButton}>Submit Hobby</Text>}
+                                   { isLoading ? <ActivityIndicator size="small" color="white" /> : <Text style={styles.textButton}>Next</Text>}
                                 </TouchableOpacity>
                             </View>
                         </>
@@ -97,7 +103,7 @@ const styles = StyleSheet.create({
     iconTitle: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 20
+        gap: 7
     },
     container: {
         backgroundColor: '#151515',
@@ -181,4 +187,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default CreateHobby
+export default QuestionScreen

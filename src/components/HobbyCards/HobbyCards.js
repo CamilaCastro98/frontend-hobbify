@@ -28,7 +28,7 @@ const HobbyCards = ({emoji,name,hobbieId,onPress,disable}) => {
                 }
 
             } catch (error) {
-                console.error('Error setting selections:', error)
+                console.log('Error setting selections:', error)
             }
         };
 

@@ -22,6 +22,7 @@ import Loading from "../src/screens/Loading";
 import TempLogOut from "../src/screens/TempLogOut";
 import ChatPrueba from "../src/screens/ChatPrueba";
 import { NavigationContainer } from "@react-navigation/native";
+import QuestionScreen from "../src/screens/QuestionsScreen";
 const Stack = createNativeStackNavigator();
 const screenOptions = {
   headerShown: false,
@@ -43,6 +44,7 @@ const SignedInStack = ({initialRoute}) => (
     <DeepLinkingHandler />
     <Stack.Navigator initialRouteName={initialRoute} screenOptions={screenOptions}>
       <Stack.Screen name="MainFeed" component={MainFeed} />
+      <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
       <Stack.Screen name="HobbySelector" component={HobbySelector} />
       <Stack.Screen name="Messages" component={Messages} />
       <Stack.Screen name="Chat" component={Chat} />

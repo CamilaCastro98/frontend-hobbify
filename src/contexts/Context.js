@@ -20,7 +20,7 @@ console.log('context iniciado')
           setToken(storedToken);
           setIsAuthenticated(true);
           setIsLoading(false);
-          console.log("Token loaded in context");
+          console.log("Token loaded in context: ",token);
         }
 
       } catch (error) {
@@ -35,7 +35,7 @@ console.log('context iniciado')
           setUser(JSON.parse(storedUser));
           const userIsPremium = JSON.parse(storedUser).payments && JSON.parse(storedUser).payments.length > 0
           setIsPremium(userIsPremium)
-          console.log("User loaded in context");
+          console.log("User loaded in context: ",JSON.stringify(storedUser));
         }
       } catch (error) {
         console.error("Error loading user:", error);

@@ -116,9 +116,11 @@ const HobbySelector = ({ navigation }) => {
     useEffect(() => {
         const handleGetHobbies = async () => {
             try {
-                const response = await getAllHobbies();
-                setHobbies(response);
-                setOriginalHobbies(response);
+                const allHobbies = await getAllHobbies();
+                const acceptedHobbies = allHobbies.filter(hobby => hobby.state === "approved")
+                // const acceptedHobbies = allHobbies
+                setHobbies(acceptedHobbies);
+                setOriginalHobbies(acceptedHobbies);
             } catch (error) {
                 console.error('Error handling hobbies:', error);
             }
@@ -148,7 +150,7 @@ const HobbySelector = ({ navigation }) => {
                 if (update === 200) {
                     await updateHobbies(userNewHobbies);
                     await AsyncStorage.removeItem('tempHobbies');
-                    navigation.push("MainFeed");
+                    navigation.push("QuestionScreen");
                 }
             }
         } catch (error) {

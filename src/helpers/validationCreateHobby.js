@@ -18,10 +18,6 @@ const validationCreateHobby = ({name,emoji,description}) => {
           errors.emoji = "Please enter only emojis"
       }
 
-    if (!description) {
-      errors.description = "Please enter a description for your hobby"
-    }
-
     return errors;
 }
 
