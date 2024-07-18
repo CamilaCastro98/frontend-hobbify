@@ -37,7 +37,7 @@ const CreateHobby = ({ navigation }) => {
                 <Ionicons style={styles.icon} name="chevron-back" size={32} color="#7E78D2" onPress={()=>navigation.goBack()}/>
                 <Text style={styles.title}>Create Your Hobby!</Text>
             </View>
-                <Text style={styles.subtitle}>Enter the name of your hobby, a descriptive emoji and a description.</Text>
+                <Text style={styles.subtitle}>Enter the name of your hobby and a descriptive emoji.</Text>
             </View>
             <ScrollView>
                 <Formik

@@ -1,5 +1,5 @@
-import { TextInput, View, Text, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator } from "react-native";
-import { useState,useContext } from "react";
+import { TextInput, View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Platform } from "react-native";
+import { useState, useContext } from "react";
 import { Context } from "../contexts/Context";
 import { Formik } from 'formik';
 import { sendToAdmin, updateUser } from "../helpers/petitions";
@@ -9,21 +9,22 @@ const QuestionScreen = ({ navigation }) => {
 
     const [errorSubmiting, setErrorSubmiting] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const { token,updateHobbies,user} = useContext(Context);
+    const { token, updateHobbies, user } = useContext(Context);
 
     const handleUpdate = async (values) => {
         console.log(`values son: ${JSON.stringify(values)}`)
-        const {mate,intensity} = values
-        console.log(`${mate} y ${intensity}`) 
+        const { mate, intensity, bio } = values;
+        console.log(`${mate}, ${intensity} y ${bio}`) 
         setIsLoading(true);
         const newUser = {
             ...user,
             idealMate: mate,
             hobbyIntensity: intensity,
+            biography: bio,
         };
         console.log(`EL NEW USER QUE SE VA A ENVIAR ES ${JSON.stringify(newUser)}`)
         try {
-            const response = await updateUser(newUser,token);
+            const response = await updateUser(newUser, token);
             console.log('response.data es', response);
             if (response === 200 || response === 201) {
                 console.log(`el nuevo user es: ${JSON.stringify(newUser)}`)
@@ -31,7 +32,7 @@ const QuestionScreen = ({ navigation }) => {
                 navigation.push("MainFeed");
             }
         } catch (error) {
-                setErrorSubmiting("Your data couldn't be sent");
+            setErrorSubmiting("Your data couldn't be sent");
         } finally {
             setIsLoading(false);
         }
@@ -40,14 +41,19 @@ const QuestionScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-            <View style={styles.iconTitle}>
-                <Text style={styles.title}>Tell us About Yourself</Text>
-            </View>
+                <View style={styles.iconTitle}>
+                    <Text style={styles.title}>Tell us About Yourself</Text>
+                </View>
                 <Text style={styles.subtitle}>Answer some questions so everyone can know you better. This step is not mandatory.</Text>
             </View>
+            <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          keyboardVerticalOffset={30} 
+          >
             <ScrollView>
                 <Formik
-                    initialValues={{ mate: '', intensity: ''}}
+                    initialValues={{ mate: '', intensity: '', bio: '' }}
                     onSubmit={handleUpdate}
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -65,7 +71,7 @@ const QuestionScreen = ({ navigation }) => {
                                             value={values.mate}
                                             onFocus={() => setErrorSubmiting("")}
                                             placeholderTextColor="gray"
-                                            multiline={true} 
+                                            multiline={true}
                                             numberOfLines={4}
                                         />
                                     </View>
@@ -79,10 +85,23 @@ const QuestionScreen = ({ navigation }) => {
                                             placeholder="I practice my hobbies all weekends and..."
                                             onFocus={() => setErrorSubmiting("")}
                                             placeholderTextColor="gray"
-                                            multiline={true} 
+                                            multiline={true}
                                         />
                                     </View>
-
+                                    <View style={styles.formSection}>
+                                        <Text style={styles.text}>Tell us a bit more about yourself</Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            onChangeText={handleChange('bio')}
+                                            onBlur={handleBlur('bio')}
+                                            value={values.bio}
+                                            placeholder="Write something interesting about you..."
+                                            onFocus={() => setErrorSubmiting("")}
+                                            placeholderTextColor="gray"
+                                            multiline={true}
+                                            numberOfLines={4}
+                                        />
+                                    </View>
                                 </View>
                             </ScrollView>
                             <View style={styles.buttonContainer}>
@@ -94,6 +113,7 @@ const QuestionScreen = ({ navigation }) => {
                     )}
                 </Formik>
             </ScrollView>
+            </KeyboardAvoidingView>
         </View>
     );
 };
@@ -180,7 +200,7 @@ const styles = StyleSheet.create({
         color: 'white',
         backgroundColor: '#151515',
         borderRadius: 10,
-        fontSize: 20
+        fontSize: 15
     },
     textArea: {
         height: 150
