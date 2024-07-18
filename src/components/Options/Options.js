@@ -39,15 +39,6 @@ const Options = () => {
       <Modal transparent visible={isVisible}>
         <SafeAreaView style={styles.modalContent} onTouchEnd={handleCloseModal}>
           <View style={styles.optionsContainer}>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <Text style={styles.textOption}>Edit profile </Text>
-              <Image
-                style={styles.icon}
-                source={require("../../../assets/edit.png")}
-              />
-            </View>
             <View style={styles.div}></View>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
@@ -86,7 +77,7 @@ const styles = StyleSheet.create({
   options1: {
     position: "absolute",
     left: 320,
-    bottom: 720,
+    bottom: 150,
   },
   modalContent: {
     flex: 1,

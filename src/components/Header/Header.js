@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
-import { iconColor, mainColor, textColor } from "../../screens/MainFeed";
 
 const premiumBadge = {
   vipOn: require("../../../assets/vip-on.png"),
@@ -18,7 +17,7 @@ const Header = ({ user, navigation, isPremium }) => {
           <TouchableOpacity onPress={()=> isPremium ?  "" : navigation.push("SubscriptionScreen") }>
 
         <Image
-              style={ isPremium ? styles.iconPremium : styles.icon }
+              style={ isPremium ? styles.iconPremium : styles.iconPremiumOff  }
               source={ isPremium ? premiumBadge.vipOn : premiumBadge.vipOff }
               />
               </TouchableOpacity>
@@ -31,13 +30,13 @@ const Header = ({ user, navigation, isPremium }) => {
           </TouchableOpacity>
         </View>
         <View>
-          <TouchableOpacity>
-            <View style={styles.unreadBadge}>
+          <TouchableOpacity onPress={()=>navigation.push("Messages")} >
+            {/* <View style={styles.unreadBadge}>
               <Text style={styles.unreadBadgeText}>11</Text>
-            </View>
+            </View> */}
             <Image
               style={styles.icon}
-              source={require("../../../assets/notification.png")}
+              source={require("../../../assets/messages.png")}
             />
           </TouchableOpacity>
         </View>
@@ -48,13 +47,12 @@ const Header = ({ user, navigation, isPremium }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: mainColor,
-    // backgroundColor: mainColor,
+    backgroundColor: "#151515",
     height: 70,
     // borderBottomLeftRadius: 10,
     // borderBottomRightRadius: 10,
     borderBottomWidth:0.1,
-    borderColor:textColor
+    borderColor:"white"
   },
   mainContainer: {
     flex: 1,
@@ -65,7 +63,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   icon: {
-    tintColor: "white",
+    tintColor: "#7E78D2",
     width: 30,
     height: 30,
     resizeMode: "contain",
@@ -98,6 +96,12 @@ const styles = StyleSheet.create({
   },
   iconPremium: {
     tintColor: "gold",
+    width: 30,
+    height: 30,
+    resizeMode: "contain",
+  },
+  iconPremiumOff: {
+    tintColor: "white",
     width: 30,
     height: 30,
     resizeMode: "contain",

@@ -21,7 +21,7 @@ const EProfile = () => {
       <StatusBar backgroundColor={mainColor} />
       <View style={styles.imgContainer}>
         <Image style={styles.img} source={require("../../assets/no-pic15.png")} />
-        <Text style={styles.name}> {user.username} </Text>
+        <Text style={styles.name}> {user?.username} </Text>
       </View>
       <View style={styles.detailsContainer}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -32,19 +32,37 @@ const EProfile = () => {
           <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
         </View>
         <View style={styles.hobbiesContainer}>
-          {user.hobbies.map((hobby, index) => (
+          {user?.hobbies.map((hobby, index) => (
             <View key={index} style={styles.hobbyCard}>
               <Text style={styles.hobbiesInCard}>{hobby.name}</Text>
             </View>
           ))}
         </View>
         <View>
+        <View style={styles.infoContainer}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
             <Text style={styles.intereses}>Bio</Text>
             <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
           </View>
-          <Text style={styles.bio}> " {"asdasdasdasdasdasdasdasdasd"} " </Text>
+          <Text style={styles.bio}> " {user?.biography} " </Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
+            <Text style={[styles.intereses,{width:180}]}>My ideal mate</Text>
+            <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
+          </View>
+          <Text style={styles.bio}> " {user?.idealMate} " </Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
+            <Text style={[styles.intereses,{width:240}]}>Passion Frequency</Text>
+            <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
+          </View>
+          <Text style={styles.bio}> " {user?.hobbyIntensity} " </Text>
+        </View>
         </View>
         <TouchableOpacity style={{ alignItems: "center" }}>
           <Image
