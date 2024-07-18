@@ -183,6 +183,16 @@ const messagess1 = [
 ];
 const reactionsEmojis = ["👍", "🤣", "💖", "😡", "🤢", "👊", "X"];
 
+const converToTime = (dateToConver) => {
+  const date = new Date(dateToConver);
+  const optionsDate = { day: "2-digit", month: "2-digit", year: "numeric" };
+  const optionsTime = { hour: "2-digit", minute: "2-digit" };
+  const formattedDate = date.toLocaleDateString("es-ES", optionsDate);
+  const formattedTime = date.toLocaleTimeString("es-ES", optionsTime);
+
+  return `${formattedDate} ${formattedTime}`;
+};
+
 const EMsj = ({
   msj,
   keyNumb,
@@ -283,7 +293,7 @@ const EMsj = ({
         <View style={styles.eMessage}>
           <Text style={styles.eMsg}>{msj.message}</Text>
           <View style={styles.eMsgTimeContainer}>
-            <Text style={styles.eMsgTime}>20:15</Text>
+            <Text style={styles.eMsgTime}>{converToTime(msj.createdAt)}</Text>
           </View>
         </View>
         {isPressed && <View style={styles.overlay} />}
@@ -366,7 +376,7 @@ const OMsj = ({ msj, keyNumb }) => {
         <View style={styles.oMessage}>
           <Text style={styles.oMsg}>{msj.message}</Text>
           <View style={styles.oMsgTimeContainer}>
-            <Text style={styles.oMsgTime}>"20:15"</Text>
+            <Text style={styles.oMsgTime}>{converToTime(msj.createdAt)}</Text>
           </View>
         </View>
       </View>
@@ -380,8 +390,9 @@ const ChatMessages = ({
   disableTouch,
   block,
   setBlock,
-  messagesHistory,
-  socket
+  messages,
+  socket,
+  user
 }) => {
   
   const [scrolling, setScrolling] = useState(0);
@@ -390,31 +401,15 @@ const ChatMessages = ({
   };
   useEffect(() => {
     setScrolling(1);
+    console.log(messages);
   }, []);
 
   
   return (
     <View style={styles.container}>
       <ScrollView style={{flex:1}} onScroll={handleScrolling}>
-      {messagess1.map((msj, key) =>
-          msj.email === 2 ? (
-            <OMsj msj={msj} key={key} />
-          ) : (
-            <EMsj
-              msj={msj}
-              key={key}
-              keyNumb={key}
-              scrolling={scrolling}
-              touched={touched}
-              setDisableTouch={setDisableTouch}
-              block={block}
-              setBlock={setBlock}
-              numb={key}
-            />
-          )
-        )}
-        {messagesHistory.map((msj, key) =>
-          msj.client == socket.id ? (
+      {messages.map((msj, key) =>
+          msj.from.userId === user.userId ? (
             <OMsj msj={msj} key={key} />
           ) : (
             <EMsj

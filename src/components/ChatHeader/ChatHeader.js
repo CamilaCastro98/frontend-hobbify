@@ -24,7 +24,7 @@ const ChatHeader = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity>
-          <Text style={{ color: "white", fontSize: 20 }}>... </Text>
+          <Text style={{ color: "#7E78D2", fontSize: 20 }}>... </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   arrow: {
-    color: "white",
+    color: "#7E78D2",
     fontSize: 40,
   },
   profile: {

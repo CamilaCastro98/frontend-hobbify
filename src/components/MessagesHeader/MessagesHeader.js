@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   arrow: {
-    color: "white",
+    color: "#7E78D2",
     fontSize: 40,
   },
   input: {
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     color: "white",
     height:30,
     borderWidth:0.5,
-    borderColor:"white",
+    borderColor:"#7E78D2",
     borderRadius:5,
     paddingLeft:10
   },

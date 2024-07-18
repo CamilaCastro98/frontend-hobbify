@@ -8,10 +8,11 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NavBar from "../components/NavBar/NavBar";
 import MessagesHeader from "../components/MessagesHeader/MessagesHeader";
 import { mainColor } from "./MainFeed";
+import { Context } from "../contexts/Context";
 
 const h1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 const userExamplle = {
@@ -114,14 +115,20 @@ const users1 = [
 ];
 
 const Messages = ({ navigation }) => {
-const [users, setUsers] = useState(users1);
+const { user, isPremium,token } = useContext(Context); 
+const [users, setUsers] = useState(user.contacts1);
 const [searched, setSearched] =useState("");
-
+useEffect(()=>{
+  setUsers(user.contacts1);
+},[])
 useEffect(() => {
-  const newUsers = users1.filter(user => user.name.toLocaleLowerCase().includes(searched.toLowerCase()))
+  const newUsers = user.contacts1.filter(user => user.username.toLocaleLowerCase().includes(searched.toLowerCase()))
   setUsers(newUsers)
 }, [searched])
-
+useEffect(() => {
+  console.log(user[0]?.userId+"--------------------------------------------");
+  
+}, [searched])
 
 
   return (
@@ -130,13 +137,11 @@ useEffect(() => {
       <MessagesHeader navigation={navigation} searched={searched} setSearched={setSearched}  />
       <View style={styles.mainContainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {users?.length ?   
-
-
+          {users?.length ?
           users.map((userExamplle, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => navigation.push("Chat")}
+              onPress={() => navigation.push("Chat", { userPara: userExamplle })}
             >
               <View style={styles.card}>
                 <View style={styles.mainCard}>
@@ -147,10 +152,10 @@ useEffect(() => {
                     />
                   </View>
                   <View style={styles.textContainer}>
-                    <Text style={styles.nameText}>{userExamplle.name}</Text>
-                    <Text style={styles.messageText}>
+                    <Text style={styles.nameText}>{userExamplle.username}</Text>
+                    {/* <Text style={styles.messageText}>
                       {userExamplle.message}
-                    </Text>
+                    </Text> */}
                   </View>
                 </View>
               </View>

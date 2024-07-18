@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 const mainColor1 = "#151515"
-const ChatInput = ({sendMessage, messageFromFront,setMessageFromFront}) => {
+const ChatInput = ({sendMessage,}) => {
   const [height, setHeight] = useState(40);
+  const [mensaje, setMensaje] = useState("");
   const sendHandler=() =>{
-    sendMessage();
-    setMessageFromFront("");
+    sendMessage(mensaje);
+    setMensaje("");
   }
   return (
     <View style={[styles.container, { height: Math.max(50, height + 15) }]}>
@@ -27,8 +28,8 @@ const ChatInput = ({sendMessage, messageFromFront,setMessageFromFront}) => {
           style={[styles.inputContainer, { height: Math.max(30, height + 5) }]}
         >
           <TextInput
-            value={messageFromFront}
-            onChangeText={setMessageFromFront}
+            value={mensaje}
+            onChangeText={setMensaje}
             multiline={true}
             style={[styles.input, { height: Math.max(30, height) }]}
             onContentSizeChange={(event) => {
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
   icon: {
     height: 30,
     width: 30,
-    tintColor: "white",
+    tintColor: "#7E78D2",
     marginTop: 5,
     marginBottom: 5,
   },
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     borderWidth: 0.5,
     borderRadius: 5,
-    borderColor: "white",
+    borderColor: "#7E78D2",
     paddingLeft: 5,
     paddingRight: 5,
   },

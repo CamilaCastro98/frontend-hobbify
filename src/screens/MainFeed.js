@@ -12,9 +12,10 @@ import React, { useContext, useEffect, useState } from "react";
 import Header from "../components/Header/Header";
 import NavBar from "../components/NavBar/NavBar";
 import { Context } from "../contexts/Context";
-import { API_URL, API_KEY_TEST } from '@env'
+import { API_KEY_TEST } from '@env'
 import axios from "axios";
 
+const API_URL = "https://c9knnnk6-3017.use2.devtunnels.ms/"
 
 
 
@@ -130,7 +131,7 @@ const users1 = [
 export const fondo = "#151515"
 export const textColor = "white"
 export const mainColor = "#151515"
-export const iconColor = "white"
+export const iconColor = "#7E78D2"
 const detailColor = "#151515"
 
 
@@ -148,7 +149,7 @@ const MainFeed = ({ navigation }) => {
     const getFilteredUsers = async () => {
       try {
         console.log(user);
-          const response = await axios.get(`https://backend-hobbify.onrender.com/users/byhobbies/${user.userId}`,{
+          const response = await axios.get(`${API_URL}users/byhobbies/${user.userId}`,{
             headers: {
               Authorization: `Bearer ${token}`,
             }
@@ -179,8 +180,36 @@ const MainFeed = ({ navigation }) => {
     // console.log(newUsers);
     // setUsers(newUsers);
     // console.log(API_URL)
+    
+    const addNewContact = (newContact) => {
+      const request1 = {
+        idUser: user.userId,
+        idContact: newContact.userId,
+      }
 
-
+      const addContact = async () => {
+        try {
+          console.log(user);
+            const response = await axios.post(`${API_URL}users`,request1 )
+            return response
+      }
+      catch(error) {
+          console.log(error);
+            throw new Error(`error trying to addcontact: ${error}`)
+          }
+       } 
+        const handleAddContact = async () => {
+          try {
+            const response = await addContact();
+            console.log(response)
+            navigation.push("Chat", { userPara: newContact })
+          } catch (error) {
+            console.log(error)
+          }
+        }
+        handleAddContact();
+  
+      }
 
 
   return (
@@ -200,7 +229,7 @@ const MainFeed = ({ navigation }) => {
                   <View style={{ margin: 5 }}>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.push("EProfile", { user: userExamplle })
+                        navigation.push("EProfile", { userPara: userExamplle })
                       }
                     >
                       <Image
@@ -223,7 +252,7 @@ const MainFeed = ({ navigation }) => {
                       ))}
                     </View>
                   </View>
-                  <TouchableOpacity style={styles.imageContainer}>
+                  <TouchableOpacity style={styles.imageContainer} onPress={()=> addNewContact(userExamplle)} >
                     <Image
                       source={require("../../assets/send-message.png")}
                       style={styles.sendMessage}
@@ -238,7 +267,7 @@ const MainFeed = ({ navigation }) => {
           </ScrollView>
         </View>
       </View>
-      <NavBar navigation={navigation} />
+      {/* <NavBar navigation={navigation} /> */}
     </SafeAreaView>
   );
 };
@@ -305,9 +334,9 @@ const styles = StyleSheet.create({
     padding: 0.5,
     backgroundColor: detailColor,
     margin: 1,
-    borderRadius: 4,
-    borderWidth:0.1,
-    borderColor:"gray"
+    borderRadius: 99,
+    borderWidth:0.3,
+    borderColor:"#7E78D2"
   },
 });
 

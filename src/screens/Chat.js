@@ -9,18 +9,27 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import React, { Profiler, useEffect, useState } from "react";
+import React, { Profiler, useContext, useEffect, useState } from "react";
 import ChatHeader from "../components/ChatHeader/ChatHeader";
 import ChatInput from "../components/ChatInput/ChatInput";
 import ChatMessages from "../components/ChatMessages/ChatMessages";
 import { io } from "socket.io-client";
 import axios from "axios";
-import {
-  API_URLTEST
-} from "@env";
-const socket = io("https://backend-hobbify.onrender.com/");
+import { Context } from "../contexts/Context";
+import { useRoute } from "@react-navigation/native";
+
+const API_URL = "https://c9knnnk6-3017.use2.devtunnels.ms/"
+
+const socket= io("https://c9knnnk6-3017.use2.devtunnels.ms/", {
+  autoConnect: false,
+});
+
 const mainColor1 = "#151515"
+///////////////////////////////////////////////////////////////////////////////////////////
 const Chat = ({ navigation }) => {
+  const route = useRoute(); 
+  const { userPara } = route.params;
+  const { user, isPremium,token, updateHobbies } = useContext(Context); 
   const [touched, setTouched] = useState(0);
   const [disableTouch, setDisableTouch] = useState(false);
   const [block, setBlock] = useState(false);
@@ -34,46 +43,88 @@ const Chat = ({ navigation }) => {
   useEffect(() => {
     console.log(touched);
   }, [touched]);
-
-  const [messageFromFront, setMessageFromFront] = useState("");
-  const [messagesHistory, setMessagesHistory] = useState([]);
-
-  const handleConnection = () => {
-    setIsConnected(true);
-  };
-
-  const handleNewMessage = (event) => {
-    setMessageFromFront(event.target.value);
-  };
-
+  const [messages, setMessages] = useState([]);
+  const [userFrom, setUserFrom] = useState(user);
+  const [userTo, setUserTo] = useState(userPara);
+  const [contacts, setContacts] = useState([]);
   useEffect(() => {
-    socket.on("connect", handleConnection);
-    // socket.emit("join-room", { room: "GENERAL" });
-    socket.on("newMessage", (payload) => {
-      console.log("En el front recibo:");
-      console.log("payload:", payload);
-      console.log("messagesHistory:", messagesHistory);
-      setMessagesHistory((messagesHistory) => [...messagesHistory, payload]);
+    socket.on("connect", () => {
+      socket.emit("start", {
+        userFrom: userFrom.userId,
+      });
+      console.log("askdpoaskdopsa")
     });
 
-    return () => {
-      socket.off("connect");
-      socket.off("newMessage");
-    };
+    socket.on(`contacts_${userFrom.userId}`, (e) => {
+      setContacts(e);
+    });
+    const newUser123 = user;
+    newUser123.contacts1 = contacts;
+    updateHobbies(newUser123);
+    setUserFrom(newUser123);
+    console.log(contacts[0]?.username+"----------------------")
+    socket.connect();
   }, []);
+  useEffect(() => {
+    console.log(contacts);
+  }, [contacts])
 
-  const sendMessage = () => {
-    socket.emit("message-sent", {
-      client: socket.id,
-      room: "GENERAL",
-      message: messageFromFront,
-    });
-  };
+
+
 
 
   useEffect(() => {
-    console.log(API_URLTEST);
-  }, []);
+    console.log(userFrom.userId," ", userTo.userId)
+    if (userTo) {
+      socket.emit("joinRoom", {
+        userFrom: userFrom.userId,
+        userTo: userTo.userId,
+      });
+
+      let messageEvent;
+      if (userTo.userId > userFrom.userId)
+        messageEvent = `chat_${userFrom.userId}_${userTo.userId}`;
+      else messageEvent = `chat_${userTo.userId}_${userFrom.userId}`;
+
+      socket.on(messageEvent, (e) => {
+        console.log("********LLEGO MENSAJE********");
+        setMessages((messages) => [...messages, e]);
+      });
+
+      socket.on("roomMessages", (e) => {
+        console.log("*******MENSAJES DE LA SALA*********", e);
+        setMessages(e);
+      });
+      // Aquí es donde te desuscribes de los eventos
+      return () => {
+        socket.off("connect");
+        socket.off("disconnect");
+        socket.off(messageEvent);
+      };
+    }
+    socket.on("disconnect", () => {
+      setIsConnected(false);
+    });
+  }, [ userFrom, userTo]);
+
+  const sendMessage = (message) => {
+    console.log("OS"+userFrom.userId)
+    console.log("OeS"+userTo)
+    socket.emit("chat", {
+      message,
+      userFrom: userFrom.userId,
+      userTo: userTo.userId,
+    });
+  };
+
+
+
+  useEffect(() => {
+    console.log(user.contacts1+"---------------------------------------------------------------");
+    updateHobbies(userFrom);
+  }, [touched])
+  
+
 
 
   return (
@@ -92,11 +143,12 @@ const Chat = ({ navigation }) => {
           disableTouch={disableTouch}
           block={block}
           setBlock={setBlock}
-          messagesHistory={messagesHistory}
+          messages={messages}
           socket={socket}
           style={{flex:1}}
+          user={user}
         />
-        <ChatInput sendMessage={sendMessage} messageFromFront={messageFromFront} setMessageFromFront={setMessageFromFront} />
+        <ChatInput sendMessage={sendMessage}  />
         </KeyboardAvoidingView>
       </Pressable>
     </SafeAreaView>
