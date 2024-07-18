@@ -11,11 +11,14 @@ const Subscription = () => {
 
     useEffect(() => {
         const handleGetPlans = async () => {
+            setIsLoading(true);  // Usar setIsLoading para establecer el estado a true
             try {
                 const response = await getPlans();
                 setPlans(response);
             } catch (error) {
-                throw new Error(`Error handling get premium plans: ${error}`);
+                console.error(`Error handling get premium plans: ${error}`);
+            } finally {
+                setIsLoading(false);  // Establecer el estado a false después de obtener la respuesta o si hay un error
             }
         };
         handleGetPlans();
@@ -27,15 +30,14 @@ const Subscription = () => {
 
     const handlePurchase = async (id) => {
         if (selectedPlan !== null) {
-            // Handle the purchase logic here
-            setIsLoading(true);
+            setIsLoading(true);  // Usar setIsLoading para establecer el estado a true
             try {
                 await postPurchase(id);
             } catch (error) {
-                throw new Error(`Error handling post purchase: ${error}`);
-            }  finally {
-                setIsLoading(false);
-              }
+                console.error(`Error handling post purchase: ${error}`);
+            } finally {
+                setIsLoading(false);  // Establecer el estado a false después de manejar la compra
+            }
         } else {
             alert('Please select a subscription plan.');
         }
@@ -44,19 +46,27 @@ const Subscription = () => {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View style={styles.container}>
-                {plans.map((plan, index) => (
-                    <SubscriptionCard
-                        key={index}
-                        nickname={plan.nickname}
-                        price={plan.unit_amount}
-                        interval={plan.recurring ? plan.recurring.interval : ''}
-                        description={plan.description}
-                        selected={selectedPlan === plan.id}
-                        onSelect={() => handleSelectPlan(plan.id)}
-                    />
-                ))}
+                {isLoading ? (
+                    <ActivityIndicator size="large" color="white" />
+                ) : (
+                    plans.map((plan, index) => (
+                        <SubscriptionCard
+                            key={index}
+                            nickname={plan.nickname}
+                            price={plan.unit_amount}
+                            interval={plan.recurring ? plan.recurring.interval : ''}
+                            description={plan.description}
+                            selected={selectedPlan === plan.id}
+                            onSelect={() => handleSelectPlan(plan.id)}
+                        />
+                    ))
+                )}
                 <TouchableOpacity style={styles.purchaseButton} onPress={() => handlePurchase(selectedPlan)}>
-                   {isLoading ? <ActivityIndicator size="small" color="white" /> :  <Text style={styles.purchaseButtonText}>Purchase</Text>}
+                    {isLoading ? (
+                        <ActivityIndicator size="small" color="white" />
+                    ) : (
+                        <Text style={styles.purchaseButtonText}>Purchase</Text>
+                    )}
                 </TouchableOpacity>
             </View>
         </ScrollView>
@@ -64,3 +74,4 @@ const Subscription = () => {
 };
 
 export default Subscription;
+

@@ -226,7 +226,7 @@ const HobbySelector = ({ navigation }) => {
                     onPress={() => handleSelectHobbies()}
                     disabled={!canProceed}
                 >
-                   {isLoading ?  <ActivityIndicator size="small" color="white" /> : <Text style={buttonTextStyle}>Go to Feed</Text>}
+                   {isLoading ?  <ActivityIndicator size="small" color="white" /> : <Text style={buttonTextStyle}>Next</Text>}
                 </TouchableOpacity>
             </View>
         </View>

@@ -100,7 +100,7 @@ export const sendToAdmin = async(values) => {
 export const getPlans = async() => {
 
     try {
-        const subscriptions = await axios.get(`http://192.168.100.248:3000/stripe`, {
+        const subscriptions = await axios.get(`https://backend-hobbify.onrender.com/stripe`, {
             headers: {
                 'Authorization': `Bearer ${STRIPE_API_KEY}`
             }
