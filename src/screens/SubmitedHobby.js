@@ -7,7 +7,7 @@ const SubmitedHobby = ({navigation}) => {
             <Message
                 navigation={navigation}
                 title="Your Hobby was Submited"
-                text1="We have sent the information you just submited to our admin. We will notify you once your request has been reviewed."
+                text1="We have sent the information you just submited to our admin. They will review your request as quickly as possible."
                 text2="In the meantime, you can go back and choose another hobby to start chatting right away."
                 nav="HobbySelector"
                 button="Go to Hobby Selector"

@@ -32,8 +32,14 @@ const user = {
 
     try {
        const response = await axios.post(`https://backend-hobbify.onrender.com/authown/signin`,values)
-       console.log(response.data)
-       await loginUser({email,password},login,navigation)
+
+       if (!response.data.error) {
+        console.log('response.data.error: ',JSON.stringify(response.data.error))
+           await loginUser({email,password},login,navigation)
+       } else {
+        console.log('no se puede registrar')
+        return('The email you provided is already used')
+       }
     }
     catch(error) {
         throw new Error(`error trying to register: ${error}`)
@@ -41,14 +47,13 @@ const user = {
 }
 
 export const loginUser = async(values,login) => {
-    console.log('HOLA HOLA')
   try {
     let response
         if (values.password) {
 
             response = await axios.post(`https://backend-hobbify.onrender.com/authown/login`,values);
         } else {
-            console.log('entroooooo')
+
             response = await axios.post(`https://backend-hobbify.onrender.com/auth/login`,values);
         }
 
@@ -82,8 +87,10 @@ export const loginUser = async(values,login) => {
 
 export const sendToAdmin = async(values) => {
     try {
-       //axios.post('api-back-sendToAdmin', values)
+        const response = await axios.post('https://backend-hobbify.onrender.com/hobbies', values)
         console.log(`Sent to admin: ${JSON.stringify(values)}`)
+
+        return response
     }
     catch(error) {
         throw new Error(`error trying to send form to admin: ${error}`)
@@ -136,6 +143,7 @@ export const getAllHobbies = async() => {
 
 export const updateUser = async(userUpdated,token) => {
     const {userId,...user} = userUpdated
+    console.log('token es ',token)
 
     try {
         const response = await axios.patch(`https://backend-hobbify.onrender.com/users/${userId}`, user, {
@@ -144,7 +152,7 @@ export const updateUser = async(userUpdated,token) => {
       }
     });
 
-    console.log(`La respuesta retornada es ${JSON.stringify(response.status)}`);
+    console.log(`La respuesta retornada es ${JSON.stringify(response.data)}`);
     return response.status;
     }
     catch(error) {
@@ -155,7 +163,8 @@ export const updateUser = async(userUpdated,token) => {
 export const getUserById = async(user,token) => {
     const {userId,...userInfo} = user
     try {
-        const response = await axios.get(`http://192.168.100.248:3000/users/${userId}`,{
+        console.log(`token para obtener user luego de pago: ${token}`)
+        const response = await axios.get(`https://backend-hobbify.onrender.com/users/${userId}`,{
             headers: {
               'Authorization': `Bearer ${token}` 
             }
